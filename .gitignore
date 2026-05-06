@@ -50,3 +50,10 @@ debug.log
 # Test/CI scratch
 .phpunit.result.cache
 coverage/
+
+# Internal planning / tracking docs (kept on disk, off the repo)
+avancement.md
+DASHBOARD-TODO.md
+ROADMAP.md
+SEO-AUDIT.md
+SETUP.md
