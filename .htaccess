@@ -1,0 +1,57 @@
+# =====================================================================
+# GreenAmal — Apache rewrite + error pages + security
+# =====================================================================
+
+Options -Indexes
+DirectoryIndex index.php
+
+# Force HTTPS in production (uncomment after deploy)
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Custom error documents
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Pretty URLs:
+#   /p/<slug>     → product.php?slug=<slug>
+#   /c/<slug>     → shop.php?cat=<slug>
+#   /post/<slug>  → blog-post.php?slug=<slug>
+RewriteRule ^p/([a-z0-9\-]+)/?$    product.php?slug=$1   [L,QSA]
+RewriteRule ^c/([a-z0-9\-]+)/?$    shop.php?cat=$1       [L,QSA]
+RewriteRule ^post/([a-z0-9\-]+)/?$ blog-post.php?slug=$1 [L,QSA]
+RewriteRule ^blog/?$               blog.php              [L,QSA]
+</IfModule>
+
+# Cache static assets aggressively (1 year, immutable)
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png  "access plus 1 year"
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType text/css   "access plus 1 month"
+ExpiresByType application/javascript "access plus 1 month"
+ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
+
+# Compress text resources
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Permissions-Policy "interest-cohort=()"
+</IfModule>
+
+# Block direct access to sensitive files
+<FilesMatch "^(\.env|composer\.|config\.local\.php|\.git)">
+  Require all denied
+</FilesMatch>

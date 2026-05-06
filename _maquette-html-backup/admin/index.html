@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de bord — GreenAmal Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+<div class="admin-app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="sidebar-brand-mark">G</span>
+      <div class="sidebar-brand-text">GreenAmal<small>Admin</small></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <a href="index.html" class="sidebar-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Tableau de bord
+        </a>
+        <a href="orders.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Commandes
+          <span class="badge">8</span>
+        </a>
+        <a href="products.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Produits
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          Catégories
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          Stocks
+        </a>
+        <a href="customers.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Clients
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Avis
+          <span class="badge">3</span>
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Marketing</div>
+        <a href="coupons.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 010-4h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 000 4h4v-4z"/></svg>
+          Coupons
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Newsletter
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="6" rx="1"/><line x1="3" y1="13" x2="21" y2="13"/></svg>
+          Bandeau promo
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          Paniers abandonnés
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Contenu</div>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Blog
+        </a>
+        <a href="#" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+          Pages
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Réglages</div>
+        <a href="settings.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          Paramètres
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="sidebar-user-avatar">FZ</span>
+      <div class="sidebar-user-info">
+        <strong>Fatima Z.</strong>
+        <span>Administratrice</span>
+      </div>
+      <button title="Déconnexion" onclick="window.location.href='login.html'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Rechercher commandes, produits, clients...">
+        <kbd>⌘K</kbd>
+      </div>
+      <div class="topbar-actions">
+        <a href="../index.html" target="_blank" class="topbar-btn" title="Voir la boutique">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <button class="topbar-btn" title="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="dot"></span>
+        </button>
+        <button class="topbar-btn" title="Aide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+        <div class="topbar-divider"></div>
+        <div class="topbar-user">
+          <span class="topbar-user-avatar">FZ</span>
+          <span class="topbar-user-name">Fatima Z.</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--ink-mute);"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page -->
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <h1>Bonjour Fatima 👋</h1>
+          <p>Voici un aperçu de votre boutique aujourd'hui · <strong>5 mai 2026</strong></p>
+        </div>
+        <div class="page-actions">
+          <select class="field-select">
+            <option>Aujourd'hui</option>
+            <option>7 derniers jours</option>
+            <option selected>30 derniers jours</option>
+            <option>Cette année</option>
+          </select>
+          <button class="btn btn-outline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exporter
+          </button>
+          <button class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouveau produit
+          </button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="kpi-label">Revenus (30j)</div>
+          <div class="kpi-value">48 290 د.م.</div>
+          <div class="kpi-meta">
+            <span class="kpi-trend up">↑ 12.4%</span>
+            <span class="kpi-meta-text">vs 30j précédents</span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+          </div>
+          <div class="kpi-label">Commandes</div>
+          <div class="kpi-value">312</div>
+          <div class="kpi-meta">
+            <span class="kpi-trend up">↑ 8.1%</span>
+            <span class="kpi-meta-text">8 en attente</span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="kpi-label">Panier moyen</div>
+          <div class="kpi-value">154 د.م.</div>
+          <div class="kpi-meta">
+            <span class="kpi-trend up">↑ 4.2%</span>
+            <span class="kpi-meta-text">+6 د.م.</span>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><polyline points="7 14 12 9 16 13 21 8"/></svg>
+          </div>
+          <div class="kpi-label">Taux conversion</div>
+          <div class="kpi-value">3.8%</div>
+          <div class="kpi-meta">
+            <span class="kpi-trend down">↓ 0.3%</span>
+            <span class="kpi-meta-text">à surveiller</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart + Top products -->
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-bottom: 24px;" class="dashboard-row">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3>Évolution des revenus</h3>
+              <div class="head-meta">30 derniers jours</div>
+            </div>
+            <div style="display: flex; gap: 14px; font-size: 0.78rem;">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <span style="width: 10px; height: 10px; border-radius: 2px; background: var(--olive);"></span> Revenus
+              </span>
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <span style="width: 10px; height: 10px; border-radius: 2px; background: var(--saffron);"></span> Commandes
+              </span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-placeholder">
+              <div class="chart-bar" style="height: 35%"></div>
+              <div class="chart-bar" style="height: 50%"></div>
+              <div class="chart-bar" style="height: 42%"></div>
+              <div class="chart-bar" style="height: 60%"></div>
+              <div class="chart-bar" style="height: 55%"></div>
+              <div class="chart-bar" style="height: 70%"></div>
+              <div class="chart-bar" style="height: 65%"></div>
+              <div class="chart-bar" style="height: 78%"></div>
+              <div class="chart-bar" style="height: 82%"></div>
+              <div class="chart-bar" style="height: 75%"></div>
+              <div class="chart-bar" style="height: 88%"></div>
+              <div class="chart-bar accent" style="height: 95%"></div>
+              <div class="chart-bar" style="height: 80%"></div>
+              <div class="chart-bar" style="height: 92%"></div>
+            </div>
+            <div class="chart-x">
+              <span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span><span>S6</span><span>S7</span><span>S8</span><span>S9</span><span>S10</span><span>S11</span><span>S12</span><span>S13</span><span>S14</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h3>Top produits</h3>
+            <a href="products.html" style="font-size: 0.82rem; color: var(--olive); font-weight: 500;">Tout voir →</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div style="display: flex; flex-direction: column;">
+              <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px 22px; align-items: center; border-bottom: 1px solid var(--line-soft);">
+                <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=80&q=80" style="width: 40px; height: 40px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <strong style="font-size: 0.88rem;">Huile d'argan 100ml</strong>
+                  <div style="font-size: 0.75rem; color: var(--ink-mute);">127 ventes</div>
+                </div>
+                <strong class="cell-num">16 383 د.م.</strong>
+              </div>
+              <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px 22px; align-items: center; border-bottom: 1px solid var(--line-soft);">
+                <img src="https://images.unsplash.com/photo-1612537786051-1d4cc6cf16d8?w=80&q=80" style="width: 40px; height: 40px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <strong style="font-size: 0.88rem;">Couscous d'orge bio</strong>
+                  <div style="font-size: 0.75rem; color: var(--ink-mute);">214 ventes</div>
+                </div>
+                <strong class="cell-num">9 630 د.م.</strong>
+              </div>
+              <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px 22px; align-items: center; border-bottom: 1px solid var(--line-soft);">
+                <img src="https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=80&q=80" style="width: 40px; height: 40px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <strong style="font-size: 0.88rem;">Hydrolat de rose 250ml</strong>
+                  <div style="font-size: 0.75rem; color: var(--ink-mute);">156 ventes</div>
+                </div>
+                <strong class="cell-num">10 140 د.م.</strong>
+              </div>
+              <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px 22px; align-items: center; border-bottom: 1px solid var(--line-soft);">
+                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=80&q=80" style="width: 40px; height: 40px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <strong style="font-size: 0.88rem;">Ghassoul argile 500g</strong>
+                  <div style="font-size: 0.75rem; color: var(--ink-mute);">184 ventes</div>
+                </div>
+                <strong class="cell-num">9 016 د.م.</strong>
+              </div>
+              <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px 22px; align-items: center;">
+                <img src="https://images.unsplash.com/photo-1612871689353-cccf581d667b?w=80&q=80" style="width: 40px; height: 40px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <strong style="font-size: 0.88rem;">Savon noir Beldi 200g</strong>
+                  <div style="font-size: 0.75rem; color: var(--ink-mute);">98 ventes</div>
+                </div>
+                <strong class="cell-num">5 782 د.م.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent orders + alerts -->
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px;" class="dashboard-row">
+        <div class="card">
+          <div class="card-head">
+            <h3>Commandes récentes</h3>
+            <a href="orders.html" style="font-size: 0.82rem; color: var(--olive); font-weight: 500;">Tout voir →</a>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Commande</th>
+                <th>Client</th>
+                <th>Statut</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="cell-mono">#GA-2026-0312</span></td>
+                <td><div class="cell-customer"><span class="cell-customer-avatar">AB</span><span><strong style="font-size: 0.85rem;">Amina Benali</strong><div class="cell-mute">Casablanca</div></span></div></td>
+                <td><span class="badge-status status-warning">En attente</span></td>
+                <td class="cell-num">344 د.م.</td>
+                <td><a href="order-detail.html" style="color: var(--olive); font-weight: 500; font-size: 0.82rem;">Voir →</a></td>
+              </tr>
+              <tr>
+                <td><span class="cell-mono">#GA-2026-0311</span></td>
+                <td><div class="cell-customer"><span class="cell-customer-avatar">YA</span><span><strong style="font-size: 0.85rem;">Youssef Alami</strong><div class="cell-mute">Rabat</div></span></div></td>
+                <td><span class="badge-status status-info">Préparation</span></td>
+                <td class="cell-num">128 د.م.</td>
+                <td><a href="order-detail.html" style="color: var(--olive); font-weight: 500; font-size: 0.82rem;">Voir →</a></td>
+              </tr>
+              <tr>
+                <td><span class="cell-mono">#GA-2026-0310</span></td>
+                <td><div class="cell-customer"><span class="cell-customer-avatar">SM</span><span><strong style="font-size: 0.85rem;">Sara Mahmoudi</strong><div class="cell-mute">Marrakech</div></span></div></td>
+                <td><span class="badge-status status-info">Expédié</span></td>
+                <td class="cell-num">512 د.م.</td>
+                <td><a href="order-detail.html" style="color: var(--olive); font-weight: 500; font-size: 0.82rem;">Voir →</a></td>
+              </tr>
+              <tr>
+                <td><span class="cell-mono">#GA-2026-0309</span></td>
+                <td><div class="cell-customer"><span class="cell-customer-avatar">MK</span><span><strong style="font-size: 0.85rem;">Mehdi Khalifi</strong><div class="cell-mute">Tanger</div></span></div></td>
+                <td><span class="badge-status status-success">Livré</span></td>
+                <td class="cell-num">219 د.م.</td>
+                <td><a href="order-detail.html" style="color: var(--olive); font-weight: 500; font-size: 0.82rem;">Voir →</a></td>
+              </tr>
+              <tr>
+                <td><span class="cell-mono">#GA-2026-0308</span></td>
+                <td><div class="cell-customer"><span class="cell-customer-avatar">FZ</span><span><strong style="font-size: 0.85rem;">Fatima Zahra</strong><div class="cell-mute">Fès</div></span></div></td>
+                <td><span class="badge-status status-danger">Annulé</span></td>
+                <td class="cell-num">85 د.م.</td>
+                <td><a href="order-detail.html" style="color: var(--olive); font-weight: 500; font-size: 0.82rem;">Voir →</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card">
+            <div class="card-head">
+              <h3>⚠ Stocks bas</h3>
+              <span class="head-meta">5 produits</span>
+            </div>
+            <div class="card-body" style="padding: 0;">
+              <div style="padding: 12px 22px; border-bottom: 1px solid var(--line-soft); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="font-size: 0.85rem;">Huile essentielle romarin</strong>
+                  <div class="cell-mute">SKU: HE-ROM-30</div>
+                </div>
+                <span class="badge-status status-danger">3 restants</span>
+              </div>
+              <div style="padding: 12px 22px; border-bottom: 1px solid var(--line-soft); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="font-size: 0.85rem;">Verveine séchée 100g</strong>
+                  <div class="cell-mute">SKU: PLT-VRV-100</div>
+                </div>
+                <span class="badge-status status-warning">7 restants</span>
+              </div>
+              <div style="padding: 12px 22px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="font-size: 0.85rem;">Couscous d'orge 1kg</strong>
+                  <div class="cell-mute">SKU: CSC-ORG-1K</div>
+                </div>
+                <span class="badge-status status-warning">9 restants</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>Visiteurs en direct</h3>
+              <span class="head-meta">Maintenant</span>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                <div style="width: 14px; height: 14px; border-radius: 50%; background: var(--success); position: relative;">
+                  <div style="position: absolute; inset: -4px; border-radius: 50%; background: var(--success); opacity: 0.3; animation: pulse 1.6s infinite;"></div>
+                </div>
+                <strong style="font-family: var(--font-display); font-size: 1.8rem; color: var(--ink);">47</strong>
+                <span style="color: var(--ink-mute); font-size: 0.85rem;">visiteurs actifs</span>
+              </div>
+              <div style="font-size: 0.82rem; color: var(--ink-soft); display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; justify-content: space-between;"><span>Page d'accueil</span><strong>18</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Boutique</span><strong>12</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Huile d'argan</span><strong>9</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Panier</span><strong>5</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Checkout</span><strong>3</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+        @media (max-width: 1024px) {
+          .dashboard-row { grid-template-columns: 1fr !important; }
+        }
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 0.3; }
+          100% { transform: scale(2); opacity: 0; }
+        }
+      </style>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Block PHP execution inside uploads
+<FilesMatch "\.(php|phtml|phar|pl|py|jsp|asp|aspx|sh|cgi)$">
+  Require all denied
+</FilesMatch>
+Options -ExecCGI

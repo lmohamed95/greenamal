@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon panier — GreenAmal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<div class="promo-bar">
+  <div class="container">
+    <strong>−25%</strong> avec le code <code>first25</code> · Livraison gratuite dès 350 د.م.
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo"><span class="logo-mark">G</span> GreenAmal</a>
+    <nav class="main-nav">
+      <a href="index.html">Accueil</a>
+      <a href="shop.html">Boutique</a>
+      <a href="shop.html">Catégories</a>
+      <a href="about.html">Notre histoire</a>
+      <a href="index.html#blog">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn menu-toggle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <button class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+      <button class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+      <a href="cart.html" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><span class="badge cart-badge">0</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="container breadcrumb">
+  <a href="index.html">Accueil</a><span>/</span><span>Mon panier</span>
+</div>
+
+<section style="padding-top: 20px;">
+  <div class="container">
+    <div style="margin-bottom: 32px;">
+      <h1 style="font-size: 2.2rem;">Mon panier</h1>
+      <p style="color: var(--ink-soft); margin-top: 8px;">3 articles dans votre panier</p>
+    </div>
+
+    <!-- Free shipping progress -->
+    <div class="shipping-progress">
+      <p>Plus que <strong>97 د.م.</strong> pour la livraison gratuite</p>
+      <div class="progress-track">
+        <div class="progress-fill" style="width: 72%;"></div>
+      </div>
+    </div>
+
+    <div class="cart-layout">
+      <div class="cart-items">
+        <div class="cart-item">
+          <div class="cart-item-image">
+            <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=200&q=80" alt="">
+          </div>
+          <div class="cart-item-info">
+            <h4>Huile d'argan pure 100ml</h4>
+            <div class="meta">Format : 100ml · Cosmétique</div>
+            <div class="qty-mini">
+              <button>−</button>
+              <input type="text" value="1">
+              <button>+</button>
+            </div>
+          </div>
+          <div class="cart-item-actions">
+            <span class="price" style="font-family: var(--font-display); font-size: 1.15rem; color: var(--olive); font-weight: 600;">129 د.م.</span>
+            <button class="cart-remove">Supprimer</button>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="cart-item-image">
+            <img src="https://images.unsplash.com/photo-1556228841-a3c527ebefe5?w=200&q=80" alt="">
+          </div>
+          <div class="cart-item-info">
+            <h4>Hydrolat de rose damascène 250ml</h4>
+            <div class="meta">Volume : 250ml</div>
+            <div class="qty-mini">
+              <button>−</button>
+              <input type="text" value="1">
+              <button>+</button>
+            </div>
+          </div>
+          <div class="cart-item-actions">
+            <span class="price" style="font-family: var(--font-display); font-size: 1.15rem; color: var(--olive); font-weight: 600;">65 د.م.</span>
+            <button class="cart-remove">Supprimer</button>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="cart-item-image">
+            <img src="https://images.unsplash.com/photo-1612871689353-cccf581d667b?w=200&q=80" alt="">
+          </div>
+          <div class="cart-item-info">
+            <h4>Savon noir Beldi 200g</h4>
+            <div class="meta">Format : 200g · Eucalyptus</div>
+            <div class="qty-mini">
+              <button>−</button>
+              <input type="text" value="1">
+              <button>+</button>
+            </div>
+          </div>
+          <div class="cart-item-actions">
+            <span class="price" style="font-family: var(--font-display); font-size: 1.15rem; color: var(--olive); font-weight: 600;">59 د.م.</span>
+            <button class="cart-remove">Supprimer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <aside class="cart-summary">
+        <h3>Récapitulatif</h3>
+
+        <div class="summary-row"><span>Sous-total (3 articles)</span><span>253 د.م.</span></div>
+        <div class="summary-row"><span>Livraison</span><span>30 د.م.</span></div>
+        <div class="summary-row" style="color: var(--terracotta);"><span>Réduction (first25)</span><span>−63,25 د.م.</span></div>
+
+        <div class="cart-coupon">
+          <input type="text" placeholder="Code promo">
+          <button>Appliquer</button>
+        </div>
+
+        <div class="summary-row total"><span>Total</span><span>219,75 د.م.</span></div>
+
+        <button class="btn btn-primary btn-block btn-lg" style="margin-top: 20px;">
+          Passer la commande
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+        <div class="cart-secure">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Paiement 100% sécurisé · Données chiffrées
+        </div>
+
+        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
+          <span style="background: var(--sand); padding: 6px 12px; border-radius: 4px; font-size: 0.72rem; color: var(--ink); font-weight: 600;">VISA</span>
+          <span style="background: var(--sand); padding: 6px 12px; border-radius: 4px; font-size: 0.72rem; color: var(--ink); font-weight: 600;">MASTERCARD</span>
+          <span style="background: var(--sand); padding: 6px 12px; border-radius: 4px; font-size: 0.72rem; color: var(--ink); font-weight: 600;">CMI</span>
+          <span style="background: var(--sand); padding: 6px 12px; border-radius: 4px; font-size: 0.72rem; color: var(--ink); font-weight: 600;">COD</span>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Cross-sell -->
+    <section style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--line);">
+      <h2 style="font-size: 1.6rem; margin-bottom: 24px;">Complétez votre commande</h2>
+      <div class="product-grid">
+        <article class="product-card" data-product data-name="Ghassoul argile" data-price="49">
+          <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&q=80" alt="">
+            <a href="#" class="add-to-cart-overlay" data-add-to-cart><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg> Ajouter</a>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Cosmétiques</span>
+            <h4 class="product-name">Ghassoul argile 500g</h4>
+            <div class="product-rating"><span class="stars">★★★★★</span><span>(184)</span></div>
+            <div class="product-price"><span class="price-now">49 د.م.</span></div>
+          </div>
+        </article>
+        <article class="product-card" data-product data-name="Verveine séchée" data-price="35">
+          <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=400&q=80" alt="">
+            <a href="#" class="add-to-cart-overlay" data-add-to-cart><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg> Ajouter</a>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Plantes</span>
+            <h4 class="product-name">Verveine séchée 100g</h4>
+            <div class="product-rating"><span class="stars">★★★★</span>☆<span>(42)</span></div>
+            <div class="product-price"><span class="price-now">35 د.م.</span></div>
+          </div>
+        </article>
+        <article class="product-card" data-product data-name="Couscous d'orge" data-price="45">
+          <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1612537786051-1d4cc6cf16d8?w=400&q=80" alt="">
+            <a href="#" class="add-to-cart-overlay" data-add-to-cart><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg> Ajouter</a>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Couscous</span>
+            <h4 class="product-name">Couscous d'orge bio 1kg</h4>
+            <div class="product-rating"><span class="stars">★★★★★</span><span>(214)</span></div>
+            <div class="product-price"><span class="price-now">45 د.م.</span></div>
+          </div>
+        </article>
+        <article class="product-card" data-product data-name="Huile romarin" data-price="89">
+          <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&q=80" alt="">
+            <a href="#" class="add-to-cart-overlay" data-add-to-cart><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg> Ajouter</a>
+          </div>
+          <div class="product-info">
+            <span class="product-cat">Huiles essentielles</span>
+            <h4 class="product-name">Huile essentielle romarin 30ml</h4>
+            <div class="product-rating"><span class="stars">★★★★★</span><span>(89)</span></div>
+            <div class="product-price"><span class="price-now">89 د.م.</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>
+
+<div style="height: 80px;"></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-mark">G</span> GreenAmal</div>
+        <p>Coopérative Al Amal — Produits naturels du Maroc, certifiés ONSSA.</p>
+        <div class="footer-social">
+          <a href="https://facebook.com"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="https://instagram.com"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/></svg></a>
+          <a href="https://wa.me/212627634472"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.4 11.4 0 0012 0a11.5 11.5 0 00-9.7 17.6L0 24l6.6-1.7a11.5 11.5 0 005.4 1.4h.1A11.5 11.5 0 0024 12.2c0-3.1-1.2-6-3.5-8.7zM12 21.5h-.1a9.6 9.6 0 01-4.9-1.3l-.3-.2-3.6.9.9-3.5-.2-.4a9.5 9.5 0 117.4 5.5z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Boutique</h4><ul><li><a href="shop.html">Catégories</a></li><li><a href="shop.html">Best-sellers</a></li></ul></div>
+      <div class="footer-col"><h4>Aide</h4><ul><li><a href="#">Livraison</a></li><li><a href="#">FAQ</a></li></ul></div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span>+212 627-634472</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GreenAmal.</span>
+      <div class="footer-payments"><span class="payment-pill">VISA</span><span class="payment-pill">CMI</span><span class="payment-pill">COD</span></div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/212627634472" class="wa-float">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.4 11.4 0 0012 0a11.5 11.5 0 00-9.7 17.6L0 24l6.6-1.7a11.5 11.5 0 005.4 1.4h.1A11.5 11.5 0 0024 12.2c0-3.1-1.2-6-3.5-8.7zM12 21.5h-.1a9.6 9.6 0 01-4.9-1.3l-.3-.2-3.6.9.9-3.5-.2-.4a9.5 9.5 0 117.4 5.5z"/></svg>
+</a>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

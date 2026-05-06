@@ -1,0 +1,227 @@
+<?php
+require_once __DIR__ . '/../includes/auth.php';
+admin_require_login();
+
+// =====================================================================
+// Bulk actions (POST)
+// =====================================================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action'])) {
+    csrf_verify();
+    $action = (string) $_POST['bulk_action'];
+    $ids = array_values(array_filter(array_map('intval', (array) ($_POST['ids'] ?? []))));
+
+    if ($ids && in_array($action, ['active', 'draft', 'archived', 'delete', 'feature', 'unfeature'], true)) {
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        switch ($action) {
+            case 'delete':
+                db_query("DELETE FROM product_images WHERE product_id IN ($placeholders)", $ids);
+                db_query("DELETE FROM reviews WHERE product_id IN ($placeholders)", $ids);
+                db_query("UPDATE order_items SET product_id = NULL WHERE product_id IN ($placeholders)", $ids);
+                db_query("DELETE FROM products WHERE id IN ($placeholders)", $ids);
+                $_SESSION['flash'] = ['type' => 'success', 'msg' => count($ids) . ' produit(s) supprimé(s).'];
+                break;
+            case 'feature':
+                db_query("UPDATE products SET is_featured = 1 WHERE id IN ($placeholders)", $ids);
+                $_SESSION['flash'] = ['type' => 'success', 'msg' => count($ids) . ' produit(s) mis en avant.'];
+                break;
+            case 'unfeature':
+                db_query("UPDATE products SET is_featured = 0 WHERE id IN ($placeholders)", $ids);
+                $_SESSION['flash'] = ['type' => 'success', 'msg' => count($ids) . ' produit(s) retiré(s) de la mise en avant.'];
+                break;
+            default: // active | draft | archived
+                $params = array_merge([$action], $ids);
+                db_query("UPDATE products SET status = ? WHERE id IN ($placeholders)", $params);
+                $labels = ['active' => 'activé(s)', 'draft' => 'mis en brouillon', 'archived' => 'archivé(s)'];
+                $_SESSION['flash'] = ['type' => 'success', 'msg' => count($ids) . ' produit(s) ' . $labels[$action] . '.'];
+        }
+    } else {
+        $_SESSION['flash'] = ['type' => 'error', 'msg' => 'Aucun produit sélectionné ou action invalide.'];
+    }
+
+    // Preserve filters on redirect
+    $qs = http_build_query(array_intersect_key($_POST, array_flip(['status', 'cat'])));
+    redirect('products.php' . ($qs ? '?' . $qs : ''));
+}
+
+$page_title = 'Produits';
+$current = 'products';
+
+$status_filter = $_GET['status'] ?? 'all';
+$cat_filter = $_GET['cat'] ?? '';
+
+$where = [];
+$params = [];
+if ($status_filter !== 'all') {
+    if ($status_filter === 'low_stock') {
+        $where[] = "p.stock <= p.low_stock_threshold AND p.stock > 0";
+    } elseif ($status_filter === 'out_of_stock') {
+        $where[] = "p.stock = 0";
+    } else {
+        $where[] = "p.status = ?";
+        $params[] = $status_filter;
+    }
+}
+if ($cat_filter !== '') {
+    $where[] = "c.slug = ?";
+    $params[] = $cat_filter;
+}
+$whereSql = empty($where) ? '' : 'WHERE ' . implode(' AND ', $where);
+
+$products = db_all("
+    SELECT p.*, c.name AS category_name
+    FROM products p
+    LEFT JOIN categories c ON c.id = p.category_id
+    $whereSql
+    ORDER BY p.created_at DESC
+    LIMIT 50
+", $params);
+
+$counts = db_one("
+    SELECT
+      COUNT(*) AS total,
+      SUM(status='active') AS active,
+      SUM(status='draft') AS draft,
+      SUM(stock <= low_stock_threshold AND stock > 0) AS low_stock,
+      SUM(stock = 0) AS out_of_stock
+    FROM products
+");
+$categories = db_all("SELECT * FROM categories ORDER BY display_order");
+
+$flash = $_SESSION['flash'] ?? null;
+unset($_SESSION['flash']);
+
+require __DIR__ . '/_includes/header.php';
+?>
+
+<div class="page">
+  <div class="breadcrumb-admin"><a href="index.php">Tableau de bord</a><span>/</span><span>Produits</span></div>
+  <div class="page-head">
+    <div>
+      <h1>Produits</h1>
+      <p><?= (int) $counts['total'] ?> produits · <?= (int) $counts['active'] ?> actifs · <?= (int) $counts['draft'] ?> brouillons</p>
+    </div>
+    <div class="page-actions">
+      <a href="product-edit.php" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nouveau produit
+      </a>
+    </div>
+  </div>
+
+  <?php if ($flash): ?>
+    <div class="flash flash-<?= e($flash['type']) ?>"><?= e($flash['msg']) ?></div>
+  <?php endif; ?>
+
+  <form method="get" class="toolbar">
+    <div class="toolbar-tabs">
+      <a href="?status=all" class="toolbar-tab<?= $status_filter === 'all' ? ' active' : '' ?>">Tous <span class="count"><?= (int) $counts['total'] ?></span></a>
+      <a href="?status=active" class="toolbar-tab<?= $status_filter === 'active' ? ' active' : '' ?>">Actifs <span class="count"><?= (int) $counts['active'] ?></span></a>
+      <a href="?status=draft" class="toolbar-tab<?= $status_filter === 'draft' ? ' active' : '' ?>">Brouillons <span class="count"><?= (int) $counts['draft'] ?></span></a>
+      <a href="?status=low_stock" class="toolbar-tab<?= $status_filter === 'low_stock' ? ' active' : '' ?>">Stock bas <span class="count"><?= (int) $counts['low_stock'] ?></span></a>
+      <a href="?status=out_of_stock" class="toolbar-tab<?= $status_filter === 'out_of_stock' ? ' active' : '' ?>">Rupture <span class="count"><?= (int) $counts['out_of_stock'] ?></span></a>
+    </div>
+    <select name="cat" class="field-select" onchange="this.form.submit()">
+      <option value="">Toutes catégories</option>
+      <?php foreach ($categories as $c): ?>
+        <option value="<?= e($c['slug']) ?>" <?= $cat_filter === $c['slug'] ? 'selected' : '' ?>><?= e($c['name']) ?></option>
+      <?php endforeach; ?>
+    </select>
+    <input type="hidden" name="status" value="<?= e($status_filter) ?>">
+  </form>
+
+  <form method="post" id="bulkForm">
+    <?= csrf_field() ?>
+    <input type="hidden" name="status" value="<?= e($status_filter) ?>">
+    <input type="hidden" name="cat" value="<?= e($cat_filter) ?>">
+
+    <div class="bulk-bar" id="bulkBar" hidden>
+      <span class="bulk-count"><strong id="bulkCount">0</strong> sélectionné(s)</span>
+      <button type="submit" name="bulk_action" value="active" class="btn btn-sm btn-secondary">Activer</button>
+      <button type="submit" name="bulk_action" value="draft" class="btn btn-sm btn-ghost">Brouillon</button>
+      <button type="submit" name="bulk_action" value="archived" class="btn btn-sm btn-ghost">Archiver</button>
+      <button type="submit" name="bulk_action" value="feature" class="btn btn-sm btn-ghost">★ Mettre en avant</button>
+      <button type="submit" name="bulk_action" value="unfeature" class="btn btn-sm btn-ghost">Retirer ★</button>
+      <button type="submit" name="bulk_action" value="delete" class="btn btn-sm btn-danger" data-confirm="Supprimer définitivement les produits sélectionnés ?">Supprimer</button>
+      <button type="button" class="btn btn-sm btn-ghost" id="bulkClear">Annuler</button>
+    </div>
+
+    <div class="card">
+      <table class="data-table" id="productsTable">
+        <thead>
+          <tr>
+            <th class="check-col"><input type="checkbox" id="checkAll" aria-label="Tout sélectionner"></th>
+            <th>Produit</th><th>SKU</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>Ventes</th><th>Statut</th><th class="actions-col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($products as $p):
+            [$status_lbl, $status_cls] = product_status_label($p['status']);
+            [$stock_lbl, $stock_color] = stock_level((int) $p['stock'], (int) $p['low_stock_threshold']);
+          ?>
+            <tr>
+              <td><input type="checkbox" name="ids[]" value="<?= (int) $p['id'] ?>" class="row-check" aria-label="Sélectionner <?= e($p['name']) ?>"></td>
+              <td><div class="cell-product"><img src="<?= e($p['image_main']) ?>"><span><strong><?= e($p['name']) ?></strong></span></div></td>
+              <td class="cell-mono"><?= e($p['sku']) ?></td>
+              <td><span class="badge-status status-neutral"><?= e($p['category_name'] ?? '—') ?></span></td>
+              <td class="cell-num">
+                <strong><?= price($p['price']) ?></strong>
+                <?php if ($p['compare_at_price'] > 0): ?> <span class="cell-mute" style="text-decoration: line-through;"><?= price($p['compare_at_price']) ?></span><?php endif; ?>
+              </td>
+              <td><span style="color: var(--<?= $stock_color ?>); font-weight: 500;"><?= e($stock_lbl) ?></span></td>
+              <td class="cell-num"><?= (int) $p['sales_count'] ?></td>
+              <td><span class="badge-status <?= e($status_cls) ?>"><?= e($status_lbl) ?></span></td>
+              <td><a href="product-edit.php?id=<?= (int) $p['id'] ?>" class="topbar-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></a></td>
+            </tr>
+          <?php endforeach; ?>
+          <?php if (!$products): ?>
+            <tr><td colspan="9" style="text-align:center; padding: 32px; color: var(--ink-mute);">Aucun produit.</td></tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>
+
+<script>
+(function () {
+  const form     = document.getElementById('bulkForm');
+  const bar      = document.getElementById('bulkBar');
+  const countEl  = document.getElementById('bulkCount');
+  const checkAll = document.getElementById('checkAll');
+  const rows     = () => form.querySelectorAll('.row-check');
+  const checked  = () => form.querySelectorAll('.row-check:checked');
+
+  function refresh() {
+    const n = checked().length;
+    countEl.textContent = n;
+    bar.hidden = n === 0;
+    const total = rows().length;
+    checkAll.checked = n > 0 && n === total;
+    checkAll.indeterminate = n > 0 && n < total;
+  }
+
+  checkAll.addEventListener('change', () => {
+    rows().forEach(cb => { cb.checked = checkAll.checked; });
+    refresh();
+  });
+
+  rows().forEach(cb => cb.addEventListener('change', refresh));
+
+  document.getElementById('bulkClear').addEventListener('click', () => {
+    rows().forEach(cb => { cb.checked = false; });
+    refresh();
+  });
+
+  // Confirm destructive actions
+  bar.querySelectorAll('button[data-confirm]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      if (!confirm(btn.getAttribute('data-confirm'))) e.preventDefault();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+<?php require __DIR__ . '/_includes/footer.php'; ?>

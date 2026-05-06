@@ -1,0 +1,52 @@
+# =====================================================================
+# GreenAmal — git ignore
+# =====================================================================
+
+# macOS / system noise
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# Editors / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.history/
+
+# Local environment & secrets
+includes/config.local.php
+.env
+.env.local
+.env.*.local
+
+# Composer / npm
+/vendor/
+/node_modules/
+
+# Logs / runtime artefacts
+*.log
+/tmp/
+storage/logs/
+debug.log
+
+# Uploaded product images — too heavy to version, transferred via FTP at deploy
+/assets/img/uploads/products/
+/assets/img/uploads/categories/
+
+# Local DB dumps (never commit; use migrations in /sql)
+/backups/
+*.sql.bak
+*.dump
+
+# Build artefacts
+/dist/
+/build/
+
+# Test/CI scratch
+.phpunit.result.cache
+coverage/
