@@ -1,6 +1,6 @@
 <?php
 /**
- * GreenAmal — Configuration
+ * GreenAmal · Configuration
  *
  * Edit DB credentials below for your local environment.
  * For production (Namecheap), copy this file as config.local.php and override.
@@ -20,7 +20,7 @@ define('DB_PASS', '');               // Homebrew: empty · MAMP: 'root'
 // =====================================================================
 define('SITE_NAME', 'GreenAmal');
 define('SITE_URL', 'http://localhost:8000');  // adjust to your local URL · Namecheap prod: https://greenamal.com
-define('CURRENCY_SYMBOL', 'د.م.');
+define('CURRENCY_SYMBOL', 'DH');
 define('SHIPPING_FEE', 30);
 define('FREE_SHIPPING_THRESHOLD', 350);
 define('CONTACT_EMAIL', 'contact@greenamal.com');

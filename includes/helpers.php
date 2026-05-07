@@ -1,6 +1,6 @@
 <?php
 /**
- * GreenAmal — Helpers
+ * GreenAmal · Helpers
  */
 
 require_once __DIR__ . '/config.php';
@@ -11,7 +11,7 @@ function e(?string $s): string {
     return htmlspecialchars($s ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/** Format a price as "129 د.م." */
+/** Format a price as "129 DH" */
 function price(float $amount, int $decimals = 0): string {
     return number_format($amount, $decimals, ',', ' ') . ' ' . CURRENCY_SYMBOL;
 }
@@ -146,7 +146,7 @@ function coupon_eligible_subtotal(array $coupon, array $cart): float {
         return $sum;
     }
 
-    $ids = array_map(fn($i) => (int) $i['id'], $cart);
+    $ids = array_values(array_map(fn($i) => (int) $i['id'], $cart));
     if (!$ids) return 0.0;
     $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
@@ -501,4 +501,74 @@ function flash_pop(): ?array {
     $f = $_SESSION['flash'] ?? null;
     unset($_SESSION['flash']);
     return $f;
+}
+
+/* =====================================================================
+ * Pack composition (a product made of other products)
+ * =====================================================================*/
+
+/**
+ * Returns the components of a pack product, ordered by display_order.
+ * Each row has: id, slug, name, image_main, price, quantity.
+ * Returns [] if the product has no components (i.e. it's a regular product).
+ */
+function product_components(int $pack_id): array {
+    return db_all("
+        SELECT p.id, p.slug, p.name, p.image_main, p.price, pc.quantity, pc.display_order
+        FROM product_components pc
+        JOIN products p ON p.id = pc.component_id
+        WHERE pc.pack_id = ? AND p.status = 'active'
+        ORDER BY pc.display_order, p.name
+    ", [$pack_id]);
+}
+
+/** Sum of (component price × component qty) · used to show "vs individual" savings. */
+function pack_components_value(array $components): float {
+    $sum = 0.0;
+    foreach ($components as $c) {
+        $sum += (float) $c['price'] * (int) $c['quantity'];
+    }
+    return $sum;
+}
+
+/* =====================================================================
+ * Coming-soon mode (toggled from admin)
+ * =====================================================================*/
+
+function is_coming_soon(): bool {
+    static $cached = null;
+    if ($cached !== null) return $cached;
+    $val = db_value("SELECT setting_value FROM settings WHERE setting_key = 'coming_soon_mode'");
+    $cached = ($val === '1' || $val === 1);
+    return $cached;
+}
+
+/**
+ * Redirect public-storefront visitors to coming-soon.php when the mode is on.
+ * Admins (logged in to /admin) and the allowed pages stay accessible.
+ *
+ * Pages that stay reachable even in coming-soon mode:
+ *   - coming-soon.php itself
+ *   - contact.php (so people can reach out)
+ *   - legal pages (CGV/privacy/mentions/returns/cookies · legally required)
+ *   - login/register/forgot-password/reset-password (so customers can manage accounts)
+ *   - 404/500 (system pages)
+ */
+function coming_soon_guard(): void {
+    if (!is_coming_soon()) return;
+    if (!empty($_SESSION['admin_user_id'])) return; // admin override
+
+    $script = basename($_SERVER['SCRIPT_NAME'] ?? '');
+    $allowlist = [
+        'coming-soon.php',
+        'contact.php',
+        'cgv.php', 'privacy.php', 'mentions.php', 'returns.php', 'cookies.php',
+        'login.php', 'register.php', 'forgot-password.php', 'reset-password.php',
+        '404.php', '500.php',
+    ];
+    if (in_array($script, $allowlist, true)) return;
+
+    // Storefront request blocked → land them on the coming-soon page.
+    header('Location: /coming-soon.php');
+    exit;
 }

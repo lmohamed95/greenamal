@@ -11,6 +11,9 @@ $jsonld     = [seo_org_jsonld(), seo_website_jsonld()];
 $categories = db_all("SELECT * FROM categories ORDER BY display_order ASC");
 $featured   = db_all("SELECT p.*, c.slug AS category_slug, c.name AS category_name FROM products p LEFT JOIN categories c ON c.id = p.category_id WHERE p.status='active' AND p.is_featured=1 ORDER BY p.sales_count DESC LIMIT 4");
 
+$hero_image = db_value("SELECT setting_value FROM settings WHERE setting_key='hero_image_url'")
+           ?: '/assets/img/categories/huiles-essentielles.jpg';
+
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -46,7 +49,7 @@ require __DIR__ . '/includes/header.php';
       </div>
       <div class="hero-visual">
         <div class="hero-image">
-          <?= picture_tag('/assets/img/categories/huiles-essentielles.jpg', 'Huiles essentielles GreenAmal — produits naturels du Maroc', [
+          <?= picture_tag($hero_image, 'Huiles essentielles GreenAmal · produits naturels du Maroc', [
               'lazy'          => false,
               'fetchpriority' => 'high',
               'sizes'         => '(max-width: 900px) 100vw, 480px',
@@ -102,7 +105,7 @@ require __DIR__ . '/includes/header.php';
     <div class="cat-grid">
       <?php foreach ($categories as $i => $cat): ?>
         <a href="shop.php?cat=<?= e($cat['slug']) ?>" class="cat-card<?= $i === 0 ? ' cat-large' : '' ?>">
-          <?= picture_tag($cat['image_url'], $cat['name'] . ' — GreenAmal', [
+          <?= picture_tag($cat['image_url'], $cat['name'] . ' · GreenAmal', [
               'lazy'   => true,
               'sizes'  => $i === 0 ? '(max-width: 720px) 100vw, 50vw' : '(max-width: 720px) 50vw, 25vw',
               'width'  => 1600,
@@ -168,6 +171,10 @@ require __DIR__ . '/includes/header.php';
                 <span class="price-was"><?= price($p['compare_at_price']) ?></span>
               <?php endif; ?>
             </div>
+            <a href="product.php?slug=<?= e($p['slug']) ?>" class="btn-view">
+              Voir
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
       <?php endforeach; ?>
@@ -184,7 +191,7 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="story">
       <div class="story-image">
-        <?= picture_tag('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80', 'Coopérative féminine d\'Azrou — femmes berbères au travail', [
+        <?= picture_tag('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80', 'Coopérative féminine d\'Azrou · femmes berbères au travail', [
             'lazy'   => true,
             'width'  => 800,
             'height' => 1000,
@@ -195,7 +202,7 @@ require __DIR__ . '/includes/header.php';
         <span class="eyebrow">Notre histoire</span>
         <h2>Une coopérative, des mains, un héritage.</h2>
         <p>À Azrou, au cœur du Moyen Atlas, des femmes berbères perpétuent un savoir-faire transmis de mères en filles. Cueillette à l'aube, distillation au feu de bois, mouture à la pierre.</p>
-        <p>Chaque produit GreenAmal raconte cette histoire — celle d'un Maroc rural, debout, fier, et résolument tourné vers l'avenir.</p>
+        <p>Chaque produit GreenAmal raconte cette histoire · celle d'un Maroc rural, debout, fier, et résolument tourné vers l'avenir.</p>
         <div class="story-features">
           <div class="story-feature">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 9v11a1 1 0 001 1h6v-7h2v7h6a1 1 0 001-1V9z"/></svg>

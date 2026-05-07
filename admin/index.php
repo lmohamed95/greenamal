@@ -77,7 +77,7 @@ function _range_new_customers(string $from, string $to): int {
 
 function _delta(float $cur, float $prev): array {
     if ($prev <= 0) {
-        return $cur > 0 ? ['Nouveau', 'up'] : ['—', 'flat'];
+        return $cur > 0 ? ['Nouveau', 'up'] : ['-', 'flat'];
     }
     $pct = (($cur - $prev) / $prev) * 100;
     $cls = $pct > 0.5 ? 'up' : ($pct < -0.5 ? 'down' : 'flat');
@@ -178,7 +178,7 @@ $recent_orders = db_all("
 $low_stock = db_all("SELECT id, name, sku, stock FROM products WHERE status='active' AND stock <= low_stock_threshold ORDER BY stock ASC LIMIT 3");
 
 // ─────────────────────────────────────────────────────────
-// Tier 2 — depth widgets
+// Tier 2 · depth widgets
 // ─────────────────────────────────────────────────────────
 $range_params = [
     'from' => $from . ' 00:00:00',
@@ -259,7 +259,7 @@ $goal_so_far = (float) db_value("
 $goal_pct = $goal_target > 0 ? min(100, round(($goal_so_far / $goal_target) * 100, 1)) : 0;
 
 // ─────────────────────────────────────────────────────────
-// Tier 3 — polish widgets
+// Tier 3 · polish widgets
 // ─────────────────────────────────────────────────────────
 
 // Mixed activity feed: orders + customer signups + reviews
@@ -340,11 +340,11 @@ function _anomaly(float $today_val, float $avg7): ?array {
     $ratio = $today_val / $avg7;
     if ($ratio < 0.7) {
         $pct = (int) round((1 - $ratio) * 100);
-        return ['⚠ ↓ ' . $pct . ' % aujourd\'hui', 'down'];
+        return ['↓ ' . $pct . ' % aujourd\'hui', 'down'];
     }
     if ($ratio > 1.5) {
         $pct = (int) round(($ratio - 1) * 100);
-        return ['🔥 ↑ ' . $pct . ' % aujourd\'hui', 'up'];
+        return ['↑ ' . $pct . ' % aujourd\'hui', 'up'];
     }
     return null;
 }
@@ -366,6 +366,13 @@ $rev_prv_data = array_map(fn($r) => round($r['rev'], 2), $series_prv);
 // Map previous-period dates onto current-period x positions
 $prv_dates = array_map(fn($r) => $r['date'], $series_prv);
 
+// ─── Demo mode ─── overrides every variable above with deterministic fake data
+$dashboard_demo_on = (db_value("SELECT setting_value FROM settings WHERE setting_key='dashboard_demo_mode'") === '1');
+if ($dashboard_demo_on) {
+    require_once __DIR__ . '/../includes/dashboard_demo.php';
+    extract(dashboard_demo_data($from, $to, $today, $prev_from, $prev_to), EXTR_OVERWRITE);
+}
+
 require __DIR__ . '/_includes/header.php';
 ?>
 
@@ -377,7 +384,7 @@ require __DIR__ . '/_includes/header.php';
 <div class="page">
   <div class="page-head">
     <div>
-      <h1>Bonjour <?= e($user['first_name']) ?> 👋</h1>
+      <h1>Bonjour <?= e($user['first_name']) ?></h1>
       <p>Aperçu de votre boutique · <strong><?= e($range_meta) ?></strong></p>
     </div>
     <div class="page-actions">
@@ -389,6 +396,10 @@ require __DIR__ . '/_includes/header.php';
           <?= $range === 'custom' ? e(date('j M', strtotime($from)) . ' → ' . date('j M', strtotime($to))) : 'Personnalisé' ?>
         </button>
       </div>
+      <button type="button" id="customizeBtn" class="btn btn-ghost" title="Personnaliser le tableau de bord">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        Personnaliser
+      </button>
       <a href="product-edit.php" class="btn btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Nouveau produit
@@ -396,7 +407,13 @@ require __DIR__ . '/_includes/header.php';
     </div>
   </div>
 
-  <div class="kpi-grid">
+  <?php if ($dashboard_demo_on): ?>
+    <div class="cs-banner" style="background: #E2ECF6; border-color: #B5CFE8; color: #1F4E84;">
+      <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><strong>Mode démo activé</strong> · les données affichées sont fictives. Désactivez dans <a href="settings.php" style="color:inherit;text-decoration:underline;">Paramètres</a>.
+    </div>
+  <?php endif; ?>
+
+  <div class="kpi-grid" data-widget="kpis">
     <div class="kpi">
       <div class="kpi-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
       <div class="kpi-label">Revenus</div>
@@ -430,7 +447,7 @@ require __DIR__ . '/_includes/header.php';
   </div>
 
   <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-bottom: 24px;" class="dashboard-row">
-    <div class="card">
+    <div class="card" data-widget="revenue-chart">
       <div class="card-head">
         <div><h3>Évolution des revenus</h3><div class="head-meta"><?= e($range_meta) ?> · comparé à la période précédente</div></div>
       </div>
@@ -439,7 +456,7 @@ require __DIR__ . '/_includes/header.php';
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-widget="top-products">
       <div class="card-head">
         <h3>Top produits</h3>
         <a href="products.php" style="font-size: 0.82rem; color: var(--olive); font-weight: 500;">Tout voir →</a>
@@ -460,7 +477,7 @@ require __DIR__ . '/_includes/header.php';
   </div>
 
   <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 16px; margin-bottom: 24px;" class="dashboard-row">
-    <div class="card">
+    <div class="card" data-widget="cat-revenue">
       <div class="card-head">
         <h3>Revenus par catégorie</h3>
         <span class="head-meta"><?= e($range_meta) ?></span>
@@ -474,7 +491,7 @@ require __DIR__ . '/_includes/header.php';
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-widget="top-cities">
       <div class="card-head">
         <h3>Top villes</h3>
         <span class="head-meta"><?= count($top_cities) ?> villes</span>
@@ -490,7 +507,7 @@ require __DIR__ . '/_includes/header.php';
   </div>
 
   <div style="display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 16px; margin-bottom: 24px;" class="dashboard-row">
-    <div class="card">
+    <div class="card" data-widget="payment-methods">
       <div class="card-head">
         <h3>Méthodes de paiement</h3>
         <span class="head-meta"><?= count($payment_breakdown) ?></span>
@@ -504,7 +521,7 @@ require __DIR__ . '/_includes/header.php';
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-widget="funnel">
       <div class="card-head">
         <h3>Tunnel de commande</h3>
         <span class="head-meta">création → livraison</span>
@@ -518,7 +535,7 @@ require __DIR__ . '/_includes/header.php';
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-widget="goal">
       <div class="card-head">
         <h3>Objectif du mois</h3>
         <span class="head-meta"><?= date('F Y') ?></span>
@@ -534,7 +551,7 @@ require __DIR__ . '/_includes/header.php';
   </div>
 
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;" class="dashboard-row">
-    <div class="card">
+    <div class="card" data-widget="activity">
       <div class="card-head">
         <h3>Activité récente</h3>
         <span class="head-meta"><?= count($activity) ?> événements</span>
@@ -587,7 +604,7 @@ require __DIR__ . '/_includes/header.php';
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-widget="top-customers">
       <div class="card-head">
         <h3>Top 5 clients</h3>
         <span class="head-meta">par valeur LTV</span>
@@ -617,7 +634,7 @@ require __DIR__ . '/_includes/header.php';
     </div>
   </div>
 
-  <div class="card" style="margin-bottom: 24px;">
+  <div class="card" data-widget="heatmap" style="margin-bottom: 24px;">
     <div class="card-head">
       <h3>Quand les commandes arrivent</h3>
       <span class="head-meta">jour × heure · 30 derniers jours</span>
@@ -628,7 +645,7 @@ require __DIR__ . '/_includes/header.php';
   </div>
 
   <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px;" class="dashboard-row">
-    <div class="card">
+    <div class="card" data-widget="recent-orders">
       <div class="card-head">
         <h3>Commandes récentes</h3>
         <a href="orders.php" style="font-size: 0.82rem; color: var(--olive); font-weight: 500;">Tout voir →</a>
@@ -642,7 +659,7 @@ require __DIR__ . '/_includes/header.php';
           ?>
             <tr>
               <td><span class="cell-mono">#<?= e($o['order_number']) ?></span></td>
-              <td><div class="cell-customer"><span class="cell-customer-avatar"><?= e(initials($name)) ?></span><span><strong style="font-size: 0.85rem;"><?= e($name) ?></strong><div class="cell-mute"><?= e($o['city'] ?? '—') ?></div></span></div></td>
+              <td><div class="cell-customer"><span class="cell-customer-avatar"><?= e(initials($name)) ?></span><span><strong style="font-size: 0.85rem;"><?= e($name) ?></strong><div class="cell-mute"><?= e($o['city'] ?? '-') ?></div></span></div></td>
               <td><span class="badge-status <?= e($cls) ?>"><?= e($lbl) ?></span></td>
               <td class="cell-num"><?= price($o['total']) ?></td>
               <td><a href="order-detail.php?id=<?= (int) $o['id'] ?>" style="color: var(--olive); font-weight: 500; font-size: 0.82rem;">Voir →</a></td>
@@ -652,14 +669,14 @@ require __DIR__ . '/_includes/header.php';
       </table>
     </div>
 
-    <div class="card">
+    <div class="card" data-widget="low-stock">
       <div class="card-head">
-        <h3>⚠ Stocks bas</h3>
+        <h3><svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Stocks bas</h3>
         <span class="head-meta"><?= count($low_stock) ?> produits</span>
       </div>
       <div class="card-body" style="padding: 0;">
         <?php if (empty($low_stock)): ?>
-          <div style="padding: 30px; text-align: center; color: var(--ink-mute); font-size: 0.88rem;">Aucune alerte 🎉</div>
+          <div style="padding: 30px; text-align: center; color: var(--ink-mute); font-size: 0.88rem;">Aucune alerte</div>
         <?php else: ?>
           <?php foreach ($low_stock as $p): ?>
             <div style="padding: 12px 22px; border-bottom: 1px solid var(--line-soft); display: flex; justify-content: space-between; align-items: center;">
@@ -1058,6 +1075,133 @@ require __DIR__ . '/_includes/header.php';
       });
     }
   });
+})();
+</script>
+
+<!-- ─── Widget customization panel ─────────────────────────────────────── -->
+<div class="side-overlay" id="customizeOverlay"></div>
+<aside class="side-panel" id="customizePanel" aria-labelledby="customizeTitle">
+  <div class="side-head">
+    <div>
+      <div class="side-eyebrow">Tableau de bord</div>
+      <h2 id="customizeTitle">Personnaliser</h2>
+    </div>
+    <button type="button" class="side-close" id="customizeClose" aria-label="Fermer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="side-body">
+    <p class="hint">Cochez les widgets à afficher. Vos préférences sont enregistrées localement dans ce navigateur.</p>
+    <ul class="widget-toggles" id="widgetToggles"></ul>
+    <button type="button" class="btn btn-ghost btn-block" id="widgetsResetBtn" style="margin-top:12px;">Tout réafficher</button>
+  </div>
+</aside>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'ga_dashboard_hidden_widgets';
+  const LABELS = {
+    'kpis':            'KPIs (Revenus, Commandes, Panier, Clients)',
+    'revenue-chart':   'Évolution des revenus',
+    'top-products':    'Top produits',
+    'cat-revenue':     'Revenus par catégorie',
+    'top-cities':      'Top villes',
+    'payment-methods': 'Méthodes de paiement',
+    'funnel':          'Tunnel de commande',
+    'goal':            'Objectif du mois',
+    'activity':        'Activité récente',
+    'top-customers':   'Top 5 clients',
+    'heatmap':         'Heatmap commandes',
+    'recent-orders':   'Commandes récentes',
+    'low-stock':       'Stocks bas',
+  };
+
+  const widgets = Array.from(document.querySelectorAll('[data-widget]'));
+  const overlay = document.getElementById('customizeOverlay');
+  const panel   = document.getElementById('customizePanel');
+  const list    = document.getElementById('widgetToggles');
+  const btn     = document.getElementById('customizeBtn');
+  const closeBtn = document.getElementById('customizeClose');
+  const resetBtn = document.getElementById('widgetsResetBtn');
+
+  function readHidden() {
+    try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function writeHidden(set) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
+  }
+  function applyHidden() {
+    const hidden = readHidden();
+    widgets.forEach(w => {
+      const id = w.dataset.widget;
+      // Hide also the parent .dashboard-row if this is the only visible child.
+      // Simpler: set display:none on the widget itself; CSS keeps the row gap.
+      if (hidden.has(id)) w.classList.add('widget-hidden');
+      else                 w.classList.remove('widget-hidden');
+    });
+  }
+
+  // 1. Inject a small "..." button on each widget for one-click hide
+  widgets.forEach(w => {
+    const id = w.dataset.widget;
+    const tag = document.createElement('button');
+    tag.type = 'button';
+    tag.className = 'widget-hide-btn';
+    tag.title = 'Masquer ce widget';
+    tag.setAttribute('aria-label', 'Masquer ce widget');
+    tag.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    tag.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const hidden = readHidden();
+      hidden.add(id);
+      writeHidden(hidden);
+      applyHidden();
+      buildPanelList();
+    });
+    w.appendChild(tag);
+  });
+
+  // 2. Build panel list
+  function buildPanelList() {
+    const hidden = readHidden();
+    list.innerHTML = '';
+    Object.entries(LABELS).forEach(([id, label]) => {
+      const exists = widgets.some(w => w.dataset.widget === id);
+      if (!exists) return;
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <label>
+          <input type="checkbox" data-id="${id}" ${hidden.has(id) ? '' : 'checked'}>
+          <span>${label}</span>
+        </label>`;
+      const cb = li.querySelector('input');
+      cb.addEventListener('change', () => {
+        const set = readHidden();
+        if (cb.checked) set.delete(id); else set.add(id);
+        writeHidden(set);
+        applyHidden();
+      });
+      list.appendChild(li);
+    });
+  }
+
+  // 3. Open / close panel
+  function open()  { overlay.classList.add('is-open'); panel.classList.add('is-open'); buildPanelList(); }
+  function close() { overlay.classList.remove('is-open'); panel.classList.remove('is-open'); }
+  btn?.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  overlay?.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('is-open')) close(); });
+
+  // 4. Reset
+  resetBtn?.addEventListener('click', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    applyHidden();
+    buildPanelList();
+  });
+
+  applyHidden();
 })();
 </script>
 

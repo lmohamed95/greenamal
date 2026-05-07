@@ -55,6 +55,21 @@ CREATE TABLE IF NOT EXISTS products (
 ) ENGINE=InnoDB;
 
 -- =====================================================================
+-- Product components (a pack/bundle product linking to its child products)
+-- =====================================================================
+CREATE TABLE IF NOT EXISTS product_components (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  pack_id INT NOT NULL,
+  component_id INT NOT NULL,
+  quantity INT DEFAULT 1,
+  display_order INT DEFAULT 0,
+  FOREIGN KEY (pack_id)      REFERENCES products(id) ON DELETE CASCADE,
+  FOREIGN KEY (component_id) REFERENCES products(id) ON DELETE CASCADE,
+  UNIQUE KEY uniq_pack_component (pack_id, component_id),
+  INDEX idx_pack (pack_id)
+) ENGINE=InnoDB;
+
+-- =====================================================================
 -- Product images (gallery)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS product_images (

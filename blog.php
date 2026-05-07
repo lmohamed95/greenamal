@@ -4,7 +4,7 @@ require_once __DIR__ . '/includes/helpers.php';
 $posts = db_all("SELECT slug, title, excerpt, cover_url, published_at FROM posts WHERE status = 'published' ORDER BY published_at DESC LIMIT 30");
 
 $page_title = 'Blog GreenAmal';
-$page_desc  = 'Conseils, traditions et coulisses de la coopérative Al Amal — produits naturels du Maroc.';
+$page_desc  = 'Conseils, traditions et coulisses de la coopérative Al Amal · produits naturels du Maroc.';
 require __DIR__ . '/includes/header.php';
 ?>
 

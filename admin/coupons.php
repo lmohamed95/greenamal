@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/auth.php';
 admin_require_login();
 
 // =====================================================================
-// POST handler — create / update / delete
+// POST handler · create / update / delete
 // =====================================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
@@ -238,7 +238,7 @@ $selected_cids = $repop['category_ids'] ?? $edit_cids;
 </div>
 
 <!-- =====================================================================
-     Side panel — create / edit coupon
+     Side panel · create / edit coupon
      ===================================================================== -->
 <div class="side-overlay<?= $open_panel ? ' is-open' : '' ?>" id="sideOverlay"></div>
 <aside class="side-panel<?= $open_panel ? ' is-open' : '' ?>" id="couponPanel" aria-labelledby="panelTitle">

@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/image.php';
 
 $page_title = 'Catégories';
-$page_desc  = 'Explorez nos univers de produits naturels du Maroc — huiles essentielles, plantes aromatiques, cosmétiques, couscous artisanal, savons et plus.';
+$page_desc  = 'Explorez nos univers de produits naturels du Maroc · huiles essentielles, plantes aromatiques, cosmétiques, couscous artisanal, savons et plus.';
 $nav        = 'categories';
 $og_image   = '/assets/img/categories/huiles-vegetales.jpg';
 $jsonld     = [seo_breadcrumb_jsonld([
@@ -38,7 +38,7 @@ require __DIR__ . '/includes/header.php';
       <?php foreach ($categories as $i => $cat): ?>
         <a href="shop.php?cat=<?= e($cat['slug']) ?>" class="category-banner<?= $i === 0 ? ' category-banner-feature' : '' ?>">
           <div class="category-banner-image">
-            <?= picture_tag($cat['image_url'], $cat['name'] . ' — produits naturels GreenAmal', [
+            <?= picture_tag($cat['image_url'], $cat['name'] . ' · produits naturels GreenAmal', [
                 'lazy'          => $i > 0,
                 'fetchpriority' => $i === 0 ? 'high' : 'auto',
                 'sizes'         => $i === 0 ? '(max-width: 720px) 100vw, 60vw' : '(max-width: 720px) 100vw, 33vw',

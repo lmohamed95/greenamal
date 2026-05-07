@@ -21,6 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+$given_csrf = $_POST['_csrf'] ?? '';
+$stored_csrf = $_SESSION['_csrf'] ?? '';
+if (!is_string($given_csrf) || !is_string($stored_csrf) || $stored_csrf === '' || !hash_equals($stored_csrf, $given_csrf)) {
+    http_response_code(403);
+    echo json_encode(['ok' => false, 'error' => 'csrf']);
+    exit;
+}
+
 if (empty($_FILES['image']) || !is_array($_FILES['image'])) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'no_file']);
@@ -29,7 +37,7 @@ if (empty($_FILES['image']) || !is_array($_FILES['image'])) {
 
 $f = $_FILES['image'];
 $target = $_POST['target'] ?? 'products';
-$target = in_array($target, ['categories', 'products'], true) ? $target : 'products';
+$target = in_array($target, ['categories', 'products', 'hero'], true) ? $target : 'products';
 
 // Upload error?
 if ($f['error'] !== UPLOAD_ERR_OK) {
@@ -54,7 +62,7 @@ if ($f['size'] > $max_bytes) {
     exit;
 }
 
-// MIME / extension check — don't trust client, use finfo + getimagesize
+// MIME / extension check · don't trust client, use finfo + getimagesize
 $finfo = finfo_open(FILEINFO_MIME_TYPE);
 $mime = finfo_file($finfo, $f['tmp_name']);
 

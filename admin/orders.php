@@ -94,7 +94,7 @@ require __DIR__ . '/_includes/header.php';
             <td><input type="checkbox"></td>
             <td><a href="order-detail.php?id=<?= (int) $o['id'] ?>" class="cell-mono" style="color: var(--olive); font-weight: 500;">#<?= e($o['order_number']) ?></a></td>
             <td class="cell-mute"><?= time_ago($o['created_at']) ?></td>
-            <td><div class="cell-customer"><span class="cell-customer-avatar"><?= e(initials($name)) ?></span><span><strong style="font-size: 0.85rem;"><?= e($name) ?></strong><div class="cell-mute"><?= e($o['email'] ?? '—') ?></div></span></div></td>
+            <td><div class="cell-customer"><span class="cell-customer-avatar"><?= e(initials($name)) ?></span><span><strong style="font-size: 0.85rem;"><?= e($name) ?></strong><div class="cell-mute"><?= e($o['email'] ?? '-') ?></div></span></div></td>
             <td class="cell-num"><?= (int) $o['items_count'] ?></td>
             <td><span class="badge-status <?= e($pay_cls) ?>"><?= e($pay_lbl) ?></span></td>
             <td><span class="badge-status <?= e($status_cls) ?>"><?= e($status_lbl) ?></span></td>

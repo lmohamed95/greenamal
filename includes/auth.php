@@ -1,6 +1,6 @@
 <?php
 /**
- * GreenAmal — Admin authentication
+ * GreenAmal · Admin authentication
  */
 
 require_once __DIR__ . '/helpers.php';

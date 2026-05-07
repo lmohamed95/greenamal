@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/image.php';
 
 $page_title = 'Mon panier';
-$page_desc  = 'Votre panier GreenAmal — finalisez votre commande de produits naturels du Maroc.';
+$page_desc  = 'Votre panier GreenAmal - finalisez votre commande de produits naturels du Maroc.';
 $nav        = '';
 $noindex    = true;
 
@@ -84,7 +84,7 @@ require __DIR__ . '/includes/header.php';
         </div>
       <?php else: ?>
         <div class="shipping-progress">
-          <p>🎉 <strong>Livraison gratuite débloquée !</strong></p>
+          <p><svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg><strong>Livraison gratuite débloquée !</strong></p>
           <div class="progress-track"><div class="progress-fill" style="width: 100%;"></div></div>
         </div>
       <?php endif; ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * GreenAmal — Database connection (PDO)
+ * GreenAmal · Database connection (PDO)
  */
 
 require_once __DIR__ . '/config.php';
@@ -19,7 +19,7 @@ function db(): PDO {
             if (APP_DEBUG) {
                 http_response_code(500);
                 die("Database connection failed: " . $e->getMessage() . "<br><br>"
-                    . "Check <code>includes/config.php</code> — DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS.<br>"
+                    . "Check <code>includes/config.php</code> · DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS.<br>"
                     . "Did you import <code>sql/schema.sql</code> and <code>sql/seed.sql</code>?");
             }
             http_response_code(503);

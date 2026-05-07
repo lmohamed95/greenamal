@@ -55,7 +55,7 @@ require __DIR__ . '/includes/header.php';
 <section class="container" style="padding:32px 16px;max-width:920px;">
   <div class="account-head">
     <div>
-      <h1 style="margin:0;">Bonjour, <?= e($user['first_name'] ?: 'vous') ?> 👋</h1>
+      <h1 style="margin:0;">Bonjour, <?= e($user['first_name'] ?: 'vous') ?></h1>
       <p style="color:var(--ink-soft);margin:4px 0 0;"><?= e($user['email']) ?></p>
     </div>
     <a href="logout.php" class="btn btn-ghost">Se déconnecter</a>

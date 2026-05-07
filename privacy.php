@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
   <ul>
     <li><strong>Données d'identification</strong> : nom, prénom, email, téléphone, adresse de livraison, ville, code postal.</li>
     <li><strong>Données de commande</strong> : produits achetés, montants, dates, mode de paiement.</li>
-    <li><strong>Données techniques</strong> : adresse IP, type de navigateur, pages visitées (via cookies — cf. plus bas).</li>
+    <li><strong>Données techniques</strong> : adresse IP, type de navigateur, pages visitées (via cookies · cf. plus bas).</li>
     <li><strong>Données de compte</strong> : si vous créez un compte client, votre mot de passe est stocké de manière hachée (jamais en clair).</li>
   </ul>
 
@@ -29,7 +29,7 @@ require __DIR__ . '/includes/header.php';
     <li>Traiter et expédier vos commandes.</li>
     <li>Vous envoyer des notifications relatives à votre commande (confirmation, expédition, livraison).</li>
     <li>Gérer votre compte client et vos demandes de service.</li>
-    <li>Vous envoyer notre newsletter (uniquement si vous y avez consenti — désinscription possible à tout moment).</li>
+    <li>Vous envoyer notre newsletter (uniquement si vous y avez consenti · désinscription possible à tout moment).</li>
     <li>Améliorer notre site et nos produits (statistiques agrégées et anonymes).</li>
     <li>Respecter nos obligations légales et comptables.</li>
   </ul>

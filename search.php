@@ -18,7 +18,7 @@ if ($q !== '' && mb_strlen($q) >= 2) {
 }
 
 $page_title = $q !== '' ? "Recherche : « {$q} »" : 'Recherche';
-$page_desc  = 'Recherchez parmi plus de 80 produits naturels du Maroc — huiles, plantes, cosmétiques, couscous artisanal.';
+$page_desc  = 'Recherchez parmi plus de 80 produits naturels du Maroc · huiles, plantes, cosmétiques, couscous artisanal.';
 $noindex    = $q === '';
 require __DIR__ . '/includes/header.php';
 ?>
@@ -53,6 +53,10 @@ require __DIR__ . '/includes/header.php';
             <div class="product-card-cat"><?= e($p['category_name'] ?? '') ?></div>
             <h3 class="product-card-name"><?= e($p['name']) ?></h3>
             <div class="product-card-price"><?= e(price((float) $p['price'])) ?></div>
+            <span class="btn-view">
+              Voir
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
           </div>
         </a>
       <?php endforeach; ?>

@@ -1,21 +1,22 @@
 <?php
 require_once __DIR__ . '/helpers.php';
+coming_soon_guard();
 
 /*
  * Page-level SEO variables (set in each page BEFORE requiring this file):
- *   $page_title    string  — used in <title>, og:title, twitter:title
- *   $page_desc     string  — used in <meta description>, og:description, twitter:description
- *   $nav           string  — active nav slug (home, shop, categories, about)
- *   $og_image      string  — absolute or root-relative URL of the share image
- *   $og_type       string  — 'website' (default) or 'product' or 'article'
- *   $canonical    ?string  — override canonical URL (defaults to current request)
- *   $noindex       bool    — true to emit <meta robots="noindex">
- *   $jsonld        array   — array of associative arrays to emit as JSON-LD blocks
- *   $extra_meta    string  — raw extra meta tags (e.g. product:price)
+ *   $page_title    string  · used in <title>, og:title, twitter:title
+ *   $page_desc     string  · used in <meta description>, og:description, twitter:description
+ *   $nav           string  · active nav slug (home, shop, categories, about)
+ *   $og_image      string  · absolute or root-relative URL of the share image
+ *   $og_type       string  · 'website' (default) or 'product' or 'article'
+ *   $canonical    ?string  · override canonical URL (defaults to current request)
+ *   $noindex       bool    · true to emit <meta robots="noindex">
+ *   $jsonld        array   · array of associative arrays to emit as JSON-LD blocks
+ *   $extra_meta    string  · raw extra meta tags (e.g. product:price)
  */
 
 $page_title  = $page_title ?? SITE_NAME;
-$page_desc   = $page_desc  ?? 'Produits naturels du Maroc — coopérative féminine d\'Azrou. Huiles essentielles, plantes, cosmétiques, couscous artisanal. Certifié ONSSA.';
+$page_desc   = $page_desc  ?? 'Produits naturels du Maroc · coopérative féminine d\'Azrou. Huiles essentielles, plantes, cosmétiques, couscous artisanal. Certifié ONSSA.';
 $nav         = $nav        ?? '';
 $og_image    = $og_image   ?? '/assets/img/og-default.jpg';
 $og_type     = $og_type    ?? 'website';
@@ -26,7 +27,7 @@ $extra_meta  = $extra_meta ?? '';
 
 $canonical_url = seo_canonical($canonical);
 $og_image_abs  = seo_abs($og_image);
-$full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} — " . SITE_NAME;
+$full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . SITE_NAME;
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -50,7 +51,7 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} — " . 
 <meta property="og:description" content="<?= e($page_desc) ?>">
 <meta property="og:url"         content="<?= e($canonical_url) ?>">
 <meta property="og:image"       content="<?= e($og_image_abs) ?>">
-<meta property="og:image:alt"   content="<?= e($page_title) ?> — <?= e(SITE_NAME) ?>">
+<meta property="og:image:alt"   content="<?= e($page_title) ?> · <?= e(SITE_NAME) ?>">
 <meta property="og:site_name"   content="<?= e(SITE_NAME) ?>">
 <meta property="og:locale"      content="fr_MA">
 
@@ -62,7 +63,7 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} — " . 
 
 <?= $extra_meta ?>
 
-<!-- Favicon (placeholder — replace when a real favicon is added) -->
+<!-- Favicon (placeholder · replace when a real favicon is added) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%233A5A40'/><text x='50' y='66' text-anchor='middle' font-family='serif' font-weight='600' font-size='52' fill='%23FAF6F0'>G</text></svg>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

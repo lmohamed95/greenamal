@@ -27,6 +27,13 @@ if ($method === 'GET') {
 
 if ($method === 'POST') {
     $body = json_decode(file_get_contents('php://input'), true) ?? $_POST;
+
+    $given = $body['_csrf'] ?? '';
+    $stored = $_SESSION['_csrf'] ?? '';
+    if (!is_string($given) || !is_string($stored) || $stored === '' || !hash_equals($stored, $given)) {
+        json_response(['ok' => false, 'error' => 'csrf'], 403);
+    }
+
     $action = $body['action'] ?? '';
 
     if ($action === 'add') {

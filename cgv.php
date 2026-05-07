@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Conditions générales de vente';
-$page_desc  = 'Conditions générales de vente de GreenAmal — coopérative féminine d\'Azrou. Commande, livraison, paiement, retours, garanties.';
+$page_desc  = 'Conditions générales de vente de GreenAmal · coopérative féminine d\'Azrou. Commande, livraison, paiement, retours, garanties.';
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -33,7 +33,7 @@ require __DIR__ . '/includes/header.php';
   <p>Le paiement s'effectue selon les modes proposés au moment de la commande :</p>
   <ul>
     <li><strong>Paiement à la livraison (COD)</strong> : en espèces auprès du livreur.</li>
-    <li><strong>Carte bancaire</strong> via la plateforme sécurisée CMI (3-D Secure) — disponibilité progressive.</li>
+    <li><strong>Carte bancaire</strong> via la plateforme sécurisée CMI (3-D Secure) · disponibilité progressive.</li>
     <li><strong>Virement bancaire</strong> sur demande pour les commandes importantes.</li>
   </ul>
 

@@ -1,4 +1,4 @@
-/* GreenAmal — interactions (server-side cart via PHP API) */
+/* GreenAmal · interactions (server-side cart via PHP API) */
 
 document.addEventListener('DOMContentLoaded', () => {
   /* ========== Mobile menu ========== */
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </button>
       </div>
       <div class="cart-drawer-shipping" id="drawer-shipping">
-        <p>Plus que <strong>${SHIPPING_THRESHOLD} د.م.</strong> pour la livraison gratuite</p>
+        <p>Plus que <strong>${SHIPPING_THRESHOLD} DH</strong> pour la livraison gratuite</p>
         <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
       </div>
       <div class="cart-drawer-body" id="drawer-body"></div>
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="drawer-item-image"><img src="${item.image}" alt="${escapeHtml(item.name)}"></div>
         <div class="drawer-item-info">
           <h4>${escapeHtml(item.name)}</h4>
-          <div class="price">${(item.price * item.qty).toFixed(0)} د.م.</div>
+          <div class="price">${(item.price * item.qty).toFixed(0)} DH</div>
           <div class="qty-mini">
             <button data-qty-minus aria-label="Diminuer">−</button>
             <input type="text" value="${item.qty}" readonly>
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     drawerFoot.innerHTML = `
       <div class="total-row">
         <span>Sous-total</span>
-        <span>${subtotal.toFixed(0)} د.م.</span>
+        <span>${subtotal.toFixed(0)} DH</span>
       </div>
       <div class="drawer-cta">
         <a href="checkout.php" class="btn btn-primary btn-lg btn-block">
@@ -148,10 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const pct = Math.min(100, (subtotal / SHIPPING_THRESHOLD) * 100);
     fill.style.width = pct + '%';
     if (subtotal >= SHIPPING_THRESHOLD) {
-      txt.innerHTML = `🎉 <strong>Livraison gratuite débloquée !</strong>`;
+      txt.innerHTML = `<svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg><strong>Livraison gratuite débloquée !</strong>`;
     } else {
       const remaining = (SHIPPING_THRESHOLD - subtotal).toFixed(0);
-      txt.innerHTML = `Plus que <strong>${remaining} د.م.</strong> pour la livraison gratuite`;
+      txt.innerHTML = `Plus que <strong>${remaining} DH</strong> pour la livraison gratuite`;
     }
   }
 
@@ -257,13 +257,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ========== PDP gallery ========== */
   const thumbs = document.querySelectorAll('.pdp-thumb');
-  const mainImg = document.querySelector('.pdp-main-image img');
+  const mainContainer = document.querySelector('.pdp-main-image');
   thumbs.forEach(t => {
     t.addEventListener('click', () => {
       thumbs.forEach(x => x.classList.remove('active'));
       t.classList.add('active');
-      const src = t.querySelector('img').src;
-      if (mainImg) mainImg.src = src;
+      if (!mainContainer) return;
+      // Clone the thumb's <picture> (or <img>) into the main slot.
+      // Cloning the full <picture> swaps its <source> srcsets too —
+      // simply changing img.src doesn't, because <source> wins.
+      const node = t.querySelector('picture, img');
+      if (!node) return;
+      const fresh = node.cloneNode(true);
+      const finalImg = fresh.tagName === 'PICTURE' ? fresh.querySelector('img') : fresh;
+      if (finalImg) {
+        finalImg.removeAttribute('loading');
+        finalImg.setAttribute('fetchpriority', 'high');
+        finalImg.setAttribute('decoding', 'async');
+      }
+      mainContainer.innerHTML = '';
+      mainContainer.appendChild(fresh);
     });
   });
 

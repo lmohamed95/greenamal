@@ -132,8 +132,8 @@ require __DIR__ . '/_includes/header.php';
             </div>
           </div>
           <div style="font-size: 0.85rem; color: var(--ink-soft); display: flex; flex-direction: column; gap: 6px;">
-            <div>📧 <?= e($order['shipping_email']) ?></div>
-            <div>📱 <?= e($order['shipping_phone']) ?></div>
+            <div><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><?= e($order['shipping_email']) ?></div>
+            <div><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg><?= e($order['shipping_phone']) ?></div>
             <?php if ($order['customer_id']): ?>
               <div style="margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line-soft);">
                 <strong style="color: var(--ink);"><?= (int) $order['total_orders'] ?></strong> commandes · LTV <strong style="color: var(--ink);"><?= price($order['lifetime_value']) ?></strong>

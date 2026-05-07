@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Mentions légales';
-$page_desc  = 'Mentions légales du site greenamal.com — éditeur, hébergeur, propriété intellectuelle.';
+$page_desc  = 'Mentions légales du site greenamal.com · éditeur, hébergeur, propriété intellectuelle.';
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -12,7 +12,7 @@ require __DIR__ . '/includes/header.php';
   <h2>Éditeur du site</h2>
   <p>
     <strong>Coopérative Al Amal</strong> (« GreenAmal »)<br>
-    Coopérative féminine — Tigrigra, Province d'Ifrane, Maroc<br>
+    Coopérative féminine · Tigrigra, Province d'Ifrane, Maroc<br>
     Téléphone : <?= e(CONTACT_PHONE) ?><br>
     Email : <a href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a><br>
     Autorisation sanitaire : ONSSA PAC.15.13.21<br>

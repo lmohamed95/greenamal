@@ -44,8 +44,60 @@ require __DIR__ . '/_includes/header.php';
     </div>
   <?php endif; ?>
 
+  <!-- Display & demo toggles (separate POST, not part of the main settings form) -->
+  <div class="card" style="margin-bottom: 18px;">
+    <div class="card-head"><h3>Affichage & démo</h3></div>
+    <div class="card-body" style="display:flex; flex-direction:column; gap:14px;">
+      <div class="settings-toggle-row">
+        <div>
+          <strong>Mode « Bientôt disponible »</strong>
+          <div class="cell-mute">Masque la boutique aux visiteurs et affiche un écran d'attente. Vous gardez l'accès admin.</div>
+        </div>
+        <form method="post" action="toggle-coming-soon.php" style="display:inline; margin:0;"
+              onsubmit="return confirm('<?= ($settings['coming_soon_mode'] ?? '0') === '1' ? "Réactiver la boutique pour tous les visiteurs ?" : "Activer le mode bientôt disponible ?" ?>');">
+          <?= csrf_field() ?>
+          <input type="hidden" name="back" value="settings.php">
+          <button type="submit" class="cs-toggle-btn<?= ($settings['coming_soon_mode'] ?? '0') === '1' ? ' is-on' : '' ?>">
+            <span class="cs-dot"></span>
+            <span class="cs-label"><?= ($settings['coming_soon_mode'] ?? '0') === '1' ? 'Activé' : 'Désactivé' ?></span>
+          </button>
+        </form>
+      </div>
+
+      <div class="settings-toggle-row">
+        <div>
+          <strong>Mode démo (tableau de bord)</strong>
+          <div class="cell-mute">Affiche des données fictives sur le tableau de bord pour que vous puissiez voir à quoi il ressemble une fois alimenté. La base de données reste vide.</div>
+        </div>
+        <form method="post" action="toggle-demo.php" style="display:inline; margin:0;">
+          <?= csrf_field() ?>
+          <input type="hidden" name="back" value="settings.php">
+          <button type="submit" class="cs-toggle-btn<?= ($settings['dashboard_demo_mode'] ?? '0') === '1' ? ' is-on' : '' ?>">
+            <span class="cs-dot"></span>
+            <span class="cs-label"><?= ($settings['dashboard_demo_mode'] ?? '0') === '1' ? 'Activé' : 'Désactivé' ?></span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <form method="post">
     <?= csrf_field() ?>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-head">
+        <h3>Image du hero (page d'accueil)</h3>
+        <span class="head-meta">visible en haut de la page d'accueil</span>
+      </div>
+      <div class="card-body">
+        <div class="upload-widget"
+             data-target="hero"
+             data-name="hero_image_url"
+             data-current="<?= e($settings['hero_image_url'] ?? '/assets/img/categories/huiles-essentielles.jpg') ?>"></div>
+        <p class="help" style="margin-top: 10px;">Format conseillé : JPG ou WebP, ratio portrait 4:5, au moins 1200 × 1500 px. Maximum 5 Mo.</p>
+      </div>
+    </div>
+
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" class="settings-grid">
       <div class="card">
         <div class="card-head"><h3>Informations de la boutique</h3></div>
@@ -78,12 +130,12 @@ require __DIR__ . '/_includes/header.php';
             <div class="field">
               <label>Frais standard</label>
               <input type="number" name="shipping_standard_fee" value="<?= e($settings['shipping_standard_fee'] ?? '30') ?>">
-              <span class="help">en د.م.</span>
+              <span class="help">en DH</span>
             </div>
             <div class="field">
               <label>Seuil livraison gratuite</label>
               <input type="number" name="shipping_free_threshold" value="<?= e($settings['shipping_free_threshold'] ?? '350') ?>">
-              <span class="help">en د.م.</span>
+              <span class="help">en DH</span>
             </div>
           </div>
         </div>

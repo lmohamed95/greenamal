@@ -1,4 +1,6 @@
-/* GreenAmal Admin — interactions */
+/* GreenAmal Admin · interactions */
+
+const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
 document.addEventListener('DOMContentLoaded', () => {
   /* Toolbar tabs */
@@ -65,9 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
      ======================================================================== */
 
   /* ========================================================================
-     Crop modal — used by upload widget before sending the file
+     Crop modal · used by upload widget before sending the file
      ======================================================================== */
-  const cropAspectFor = (target) => target === 'categories' ? 16 / 9 : 1;
+  const cropAspectFor = (target) => {
+    if (target === 'categories') return 16 / 9;
+    if (target === 'hero')       return 4 / 5;
+    return 1;
+  };
 
   function openCropModal(file, aspectRatio) {
     return new Promise((resolve, reject) => {
@@ -210,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const res = await fetch('api/product-images.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'remove', id: img.id }),
+            body: JSON.stringify({ action: 'remove', id: img.id, _csrf: CSRF_TOKEN }),
           });
           const data = await res.json();
           if (data.ok) load();
@@ -235,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const fd = new FormData();
           fd.append('image', blob, file.name);
           fd.append('target', 'products');
+          fd.append('_csrf', CSRF_TOKEN);
 
           addBtn.style.opacity = '0.5';
           const upRes = await fetch('upload.php', { method: 'POST', body: fd });
@@ -251,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const attachRes = await fetch('api/product-images.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'add', product_id: productId, url: upData.url }),
+            body: JSON.stringify({ action: 'add', product_id: productId, url: upData.url, _csrf: CSRF_TOKEN }),
           });
           const attachData = await attachRes.json();
           if (attachData.ok) load();
@@ -296,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
         <div class="upload-zone-title">Glissez-déposez ou <strong>parcourir</strong></div>
-        <div class="upload-zone-hint">JPG, PNG, WebP — max 5 Mo</div>
+        <div class="upload-zone-hint">JPG, PNG, WebP · max 5 Mo</div>
       </label>
 
       <div class="upload-progress" style="display:none">
@@ -346,6 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const fd = new FormData();
       fd.append('image', blob, originalName || 'cropped.jpg');
       fd.append('target', target);
+      fd.append('_csrf', CSRF_TOKEN);
 
       const xhr = new XMLHttpRequest();
       xhr.open('POST', 'upload.php');
@@ -394,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const blob = await openCropModal(file, cropAspect);
         sendBlob(blob, file.name);
       } catch (e) {
-        // User cancelled — do nothing
+        // User cancelled · do nothing
       }
     };
 

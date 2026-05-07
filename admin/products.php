@@ -163,7 +163,7 @@ require __DIR__ . '/_includes/header.php';
               <td><input type="checkbox" name="ids[]" value="<?= (int) $p['id'] ?>" class="row-check" aria-label="Sélectionner <?= e($p['name']) ?>"></td>
               <td><div class="cell-product"><img src="<?= e($p['image_main']) ?>"><span><strong><?= e($p['name']) ?></strong></span></div></td>
               <td class="cell-mono"><?= e($p['sku']) ?></td>
-              <td><span class="badge-status status-neutral"><?= e($p['category_name'] ?? '—') ?></span></td>
+              <td><span class="badge-status status-neutral"><?= e($p['category_name'] ?? '-') ?></span></td>
               <td class="cell-num">
                 <strong><?= price($p['price']) ?></strong>
                 <?php if ($p['compare_at_price'] > 0): ?> <span class="cell-mute" style="text-decoration: line-through;"><?= price($p['compare_at_price']) ?></span><?php endif; ?>

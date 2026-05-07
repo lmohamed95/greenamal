@@ -61,7 +61,7 @@ foreach ($dirs as $dir) {
                 human_bytes(filesize($paths['webp_mobile']))
             );
         } catch (Throwable $e) {
-            printf("  ✗ %s — %s\n", basename($file), $e->getMessage());
+            printf("  ✗ %s · %s\n", basename($file), $e->getMessage());
         }
     }
 }
@@ -79,7 +79,7 @@ if (!$dry && $processed > 0) {
             ($saved / $total_before) * 100
         );
     } else {
-        printf("Total grew %s — but each variant is smaller than the original; the average user only loads ONE variant, not all 3.\n",
+        printf("Total grew %s · but each variant is smaller than the original; the average user only loads ONE variant, not all 3.\n",
             human_bytes(-$saved)
         );
     }

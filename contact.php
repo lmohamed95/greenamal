@@ -2,13 +2,13 @@
 require_once __DIR__ . '/includes/helpers.php';
 
 $page_title = 'Contact';
-$page_desc  = 'Contactez la coopérative GreenAmal — téléphone, WhatsApp, email. Service client basé à Azrou, Maroc.';
+$page_desc  = 'Contactez la coopérative GreenAmal · téléphone, WhatsApp, email. Service client basé à Azrou, Maroc.';
 $nav        = 'contact';
 $jsonld     = [
     [
         '@context'    => 'https://schema.org',
         '@type'       => 'ContactPage',
-        'name'        => 'Contact — ' . SITE_NAME,
+        'name'        => 'Contact · ' . SITE_NAME,
         'url'         => seo_canonical(),
         'description' => $page_desc,
     ],
@@ -22,6 +22,7 @@ $jsonld     = [
 $sent = false;
 $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $name    = trim($_POST['name'] ?? '');
     $email   = trim($_POST['email'] ?? '');
     $phone   = trim($_POST['phone'] ?? '');
@@ -120,7 +121,7 @@ require __DIR__ . '/includes/header.php';
 
       <div style="background: var(--white); border-radius: var(--radius); padding: 32px; border: 1px solid var(--line);">
         <h3 style="margin-bottom: 8px;">Écrivez-nous</h3>
-        <p style="color: var(--ink-soft); margin-bottom: 24px;">Remplissez le formulaire — nous répondons sous 24 h ouvrées.</p>
+        <p style="color: var(--ink-soft); margin-bottom: 24px;">Remplissez le formulaire · nous répondons sous 24 h ouvrées.</p>
 
         <?php if ($sent): ?>
           <div style="background: rgba(74, 122, 79, 0.12); color: var(--olive-dark); padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px; font-size: 0.92rem;">
@@ -133,6 +134,7 @@ require __DIR__ . '/includes/header.php';
         <?php endif; ?>
 
         <form method="post">
+          <?= csrf_field() ?>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
             <div style="display: flex; flex-direction: column; gap: 6px;">
               <label style="font-size: 0.85rem; font-weight: 500;">Nom complet *</label>

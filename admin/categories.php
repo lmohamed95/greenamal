@@ -46,7 +46,7 @@ require __DIR__ . '/_includes/header.php';
     <div style="background: var(--success-bg); color: var(--success); padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;">✓ Catégorie supprimée.</div>
   <?php endif; ?>
   <?php if (!empty($_GET['error']) && $_GET['error'] === 'has_products'): ?>
-    <div style="background: var(--danger-bg); color: var(--danger); padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;">⚠ Impossible de supprimer : cette catégorie contient des produits. Réassignez-les d'abord.</div>
+    <div style="background: var(--danger-bg); color: var(--danger); padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;"><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Impossible de supprimer : cette catégorie contient des produits. Réassignez-les d'abord.</div>
   <?php endif; ?>
 
   <div class="categories-admin-grid">

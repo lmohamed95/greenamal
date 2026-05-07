@@ -4,7 +4,7 @@ require_once __DIR__ . '/includes/image.php';
 
 $page_title = 'Boutique';
 $nav        = 'shop';
-$page_desc  = 'Boutique GreenAmal — tous nos produits naturels du Maroc : huiles essentielles, plantes, cosmétiques, couscous artisanal. Filtre par catégorie, prix et note.';
+$page_desc  = 'Boutique GreenAmal · tous nos produits naturels du Maroc : huiles essentielles, plantes, cosmétiques, couscous artisanal. Filtre par catégorie, prix et note.';
 
 $selected_cat = $_GET['cat'] ?? null;
 $search       = trim($_GET['q'] ?? '');
@@ -48,7 +48,7 @@ if ($selected_cat) {
     $cat_row = db_one('SELECT name, description, image_url FROM categories WHERE slug = ?', [$selected_cat]);
     if ($cat_row) {
         $page_title = $cat_row['name'];
-        $page_desc  = $cat_row['description'] ?: "Découvrez notre sélection de {$cat_row['name']} — produits naturels du Maroc, certifiés ONSSA.";
+        $page_desc  = $cat_row['description'] ?: "Découvrez notre sélection de {$cat_row['name']} · produits naturels du Maroc, certifiés ONSSA.";
         if (!empty($cat_row['image_url'])) $og_image = $cat_row['image_url'];
     }
 }
@@ -171,6 +171,10 @@ require __DIR__ . '/includes/header.php';
                       <span class="price-was"><?= price($p['compare_at_price']) ?></span>
                     <?php endif; ?>
                   </div>
+                  <a href="product.php?slug=<?= e($p['slug']) ?>" class="btn-view">
+                    Voir
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
                 </div>
               </article>
             <?php endforeach; ?>

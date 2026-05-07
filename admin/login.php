@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Connexion — GreenAmal Admin</title>
+<title>Connexion · GreenAmal Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h2>"Une coopérative, des mains, un héritage."</h2>
       <p>Bienvenue dans le tableau de bord GreenAmal. Gérez votre catalogue, suivez vos commandes, animez votre boutique.</p>
     </div>
-    <div class="auth-foot">© <?= date('Y') ?> GreenAmal · Coopérative Al Amal, Azrou — Maroc</div>
+    <div class="auth-foot">© <?= date('Y') ?> GreenAmal · Coopérative Al Amal, Azrou · Maroc</div>
   </div>
 
   <div class="auth-form">

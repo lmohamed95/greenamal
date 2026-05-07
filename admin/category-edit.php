@@ -12,9 +12,15 @@ if (!$category) redirect('categories.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
+    $base_slug = trim($_POST['slug'] ?? '') ?: slugify($_POST['name'] ?? '');
+    $slug = $base_slug;
+    $n = 2;
+    while (db_one('SELECT id FROM categories WHERE slug = ? AND id <> ?', [$slug, $id])) {
+        $slug = $base_slug . '-' . $n++;
+    }
     $data = [
         'name'          => trim($_POST['name'] ?? ''),
-        'slug'          => trim($_POST['slug'] ?? '') ?: slugify($_POST['name'] ?? ''),
+        'slug'          => $slug,
         'description'   => trim($_POST['description'] ?? ''),
         'image_url'     => trim($_POST['image_url'] ?? ''),
         'display_order' => (int) ($_POST['display_order'] ?? 0),
@@ -169,7 +175,7 @@ require __DIR__ . '/_includes/header.php';
         <div class="card">
           <div class="card-body">
             <p style="font-size: 0.82rem; color: var(--ink-mute); margin: 0;">
-              ⚠ Cette catégorie contient <?= $products_count ?> produit<?= $products_count > 1 ? 's' : '' ?>. Réassignez-les avant de pouvoir supprimer.
+              <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Cette catégorie contient <?= $products_count ?> produit<?= $products_count > 1 ? 's' : '' ?>. Réassignez-les avant de pouvoir supprimer.
             </p>
           </div>
         </div>

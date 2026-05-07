@@ -90,10 +90,10 @@ require __DIR__ . '/_includes/header.php';
             <td><input type="checkbox"></td>
             <td><div class="cell-customer"><span class="cell-customer-avatar"><?= e(initials($name)) ?></span><strong><?= e($name) ?></strong></div></td>
             <td class="cell-mute"><?= e($c['email']) ?></td>
-            <td><?= e($c['city'] ?? '—') ?></td>
+            <td><?= e($c['city'] ?? '-') ?></td>
             <td class="cell-num"><?= (int) $c['total_orders'] ?></td>
             <td class="cell-num"><strong><?= price($c['lifetime_value']) ?></strong></td>
-            <td class="cell-mute"><?= $c['last_order_at'] ? time_ago($c['last_order_at']) : '—' ?></td>
+            <td class="cell-mute"><?= $c['last_order_at'] ? time_ago($c['last_order_at']) : '-' ?></td>
             <td><span class="badge-status <?= e($seg_cls) ?>"><?= e($seg_lbl) ?></span></td>
           </tr>
         <?php endforeach; endif; ?>

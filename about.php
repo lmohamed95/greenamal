@@ -28,7 +28,7 @@ require __DIR__ . '/includes/header.php';
         <h2>Un rêve né dans les montagnes.</h2>
         <p>En 2008, douze femmes berbères se réunissent autour d'une idée simple : transformer le savoir-faire ancestral de leurs aïeules en une activité économique viable, qui leur donne autonomie et dignité.</p>
         <p>De la cueillette des plantes médicinales à la distillation des huiles essentielles, en passant par le roulage manuel du couscous, chaque geste perpétue une tradition tout en construisant un avenir.</p>
-        <p>Aujourd'hui, la coopérative Al Amal — qui signifie <em>"l'espoir"</em> en arabe — emploie plus de 45 femmes et exporte vers le monde entier.</p>
+        <p>Aujourd'hui, la coopérative Al Amal · qui signifie <em>"l'espoir"</em> en arabe · emploie plus de 45 femmes et exporte vers le monde entier.</p>
       </div>
     </div>
   </div>

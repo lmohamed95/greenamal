@@ -11,7 +11,7 @@ $faqs = [
         ['Combien coûte la livraison ?',
          'Les frais de livraison standards s\'élèvent à ' . price(SHIPPING_FEE) . '. La livraison est offerte à partir de ' . price(FREE_SHIPPING_THRESHOLD) . ' d\'achat.'],
         ['Livrez-vous à l\'international ?',
-         'Pour le moment, nous livrons uniquement au Maroc. Les commandes internationales seront disponibles courant 2026 — inscrivez-vous à notre newsletter pour être informé(e).'],
+         'Pour le moment, nous livrons uniquement au Maroc. Les commandes internationales seront disponibles courant 2026 · inscrivez-vous à notre newsletter pour être informé(e).'],
         ['Puis-je suivre ma commande ?',
          'Vous recevrez un email de confirmation avec le numéro de suivi dès l\'expédition. Vous pouvez également retrouver toutes vos commandes dans votre <a href="account.php">espace client</a>.'],
     ],
@@ -47,7 +47,7 @@ $faqs = [
         ['Qu\'est-ce que la Coopérative Al Amal ?',
          'La Coopérative féminine Al Amal est basée à Tigrigra, dans la province d\'Ifrane (Moyen Atlas). Elle regroupe une vingtaine de femmes berbères qui transforment et commercialisent les ressources végétales locales.'],
         ['Comment soutenir la coopérative ?',
-         'Acheter nos produits soutient directement les artisanes. Vous pouvez aussi nous suivre sur les réseaux sociaux ou parrainer un projet — contactez-nous pour les détails.'],
+         'Acheter nos produits soutient directement les artisanes. Vous pouvez aussi nous suivre sur les réseaux sociaux ou parrainer un projet · contactez-nous pour les détails.'],
     ],
 ];
 

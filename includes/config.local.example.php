@@ -1,6 +1,6 @@
 <?php
 /**
- * GreenAmal — Production overrides
+ * GreenAmal · Production overrides
  *
  * Copy this file to `config.local.php` on the production server and fill in the
  * real credentials. `config.local.php` is loaded automatically by config.php
@@ -10,7 +10,7 @@
  */
 
 // =====================================================================
-// Database (Namecheap MySQL — values from cPanel → MySQL Databases)
+// Database (Namecheap MySQL · values from cPanel → MySQL Databases)
 // =====================================================================
 // define('DB_HOST', 'localhost');
 // define('DB_PORT', '3306');
@@ -19,22 +19,22 @@
 // define('DB_PASS', 'CHANGE_ME_LONG_RANDOM_STRING');
 
 // =====================================================================
-// Site URL — must match the canonical domain you serve from (https + apex)
+// Site URL · must match the canonical domain you serve from (https + apex)
 // =====================================================================
 // define('SITE_URL', 'https://greenamal.com');
 
 // =====================================================================
-// Environment — flip to 'production' to disable error display
+// Environment · flip to 'production' to disable error display
 // =====================================================================
 // define('APP_ENV', 'production');
 
 // =====================================================================
-// Mail — sender address (must match a real mailbox on the domain to pass SPF/DKIM)
+// Mail · sender address (must match a real mailbox on the domain to pass SPF/DKIM)
 // =====================================================================
 // define('MAIL_FROM', 'noreply@greenamal.com');
 
 // =====================================================================
-// Optional — Resend API key for higher-deliverability transactional email
+// Optional · Resend API key for higher-deliverability transactional email
 // (lets includes/mail.php switch from PHP mail() to Resend if implemented)
 // =====================================================================
 // define('RESEND_API_KEY', 're_xxxxxxxxxxxxxxxx');

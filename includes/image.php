@@ -3,9 +3,9 @@
  * Image optimization + responsive helpers.
  *
  * Convention: a stored image at `/path/to/foo.jpg` has companion files:
- *   /path/to/foo.webp        — same dimensions, modern WebP encoding
- *   /path/to/foo-md.webp     — half-width mobile WebP
- *   /path/to/foo-md.jpg      — half-width mobile JPEG (fallback)
+ *   /path/to/foo.webp        · same dimensions, modern WebP encoding
+ *   /path/to/foo-md.webp     · half-width mobile WebP
+ *   /path/to/foo-md.jpg      · half-width mobile JPEG (fallback)
  *
  * The .jpg path is what we store in the DB. picture_tag() generates the rest.
  */
@@ -135,7 +135,7 @@ function image_make_responsive(string $source_abs, string $out_dir_abs, string $
 function picture_tag(string $jpg_url, string $alt = '', array $opts = []): string {
     if ($jpg_url === '') return '';
 
-    // External URLs (Unsplash hotlinks etc.) — can't generate derivatives, fall back to plain <img>
+    // External URLs (Unsplash hotlinks etc.) · can't generate derivatives, fall back to plain <img>
     if (preg_match('#^https?://#i', $jpg_url)) {
         return _img_tag($jpg_url, $alt, $opts);
     }

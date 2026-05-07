@@ -77,9 +77,9 @@ $catalogue = [
             ['Eau florale de fleur d\'oranger', 'eau-floral-fleur-oranger', 'EAU-ORG', ['Eau-Floral-Fleur-Oranger-01.jpg','Eau-Floral-Fleur-Oranger-02.jpg']],
             ['Eau florale de rose', 'eau-floral-rose', 'EAU-ROS', ['Eau-Floral-Rose-01.jpg','Eau-Floral-Rose-02.jpg']],
             ['Eau florale de camomille', 'eau-floral-camomille', 'EAU-CAM', ['Eau-Floral-Camomille-01.jpg','Eau-Floral-Camomille-02.jpg']],
-            ['GreenBoost — distillat capillaire', 'greenboost', 'EAU-GBT', ['GreenBoost-01.jpg','GreenBoost-02.jpg']],
-            ['GreenEssence — huile parfumée', 'greenessence', 'EAU-GES', ['GreenEssence-01.jpg','GreenEssence-02.jpg']],
-            ['GreenSilk — huile post-épilation', 'greensilk', 'EAU-GSK', ['GreenSilk-01.jpg','GreenSilk-02.jpg']],
+            ['GreenBoost · distillat capillaire', 'greenboost', 'EAU-GBT', ['GreenBoost-01.jpg','GreenBoost-02.jpg']],
+            ['GreenEssence · huile parfumée', 'greenessence', 'EAU-GES', ['GreenEssence-01.jpg','GreenEssence-02.jpg']],
+            ['GreenSilk · huile post-épilation', 'greensilk', 'EAU-GSK', ['GreenSilk-01.jpg','GreenSilk-02.jpg']],
         ],
     ],
     'Savon' => [
@@ -90,9 +90,9 @@ $catalogue = [
             ['Koumaj el jisem', 'koumaj-jisem', 'SAV-KOU', ['Koumaj-Jisem-01.jpg','Koumaj-Jisem-02.jpg']],
             ['Gommage au café', 'gommage-cafe', 'SAV-CAF', ['Gommage-Cafe-01.jpg','Gommage-Cafe-02.jpg']],
             ['Gommage au nila & huiles', 'gommage-nila-huiles', 'SAV-NIL', ['Gommage-Nila-Huile-01.jpg','Gommage-Nila-Huile-02.jpg']],
-            ['GreenRitual Savon — bleu', 'greenritual-savon-bleu', 'SAV-GR-B', ['GreenRitual-Savon-Bleu.jpg']],
-            ['GreenRitual Savon — rose', 'greenritual-savon-rose', 'SAV-GR-R', ['GreenRitual-Savon-Rose.jpg']],
-            ['GreenRitual Savon — herbal', 'greenritual-savon-herbal', 'SAV-GR-H', ['GreenRitual-Savon-Herbal.jpg']],
+            ['GreenRitual Savon · bleu', 'greenritual-savon-bleu', 'SAV-GR-B', ['GreenRitual-Savon-Bleu.jpg']],
+            ['GreenRitual Savon · rose', 'greenritual-savon-rose', 'SAV-GR-R', ['GreenRitual-Savon-Rose.jpg']],
+            ['GreenRitual Savon · herbal', 'greenritual-savon-herbal', 'SAV-GR-H', ['GreenRitual-Savon-Herbal.jpg']],
             ['GreenMoukhammaria', 'greenmoukhammaria', 'SAV-GMK', ['GreenMoukhammaria-01.jpg','GreenMoukhammaria-02.jpg']],
         ],
     ],
@@ -115,7 +115,7 @@ $catalogue = [
             ['Bourgeons de rose (Alward)', 'pam-alward-rose', 'PAM-ALW', ['PAM-Alward-Rose.jpg']],
             ['Clous de girofle', 'pam-girofle', 'PAM-GIR', ['PAM-Girofle.jpg']],
             ['Bleuet séché', 'pam-bleuet', 'PAM-BLE', ['PAM-Bleuet.jpg']],
-            ['GreenCalme — mélange apaisant', 'pam-greencalme', 'PAM-GCL', ['PAM-GreenCalme-01.jpg','PAM-GreenCalme-02.jpg','PAM-GreenCalme-03.jpg','PAM-GreenCalme-04.jpg','PAM-GreenCalme-05.jpg']],
+            ['GreenCalme · mélange apaisant', 'pam-greencalme', 'PAM-GCL', ['PAM-GreenCalme-01.jpg','PAM-GreenCalme-02.jpg','PAM-GreenCalme-03.jpg','PAM-GreenCalme-04.jpg','PAM-GreenCalme-05.jpg']],
             ['Romarin séché', 'pam-romarin', 'PAM-ROM', ['PAM-Romarin.jpg']],
             ['Feuilles de jujubier', 'pam-jujubier', 'PAM-JUJ', ['PAM-Jujubier.jpg']],
             ['Lavande séchée', 'pam-lavande', 'PAM-LAV', ['PAM-Lavande.jpg']],
@@ -221,7 +221,7 @@ foreach ($catalogue as $folder => $info) {
             "INSERT INTO products (slug, sku, name, category_id, description_short, price, stock, image_main, status) VALUES " .
             "('%s', '%s', '%s', (SELECT id FROM categories WHERE slug='%s'), '%s', %.2f, 0, '%s', 'draft');\n",
             esc($slug), esc($sku), esc($name), esc($cat),
-            esc('Produit artisanal de la Coopérative Al Amal — ' . $name . '.'),
+            esc('Produit artisanal de la Coopérative Al Amal · ' . $name . '.'),
             PRICE_MAD,
             esc($main_url)
         );

@@ -11,12 +11,20 @@ $user_name = trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '')
 // Pending orders badge
 $pending_count = (int) db_value("SELECT COUNT(*) FROM orders WHERE status='pending'");
 $pending_reviews = (int) db_value("SELECT COUNT(*) FROM reviews WHERE status='pending'");
+
+// Coming-soon mode state
+$coming_soon_on = (db_value("SELECT setting_value FROM settings WHERE setting_key='coming_soon_mode'") === '1');
+
+// Flash from toggle endpoint
+$admin_flash = $_SESSION['flash'] ?? null;
+unset($_SESSION['flash']);
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= e($page_title) ?> — GreenAmal Admin</title>
+<meta name="csrf-token" content="<?= e(csrf_token()) ?>">
+<title><?= e($page_title) ?> · GreenAmal Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -105,7 +113,19 @@ $pending_reviews = (int) db_value("SELECT COUNT(*) FROM reviews WHERE status='pe
         <kbd>⌘K</kbd>
       </div>
       <div class="topbar-actions">
-        <a href="../index.php" target="_blank" class="topbar-btn" title="Voir la boutique">
+        <form method="post" action="toggle-coming-soon.php" class="coming-soon-toggle"
+              onsubmit="return confirm('<?= $coming_soon_on
+                  ? "Réactiver la boutique pour tous les visiteurs ?"
+                  : "Activer le mode « Bientôt disponible » ? La boutique sera masquée et un écran d'attente sera affiché aux visiteurs." ?>');">
+          <?= csrf_field() ?>
+          <input type="hidden" name="back" value="<?= e(basename($_SERVER['SCRIPT_NAME'] ?? 'index.php')) ?>">
+          <button type="submit" class="cs-toggle-btn<?= $coming_soon_on ? ' is-on' : '' ?>"
+                  title="<?= $coming_soon_on ? 'Boutique masquée · cliquer pour la réactiver' : 'Activer le mode bientôt disponible' ?>">
+            <span class="cs-dot"></span>
+            <span class="cs-label"><?= $coming_soon_on ? 'Bientôt disponible' : 'Boutique en ligne' ?></span>
+          </button>
+        </form>
+        <a href="../<?= $coming_soon_on ? 'coming-soon.php' : 'index.php' ?>" target="_blank" class="topbar-btn" title="Voir la boutique">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
         <button class="topbar-btn" title="Notifications">
@@ -119,3 +139,13 @@ $pending_reviews = (int) db_value("SELECT COUNT(*) FROM reviews WHERE status='pe
         </div>
       </div>
     </header>
+
+    <?php if ($admin_flash): ?>
+      <div class="admin-flash flash-<?= e($admin_flash['type']) ?>"><?= e($admin_flash['msg']) ?></div>
+    <?php endif; ?>
+
+    <?php if ($coming_soon_on): ?>
+      <div class="cs-banner">
+        <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><strong>Mode « Bientôt disponible » actif</strong> · la boutique est masquée pour les visiteurs publics. Vous voyez les pages admin normalement.
+      </div>
+    <?php endif; ?>

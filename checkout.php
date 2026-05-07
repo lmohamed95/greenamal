@@ -7,8 +7,8 @@ if (empty($cart)) {
     redirect('shop.php');
 }
 
-$page_title = 'Commande — Finaliser';
-$page_desc  = 'Finalisez votre commande GreenAmal — paiement à la livraison ou carte bancaire.';
+$page_title = 'Commande · Finaliser';
+$page_desc  = 'Finalisez votre commande GreenAmal · paiement à la livraison ou carte bancaire.';
 $nav        = '';
 $noindex    = true;
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Stock guard: refuse the order if any item is out of stock or quantity exceeds stock
     if (empty($errors)) {
-        $ids = array_map(fn($i) => (int) $i['id'], $cart);
+        $ids = array_values(array_map(fn($i) => (int) $i['id'], $cart));
         if ($ids) {
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
             $stocks = db_all("SELECT id, name, stock, status FROM products WHERE id IN ($placeholders)", $ids);
@@ -76,75 +76,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $customer_id = (int) $customer['id'];
         }
 
-        // Create order
-        $order_number = next_order_number();
-        $order_id = db_insert('orders', [
-            'order_number'      => $order_number,
-            'customer_id'       => $customer_id,
-            'status'            => 'pending',
-            'payment_method'    => 'cod',  // COD-only for now (CMI / virement à venir)
-            'payment_status'    => 'pending',
-            'subtotal'          => $subtotal,
-            'shipping'          => $shipping,
-            'discount'          => $discount,
-            'total'             => $total,
-            'shipping_name'     => trim($f['shipping_name']),
-            'shipping_email'    => $email,
-            'shipping_phone'    => trim($f['shipping_phone']),
-            'shipping_address'  => trim($f['shipping_address']),
-            'shipping_city'     => trim($f['shipping_city']),
-            'shipping_postcode' => trim($f['shipping_postcode'] ?? ''),
-            'notes'             => trim($f['notes'] ?? ''),
-            'coupon_code'       => $coupon['code'] ?? null,
-        ]);
+        // Create order — retry on rare race where two checkouts pick the same order_number
+        $order_id = null;
+        $order_number = null;
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            try {
+                $order_number = next_order_number();
+                $order_id = db_insert('orders', [
+                    'order_number'      => $order_number,
+                    'customer_id'       => $customer_id,
+                    'status'            => 'pending',
+                    'payment_method'    => 'cod',  // COD-only for now (CMI / virement à venir)
+                    'payment_status'    => 'pending',
+                    'subtotal'          => $subtotal,
+                    'shipping'          => $shipping,
+                    'discount'          => $discount,
+                    'total'             => $total,
+                    'shipping_name'     => trim($f['shipping_name']),
+                    'shipping_email'    => $email,
+                    'shipping_phone'    => trim($f['shipping_phone']),
+                    'shipping_address'  => trim($f['shipping_address']),
+                    'shipping_city'     => trim($f['shipping_city']),
+                    'shipping_postcode' => trim($f['shipping_postcode'] ?? ''),
+                    'notes'             => trim($f['notes'] ?? ''),
+                    'coupon_code'       => $coupon['code'] ?? null,
+                ]);
+                break;
+            } catch (PDOException $e) {
+                if ($e->getCode() !== '23000') throw $e;
+                $order_id = null;
+            }
+        }
 
-        // Insert order items
-        foreach ($cart as $item) {
-            db_insert('order_items', [
-                'order_id'      => $order_id,
-                'product_id'    => $item['id'],
-                'product_name'  => $item['name'],
-                'product_image' => $item['image'],
-                'unit_price'    => $item['price'],
-                'quantity'      => $item['qty'],
-                'total'         => $item['price'] * $item['qty'],
+        if (!$order_id) {
+            $errors[] = 'Impossible de créer la commande, veuillez réessayer.';
+        } else {
+            // Insert order items
+            foreach ($cart as $item) {
+                db_insert('order_items', [
+                    'order_id'      => $order_id,
+                    'product_id'    => $item['id'],
+                    'product_name'  => $item['name'],
+                    'product_image' => $item['image'],
+                    'unit_price'    => $item['price'],
+                    'quantity'      => $item['qty'],
+                    'total'         => $item['price'] * $item['qty'],
+                ]);
+            }
+
+            // Order event
+            db_insert('order_events', [
+                'order_id'    => $order_id,
+                'event_type'  => 'created',
+                'description' => 'Commande créée par le client',
+                'created_by'  => 'client',
             ]);
+
+            // Decrement product stock
+            foreach ($cart as $item) {
+                db_query('UPDATE products SET stock = GREATEST(stock - ?, 0), sales_count = sales_count + ? WHERE id = ?',
+                    [(int) $item['qty'], (int) $item['qty'], (int) $item['id']]
+                );
+            }
+
+            // Bump coupon uses
+            if ($coupon) {
+                db_query('UPDATE coupons SET uses_count = uses_count + 1 WHERE id = ?', [$coupon['id']]);
+            }
+
+            // Send transactional emails (order confirmation + admin notification)
+            $order_row = db_one('SELECT * FROM orders WHERE id = ?', [$order_id]);
+            $items_row = db_all('SELECT product_name, quantity, total FROM order_items WHERE order_id = ?', [$order_id]);
+            if ($order_row) {
+                @mail_order_confirmation($order_row, $items_row);
+                @mail_admin_new_order($order_row);
+            }
+
+            // Clear cart
+            cart_clear();
+            unset($_SESSION['coupon']);
+
+            // Redirect to thank-you
+            redirect('order-confirmation.php?order=' . urlencode($order_number));
         }
-
-        // Order event
-        db_insert('order_events', [
-            'order_id'    => $order_id,
-            'event_type'  => 'created',
-            'description' => 'Commande créée par le client',
-            'created_by'  => 'client',
-        ]);
-
-        // Decrement product stock
-        foreach ($cart as $item) {
-            db_query('UPDATE products SET stock = GREATEST(stock - ?, 0), sales_count = sales_count + ? WHERE id = ?',
-                [(int) $item['qty'], (int) $item['qty'], (int) $item['id']]
-            );
-        }
-
-        // Bump coupon uses
-        if ($coupon) {
-            db_query('UPDATE coupons SET uses_count = uses_count + 1 WHERE id = ?', [$coupon['id']]);
-        }
-
-        // Send transactional emails (order confirmation + admin notification)
-        $order_row = db_one('SELECT * FROM orders WHERE id = ?', [$order_id]);
-        $items_row = db_all('SELECT product_name, quantity, total FROM order_items WHERE order_id = ?', [$order_id]);
-        if ($order_row) {
-            @mail_order_confirmation($order_row, $items_row);
-            @mail_admin_new_order($order_row);
-        }
-
-        // Clear cart
-        cart_clear();
-        unset($_SESSION['coupon']);
-
-        // Redirect to thank-you
-        redirect('order-confirmation.php?order=' . urlencode($order_number));
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * GreenAmal — Email helpers (transactional)
+ * GreenAmal · Email helpers (transactional)
  *
  * Uses PHP mail() by default. On Namecheap shared hosting this works out of the
  * box once SPF/DKIM are configured (cPanel → Email Deliverability).
@@ -127,7 +127,7 @@ function mail_order_status(array $order, string $new_status): bool {
     $msg = match ($new_status) {
         'processing' => 'Votre commande est en cours de préparation. Nous vous notifierons dès l\'expédition.',
         'shipped'    => 'Votre colis a été expédié ! Vous le recevrez dans 2 à 5 jours ouvrables.',
-        'delivered'  => 'Votre commande a été livrée. Merci pour votre confiance — n\'hésitez pas à laisser un avis !',
+        'delivered'  => 'Votre commande a été livrée. Merci pour votre confiance · n\'hésitez pas à laisser un avis !',
         'cancelled'  => 'Votre commande a été annulée. Si vous n\'êtes pas à l\'origine de cette action, contactez-nous immédiatement.',
         default      => 'Le statut de votre commande a été mis à jour.',
     };
