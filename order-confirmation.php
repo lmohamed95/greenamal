@@ -1,10 +1,13 @@
 <?php
 require_once __DIR__ . '/includes/helpers.php';
 
-$order_number = $_GET['order'] ?? '';
-$order = db_one("SELECT * FROM orders WHERE order_number = ?", [$order_number]);
+$order_number = $_GET['order'] ?? $_GET['n'] ?? '';
+$token        = (string) ($_GET['t'] ?? '');
+$order = $order_number !== ''
+    ? db_one("SELECT * FROM orders WHERE order_number = ?", [$order_number])
+    : null;
 
-if (!$order) {
+if (!$order || !can_view_order($order, $token)) {
     redirect('index.php');
 }
 

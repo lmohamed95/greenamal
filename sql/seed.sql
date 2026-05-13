@@ -1,7 +1,6 @@
 -- GreenAmal — Seed data
--- Run AFTER schema.sql
-
-USE greenamal;
+-- Run AFTER schema.sql, from inside the target database.
+-- (`mysql greenamal < seed.sql` locally · phpMyAdmin → select DB → Import on cPanel)
 
 -- =====================================================================
 -- Categories

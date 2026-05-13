@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../includes/helpers.php';
+require_same_origin_json();
+
+if (!rate_limit('newsletter', 5, 600)) {
+    json_response(['ok' => false, 'error' => 'too_many'], 429);
+}
 
 $body = json_decode(file_get_contents('php://input'), true) ?? [];
 $email = trim($body['email'] ?? '');

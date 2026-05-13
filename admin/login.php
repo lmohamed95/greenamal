@@ -79,11 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </button>
       </form>
 
+      <?php if (APP_DEBUG): ?>
       <div style="margin-top: 24px; padding: 14px; background: var(--surface-2); border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--ink-soft);">
-        <strong style="color: var(--ink);">Compte de démo :</strong><br>
+        <strong style="color: var(--ink);">Compte de démo (local uniquement) :</strong><br>
         Email : <code>admin@greenamal.com</code><br>
         Mot de passe : <code>admin123</code>
       </div>
+      <?php endif; ?>
 
       <p style="text-align: center; margin-top: 24px; font-size: 0.82rem; color: var(--ink-mute);">
         Besoin d'aide ? <a href="#" style="color: var(--olive); font-weight: 500;">Contactez le support</a>

@@ -1,0 +1,30 @@
+---
+# cPanel auto-deploy — runs each time you click "Deploy HEAD Commit"
+# in cPanel → Git Version Control, or when GitHub fires the webhook.
+#
+# DEPLOYPATH is hardcoded to /home6/greenamal/public_html/ (the current
+# cPanel account). If the account ever moves, update the line below.
+#
+# What this does:
+#   - rsyncs the repo into public_html/ without --delete, so production-only
+#     files (config.local.php, uploaded images, log files) are preserved.
+#   - excludes planning docs, the maquette backup, dev tools, and itself.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home6/greenamal/public_html/
+    - /usr/bin/rsync -av
+        --exclude='.git'
+        --exclude='.gitignore'
+        --exclude='.gitattributes'
+        --exclude='.cpanel.yml'
+        --exclude='_maquette-html-backup/'
+        --exclude='node_modules/'
+        --exclude='vendor/'
+        --exclude='HOSTING-DEPLOY.md'
+        --exclude='avancement.md'
+        --exclude='ROADMAP.md'
+        --exclude='SETUP.md'
+        --exclude='SEO-AUDIT.md'
+        --exclude='DASHBOARD-TODO.md'
+        --exclude='includes/config.local.php'
+        ./ $DEPLOYPATH

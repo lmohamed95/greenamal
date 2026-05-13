@@ -4,6 +4,8 @@
  */
 require_once __DIR__ . '/../includes/helpers.php';
 
+require_same_origin_json();
+
 function cart_state_response(): void {
     $items = array_values(cart_get());
     json_response([

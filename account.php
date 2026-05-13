@@ -84,7 +84,7 @@ require __DIR__ . '/includes/header.php';
               <td class="cell-mute"><?= date('j M Y', strtotime($o['created_at'])) ?></td>
               <td><?= e(price((float) $o['total'])) ?></td>
               <td><span class="badge-status <?= e($cls) ?>"><?= e($lbl) ?></span></td>
-              <td><a href="order-confirmation.php?n=<?= e($o['order_number']) ?>" class="auth-link">Détails →</a></td>
+              <td><a href="order-confirmation.php?order=<?= e(urlencode($o['order_number'])) ?>" class="auth-link">Détails →</a></td>
             </tr>
           <?php endforeach; ?>
           </tbody>

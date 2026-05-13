@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'segment'    => 'new',
                     ]);
                 }
+                session_regenerate_id(true);
                 $_SESSION['customer_id'] = $cid;
                 @mail_welcome($old['email'], $old['first_name']);
                 redirect('account.php');

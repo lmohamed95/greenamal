@@ -76,41 +76,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $customer_id = (int) $customer['id'];
         }
 
-        // Create order — retry on rare race where two checkouts pick the same order_number
+        // Create order in a single transaction so stock decrement, items and order
+        // are all-or-nothing. Atomic UPDATE…WHERE stock>=? prevents overselling
+        // when two checkouts race for the last unit.
         $order_id = null;
         $order_number = null;
-        for ($attempt = 0; $attempt < 5; $attempt++) {
-            try {
-                $order_number = next_order_number();
-                $order_id = db_insert('orders', [
-                    'order_number'      => $order_number,
-                    'customer_id'       => $customer_id,
-                    'status'            => 'pending',
-                    'payment_method'    => 'cod',  // COD-only for now (CMI / virement à venir)
-                    'payment_status'    => 'pending',
-                    'subtotal'          => $subtotal,
-                    'shipping'          => $shipping,
-                    'discount'          => $discount,
-                    'total'             => $total,
-                    'shipping_name'     => trim($f['shipping_name']),
-                    'shipping_email'    => $email,
-                    'shipping_phone'    => trim($f['shipping_phone']),
-                    'shipping_address'  => trim($f['shipping_address']),
-                    'shipping_city'     => trim($f['shipping_city']),
-                    'shipping_postcode' => trim($f['shipping_postcode'] ?? ''),
-                    'notes'             => trim($f['notes'] ?? ''),
-                    'coupon_code'       => $coupon['code'] ?? null,
-                ]);
-                break;
-            } catch (PDOException $e) {
-                if ($e->getCode() !== '23000') throw $e;
-                $order_id = null;
-            }
-        }
+        $order_error = null;
+        $pdo = db();
 
-        if (!$order_id) {
-            $errors[] = 'Impossible de créer la commande, veuillez réessayer.';
-        } else {
+        try {
+            $pdo->beginTransaction();
+
+            // Insert order — retry on the (rare) order_number duplicate race
+            for ($attempt = 0; $attempt < 5; $attempt++) {
+                try {
+                    $order_number = next_order_number();
+                    $order_id = db_insert('orders', [
+                        'order_number'      => $order_number,
+                        'customer_id'       => $customer_id,
+                        'status'            => 'pending',
+                        'payment_method'    => 'cod',  // COD-only for now (CMI / virement à venir)
+                        'payment_status'    => 'pending',
+                        'subtotal'          => $subtotal,
+                        'shipping'          => $shipping,
+                        'discount'          => $discount,
+                        'total'             => $total,
+                        'shipping_name'     => trim($f['shipping_name']),
+                        'shipping_email'    => $email,
+                        'shipping_phone'    => trim($f['shipping_phone']),
+                        'shipping_address'  => trim($f['shipping_address']),
+                        'shipping_city'     => trim($f['shipping_city']),
+                        'shipping_postcode' => trim($f['shipping_postcode'] ?? ''),
+                        'notes'             => trim($f['notes'] ?? ''),
+                        'coupon_code'       => $coupon['code'] ?? null,
+                    ]);
+                    break;
+                } catch (PDOException $e) {
+                    if ($e->getCode() !== '23000') throw $e;
+                    $order_id = null;
+                }
+            }
+            if (!$order_id) throw new RuntimeException('order_number_collision');
+
             // Insert order items
             foreach ($cart as $item) {
                 db_insert('order_items', [
@@ -124,6 +131,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
             }
 
+            // Atomic stock decrement — refuses if another concurrent order
+            // already drained the stock since our pre-check.
+            foreach ($cart as $item) {
+                $stmt = db_query(
+                    'UPDATE products SET stock = stock - ?, sales_count = sales_count + ?
+                       WHERE id = ? AND stock >= ?',
+                    [(int) $item['qty'], (int) $item['qty'], (int) $item['id'], (int) $item['qty']]
+                );
+                if ($stmt->rowCount() !== 1) {
+                    throw new RuntimeException('stock_unavailable:' . $item['name']);
+                }
+            }
+
             // Order event
             db_insert('order_events', [
                 'order_id'    => $order_id,
@@ -132,18 +152,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'created_by'  => 'client',
             ]);
 
-            // Decrement product stock
-            foreach ($cart as $item) {
-                db_query('UPDATE products SET stock = GREATEST(stock - ?, 0), sales_count = sales_count + ? WHERE id = ?',
-                    [(int) $item['qty'], (int) $item['qty'], (int) $item['id']]
-                );
-            }
-
-            // Bump coupon uses
             if ($coupon) {
                 db_query('UPDATE coupons SET uses_count = uses_count + 1 WHERE id = ?', [$coupon['id']]);
             }
 
+            $pdo->commit();
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) $pdo->rollBack();
+            $order_id = null;
+            if (str_starts_with($e->getMessage(), 'stock_unavailable:')) {
+                $errors[] = 'Stock insuffisant pour « ' . e(substr($e->getMessage(), 18)) . ' ». Merci de réessayer.';
+            } else {
+                error_log('Checkout failed: ' . $e->getMessage());
+                $errors[] = 'Impossible de créer la commande, veuillez réessayer.';
+            }
+        }
+
+        if ($order_id) {
             // Send transactional emails (order confirmation + admin notification)
             $order_row = db_one('SELECT * FROM orders WHERE id = ?', [$order_id]);
             $items_row = db_all('SELECT product_name, quantity, total FROM order_items WHERE order_id = ?', [$order_id]);
@@ -155,6 +180,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Clear cart
             cart_clear();
             unset($_SESSION['coupon']);
+
+            // Allow this browser session to view the just-placed order without leaking
+            // every order to anyone who guesses an order number (IDOR fix).
+            $_SESSION['allowed_orders'] = $_SESSION['allowed_orders'] ?? [];
+            $_SESSION['allowed_orders'][] = (int) $order_id;
+            $_SESSION['allowed_orders'] = array_values(array_unique(array_slice($_SESSION['allowed_orders'], -20)));
 
             // Redirect to thank-you
             redirect('order-confirmation.php?order=' . urlencode($order_number));

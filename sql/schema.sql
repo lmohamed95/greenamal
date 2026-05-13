@@ -1,11 +1,11 @@
 -- GreenAmal — Database schema
 -- MySQL 8 / utf8mb4
-
-CREATE DATABASE IF NOT EXISTS greenamal
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE greenamal;
+--
+-- IMPORTANT · the database itself is created OUTSIDE this script:
+--   · locally: `mysql -uroot -e "CREATE DATABASE greenamal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"`
+--   · cPanel/Namecheap: via "MySQL® Databases" (the user can't CREATE DATABASE)
+-- Then run this file from inside that database (`mysql greenamal < schema.sql`
+-- locally, or phpMyAdmin → select DB → Import on shared hosting).
 
 -- =====================================================================
 -- Categories

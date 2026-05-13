@@ -93,6 +93,7 @@ function mail_order_confirmation(array $order, array $items): bool {
             e(price((float) $i['total']))
         );
     }
+    $view_link = url('order-confirmation.php?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number']));
     $inner = '<h1 style="margin:0 0 12px;font-size:22px;color:#3A5A40;">Merci pour votre commande !</h1>'
         . '<p>Bonjour ' . e($order['shipping_name']) . ',<br>'
         . 'Votre commande <strong>' . e($order['order_number']) . '</strong> a bien été enregistrée.</p>'
@@ -105,6 +106,7 @@ function mail_order_confirmation(array $order, array $items): bool {
         . '</table>'
         . '<p>Mode de paiement : <strong>' . (($order['payment_method'] === 'cod') ? 'À la livraison' : strtoupper($order['payment_method'])) . '</strong></p>'
         . '<p>Adresse de livraison :<br>' . nl2br(e($order['shipping_address'])) . '<br>' . e($order['shipping_city']) . ' ' . e($order['shipping_postcode']) . '</p>'
+        . '<p style="margin-top:20px;"><a href="' . $view_link . '" style="color:#3A5A40;font-weight:600;">Voir le détail de ma commande →</a></p>'
         . '<p style="margin-top:24px;">Nous vous tiendrons informé(e) dès l\'expédition. Pour toute question, répondez simplement à cet email.</p>';
     return send_mail($order['shipping_email'], 'Confirmation de commande ' . $order['order_number'], mail_layout('Confirmation', $inner));
 }
@@ -134,7 +136,7 @@ function mail_order_status(array $order, string $new_status): bool {
     $inner = '<h1 style="margin:0 0 12px;font-size:20px;color:#3A5A40;">Mise à jour : ' . e($lbl) . '</h1>'
         . '<p>Commande <strong>' . e($order['order_number']) . '</strong></p>'
         . '<p>' . e($msg) . '</p>'
-        . '<p><a href="' . url('order-confirmation.php?n=' . urlencode($order['order_number'])) . '" style="color:#3A5A40;font-weight:600;">Voir ma commande →</a></p>';
+        . '<p><a href="' . url('order-confirmation.php?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number'])) . '" style="color:#3A5A40;font-weight:600;">Voir ma commande →</a></p>';
     return send_mail($order['shipping_email'], '[' . $order['order_number'] . '] ' . $lbl, mail_layout($lbl, $inner));
 }
 

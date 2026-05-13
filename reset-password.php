@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $row) {
             'UPDATE customers SET password_hash = ?, reset_token = NULL, reset_token_expires_at = NULL WHERE id = ?',
             [$hash, $row['id']]
         );
+        session_regenerate_id(true);
         $_SESSION['customer_id'] = (int) $row['id'];
         $ok = true;
     }

@@ -23,17 +23,24 @@ $sent = false;
 $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    $name    = trim($_POST['name'] ?? '');
-    $email   = trim($_POST['email'] ?? '');
-    $phone   = trim($_POST['phone'] ?? '');
-    $message = trim($_POST['message'] ?? '');
-
-    if ($name && filter_var($email, FILTER_VALIDATE_EMAIL) && $message) {
-        // For now, store as a "newsletter subscriber" with source=contact + a note in the message field would need a proper messages table
-        // Quick path: log to an internal admin email via mail() in production. Locally, just confirm.
-        $sent = true;
+    // Honeypot — real users leave this empty; bots fill every field.
+    if (!empty($_POST['website'] ?? '')) {
+        $sent = true; // pretend success, drop silently
+    } elseif (!rate_limit('contact', 3, 600)) {
+        $error = 'Trop de tentatives, merci de réessayer dans quelques minutes.';
     } else {
-        $error = 'Merci de remplir au moins le nom, l\'email et le message.';
+        $name    = trim($_POST['name'] ?? '');
+        $email   = trim($_POST['email'] ?? '');
+        $phone   = trim($_POST['phone'] ?? '');
+        $message = trim($_POST['message'] ?? '');
+
+        if ($name && filter_var($email, FILTER_VALIDATE_EMAIL) && $message) {
+            // For now, store as a "newsletter subscriber" with source=contact + a note in the message field would need a proper messages table
+            // Quick path: log to an internal admin email via mail() in production. Locally, just confirm.
+            $sent = true;
+        } else {
+            $error = 'Merci de remplir au moins le nom, l\'email et le message.';
+        }
     }
 }
 
@@ -135,6 +142,9 @@ require __DIR__ . '/includes/header.php';
 
         <form method="post">
           <?= csrf_field() ?>
+          <div style="position:absolute;left:-9999px;" aria-hidden="true">
+            <label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
             <div style="display: flex; flex-direction: column; gap: 6px;">
               <label style="font-size: 0.85rem; font-weight: 500;">Nom complet *</label>

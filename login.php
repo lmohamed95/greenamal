@@ -17,8 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pw    = (string) ($_POST['password'] ?? '');
         $res = customer_login($email, $pw);
         if ($res['ok']) {
-            $next = $_POST['next'] ?? 'account.php';
-            redirect(filter_var($next, FILTER_VALIDATE_URL) === false && str_starts_with($next, '/') === false ? $next : 'account.php');
+            $next = (string) ($_POST['next'] ?? 'account.php');
+            // Only allow same-origin paths: a relative file path, or one absolute
+            // path starting with a single "/" (not "//", which is protocol-relative).
+            // Block schemes (javascript:, http://) and CRLF injection.
+            $safe = $next !== ''
+                && !preg_match('#[\r\n]#', $next)
+                && !preg_match('#^[a-z][a-z0-9+.-]*:#i', $next)
+                && !str_starts_with($next, '//');
+            redirect($safe ? $next : 'account.php');
         }
         $err = $res['msg'];
     }

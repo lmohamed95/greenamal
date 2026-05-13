@@ -2,55 +2,77 @@
 /**
  * GreenAmal · Configuration
  *
- * Edit DB credentials below for your local environment.
- * For production (Namecheap), copy this file as config.local.php and override.
+ * Defaults below are aimed at local dev (MAMP / Homebrew MySQL). On
+ * production, drop a `config.local.php` next to this file with overrides —
+ * it is loaded first so its `define()`s win over these defaults.
  */
 
-// =====================================================================
-// Database (defaults match MAMP)
-// =====================================================================
-define('DB_HOST', '127.0.0.1');
-define('DB_PORT', '3306');           // Homebrew MySQL: 3306 · MAMP: 8889
-define('DB_NAME', 'greenamal');
-define('DB_USER', 'root');
-define('DB_PASS', '');               // Homebrew: empty · MAMP: 'root'
-
-// =====================================================================
-// Site
-// =====================================================================
-define('SITE_NAME', 'GreenAmal');
-define('SITE_URL', 'http://localhost:8000');  // adjust to your local URL · Namecheap prod: https://greenamal.com
-define('CURRENCY_SYMBOL', 'DH');
-define('SHIPPING_FEE', 30);
-define('FREE_SHIPPING_THRESHOLD', 350);
-define('CONTACT_EMAIL', 'contact@greenamal.com');
-define('CONTACT_PHONE', '+212 627-634472');
-define('WHATSAPP_NUMBER', '212627634472');
-
-// =====================================================================
-// Environment
-// =====================================================================
-define('APP_ENV', 'local');           // 'local' | 'production'
-define('APP_DEBUG', APP_ENV === 'local');
-
-// Local override (gitignored in production)
+// Load production / local overrides BEFORE defaults so they actually win.
+// (PHP can't redefine an already-defined constant; defaults below use the
+//  `defined(...) || define(...)` idiom so they only fill in what's missing.)
 if (file_exists(__DIR__ . '/config.local.php')) {
     require __DIR__ . '/config.local.php';
 }
 
-// Error display (only in local)
+// =====================================================================
+// Database (defaults match MAMP / Homebrew)
+// =====================================================================
+defined('DB_HOST') || define('DB_HOST', '127.0.0.1');
+defined('DB_PORT') || define('DB_PORT', '3306');     // Homebrew MySQL: 3306 · MAMP: 8889
+defined('DB_NAME') || define('DB_NAME', 'greenamal');
+defined('DB_USER') || define('DB_USER', 'root');
+defined('DB_PASS') || define('DB_PASS', '');         // Homebrew: empty · MAMP: 'root'
+
+// =====================================================================
+// Site
+// =====================================================================
+defined('SITE_NAME') || define('SITE_NAME', 'GreenAmal');
+defined('SITE_URL')  || define('SITE_URL', 'http://localhost:8000');
+defined('CURRENCY_SYMBOL')        || define('CURRENCY_SYMBOL', 'DH');
+defined('SHIPPING_FEE')           || define('SHIPPING_FEE', 30);
+defined('FREE_SHIPPING_THRESHOLD')|| define('FREE_SHIPPING_THRESHOLD', 350);
+defined('CONTACT_EMAIL')          || define('CONTACT_EMAIL', 'contact@greenamal.com');
+defined('CONTACT_PHONE')          || define('CONTACT_PHONE', '+212 627-634472');
+defined('WHATSAPP_NUMBER')        || define('WHATSAPP_NUMBER', '212627634472');
+
+// =====================================================================
+// Environment
+// =====================================================================
+defined('APP_ENV')   || define('APP_ENV', 'local');                    // 'local' | 'production'
+defined('APP_DEBUG') || define('APP_DEBUG', APP_ENV === 'local');
+
+// HMAC secret for tokenised links (order-confirmation, password reset, etc.)
+// MUST be overridden in config.local.php on production with a long random string.
+defined('APP_SECRET') || define('APP_SECRET', 'CHANGE-ME-IN-config.local.php-' . hash('sha256', __DIR__));
+
+// Error display (only in local) · always log
+error_reporting(E_ALL);
 if (APP_DEBUG) {
-    error_reporting(E_ALL);
     ini_set('display_errors', '1');
 } else {
-    error_reporting(E_ERROR | E_PARSE);
     ini_set('display_errors', '0');
+    ini_set('log_errors', '1');
+    $log_dir = __DIR__ . '/../storage/logs';
+    if (!is_dir($log_dir)) @mkdir($log_dir, 0755, true);
+    ini_set('error_log', $log_dir . '/php-errors.log');
 }
 
 // Default timezone
 date_default_timezone_set('Africa/Casablanca');
 
-// Session
+// Session — harden cookie before starting
 if (session_status() === PHP_SESSION_NONE) {
+    $is_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https')
+        || (($_SERVER['SERVER_PORT'] ?? '') == 443);
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => $is_https,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    session_name('GASESSID');
     session_start();
 }

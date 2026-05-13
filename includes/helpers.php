@@ -392,6 +392,36 @@ function redirect(string $path): void {
 }
 
 /* =====================================================================
+ * Order access tokens — unguessable HMAC of the order_number, used in
+ * confirmation emails so a recipient can view their own order from any
+ * device without exposing all orders to anyone who guesses a number.
+ * =====================================================================*/
+
+function order_view_token(string $order_number): string {
+    return substr(hash_hmac('sha256', $order_number, APP_SECRET), 0, 32);
+}
+
+function order_view_token_verify(string $order_number, string $given): bool {
+    if ($given === '') return false;
+    return hash_equals(order_view_token($order_number), $given);
+}
+
+/**
+ * Returns true if the current viewer is allowed to see the given order:
+ *  - logged-in customer who owns it, OR
+ *  - guest who just placed it (session-allowlisted in checkout), OR
+ *  - holds the matching HMAC token from the email link.
+ */
+function can_view_order(array $order, string $given_token = ''): bool {
+    $cid = (int) ($_SESSION['customer_id'] ?? 0);
+    if ($cid > 0 && (int) ($order['customer_id'] ?? 0) === $cid) return true;
+    $allowed = $_SESSION['allowed_orders'] ?? [];
+    if (in_array((int) $order['id'], array_map('intval', $allowed), true)) return true;
+    if ($given_token !== '' && order_view_token_verify($order['order_number'], $given_token)) return true;
+    return false;
+}
+
+/* =====================================================================
  * CSRF protection
  * =====================================================================*/
 
@@ -414,6 +444,29 @@ function csrf_verify(): void {
     if (!is_string($given) || !is_string($stored) || !hash_equals($stored, $given)) {
         http_response_code(403);
         die('Erreur de sécurité (CSRF). Veuillez recharger la page.');
+    }
+}
+
+/**
+ * Same-origin guard for JSON API endpoints. Rejects cross-origin POSTs by
+ * comparing the Origin / Referer header against the request Host. This is the
+ * pragmatic CSRF defence for endpoints called from our own JS via fetch()
+ * with raw JSON bodies, where adding a token would require touching every
+ * caller. Returns void; on failure, sends a 403 JSON response and exits.
+ */
+function require_same_origin_json(): void {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
+    $host   = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));   // e.g. "localhost:8000"
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? $_SERVER['HTTP_REFERER'] ?? '';
+    $parsed = $origin !== '' ? parse_url($origin) : false;
+    $origin_host = $parsed ? strtolower($parsed['host'] ?? '') : '';
+    if (!empty($parsed['port'])) $origin_host .= ':' . $parsed['port'];
+    $ok = $host !== '' && $origin_host !== '' && $origin_host === $host;
+    if (!$ok) {
+        http_response_code(403);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['ok' => false, 'error' => 'cross_origin']);
+        exit;
     }
 }
 
@@ -480,6 +533,7 @@ function customer_login(string $email, string $password): array {
     if (!password_verify($password, $row['password_hash'])) {
         return ['ok' => false, 'msg' => 'Email ou mot de passe incorrect.'];
     }
+    session_regenerate_id(true); // defeat session fixation across the privilege boundary
     $_SESSION['customer_id'] = (int) $row['id'];
     db_query('UPDATE customers SET last_login_at = NOW() WHERE id = ?', [$row['id']]);
     return ['ok' => true, 'msg' => 'Connecté.'];
@@ -487,6 +541,7 @@ function customer_login(string $email, string $password): array {
 
 function customer_logout(): void {
     unset($_SESSION['customer_id']);
+    session_regenerate_id(true);
 }
 
 /* =====================================================================

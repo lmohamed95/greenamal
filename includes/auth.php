@@ -28,6 +28,7 @@ function admin_login(string $email, string $password): bool {
     $user = db_one('SELECT id, password_hash FROM admin_users WHERE email = ?', [$email]);
     if (!$user) return false;
     if (!password_verify($password, $user['password_hash'])) return false;
+    session_regenerate_id(true); // defeat session fixation across the privilege boundary
     $_SESSION['admin_user_id'] = (int) $user['id'];
     db_query('UPDATE admin_users SET last_login_at = NOW() WHERE id = ?', [$user['id']]);
     return true;

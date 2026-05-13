@@ -52,6 +52,10 @@ Header set Permissions-Policy "interest-cohort=()"
 </IfModule>
 
 # Block direct access to sensitive files
-<FilesMatch "^(\.env|composer\.|config\.local\.php|\.git)">
+<FilesMatch "^(\.env|composer\.|config\.local\.php|\.git|\.cpanel\.yml|.*\.md)$">
   Require all denied
 </FilesMatch>
+
+# Block direct access to server-only directories. Files inside are still
+# accessible to PHP via require/include — this only blocks browser hits.
+RedirectMatch 404 ^/(sql|bin|includes|storage)(/|$)

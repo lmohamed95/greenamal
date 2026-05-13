@@ -7,8 +7,8 @@
 --
 -- ⚠️  After import, log in to /admin/login.php with the credentials below
 --     and IMMEDIATELY change the admin password in /admin/settings.php.
-
-USE greenamal;
+-- Run from inside the target database (no USE statement — won't work on cPanel
+-- where the DB user lacks USE/CREATE privileges on un-prefixed names).
 
 -- =====================================================================
 -- Categories

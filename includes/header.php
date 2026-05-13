@@ -33,6 +33,7 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= e(csrf_token()) ?>">
 
 <title><?= e($full_title) ?></title>
 <meta name="description" content="<?= e($page_desc) ?>">
