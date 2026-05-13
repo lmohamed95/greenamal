@@ -2,56 +2,117 @@
 # GreenAmal — git ignore
 # =====================================================================
 
-# macOS / system noise
+# ---------------------------------------------------------------------
+# macOS / Windows / Linux file-system noise
+# ---------------------------------------------------------------------
 .DS_Store
 ._*
 .Spotlight-V100
 .Trashes
+.AppleDouble
+.LSOverride
+Icon?
+__MACOSX
 Thumbs.db
+Desktop.ini
+*~
 
-# Editors / IDE
+# ---------------------------------------------------------------------
+# Editors / IDEs
+# ---------------------------------------------------------------------
 .vscode/
 .idea/
+.fleet/
+.zed/
+.history/
+*.code-workspace
 *.swp
 *.swo
 *.sublime-project
 *.sublime-workspace
-.history/
 
-# Local environment & secrets
+# ---------------------------------------------------------------------
+# Local environment & secrets — NEVER commit these
+# ---------------------------------------------------------------------
 includes/config.local.php
 .env
 .env.local
 .env.*.local
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.ppk
+*_rsa
+*_rsa.pub
+*_ed25519
+*_ed25519.pub
+auth.json
+credentials.json
 
-# Composer / npm
+# ---------------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------------
 /vendor/
 /node_modules/
 
-# Logs / runtime artefacts
+# ---------------------------------------------------------------------
+# Runtime / logs / temp
+# ---------------------------------------------------------------------
 *.log
-/tmp/
-storage/logs/
+*.pid
+*.lock
 debug.log
+error_log
+storage/logs/
+/tmp/
+/cache/
 
-# Uploaded product images — too heavy to version, transferred via FTP at deploy
+# cPanel sometimes drops a default cgi-bin into web roots
+cgi-bin/
+
+# ---------------------------------------------------------------------
+# User-uploaded media — too heavy to version, lives only on the server
+# ---------------------------------------------------------------------
 /assets/img/uploads/products/
 /assets/img/uploads/categories/
+/assets/img/uploads/hero/
 
-# Local DB dumps (never commit; use migrations in /sql)
+# ---------------------------------------------------------------------
+# Backups (local dumps, WP migrations, archive files dropped into the tree)
+# ---------------------------------------------------------------------
 /backups/
+/wordpress-backup/
+/wordpress-backups/
 *.sql.bak
 *.dump
+*.bak
+*.old
+*.orig
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z
 
-# Build artefacts
+# Legacy HTML mock-ups kept on disk for reference — not part of the running app
+/_maquette-html-backup/
+
+# ---------------------------------------------------------------------
+# Build & CI artefacts
+# ---------------------------------------------------------------------
 /dist/
 /build/
-
-# Test/CI scratch
 .phpunit.result.cache
 coverage/
 
-# Internal planning / tracking docs (kept on disk, off the repo)
+# ---------------------------------------------------------------------
+# Internal planning docs (kept on disk, off the repo)
+# ---------------------------------------------------------------------
 avancement.md
 DASHBOARD-TODO.md
 ROADMAP.md
