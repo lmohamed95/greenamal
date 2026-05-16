@@ -14,8 +14,8 @@ $jsonld     = [
     ],
     seo_org_jsonld(),
     seo_breadcrumb_jsonld([
-        ['Accueil', '/index.php'],
-        ['Contact', '/contact.php'],
+        ['Accueil', '/'],
+        ['Contact', '/contact'],
     ]),
 ];
 
@@ -48,7 +48,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container breadcrumb">
-  <a href="/index.php">Accueil</a><span>/</span><span>Contact</span>
+  <a href="">Accueil</a><span>/</span><span>Contact</span>
 </div>
 
 <section class="about-hero">

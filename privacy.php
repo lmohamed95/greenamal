@@ -73,7 +73,7 @@ require __DIR__ . '/includes/header.php';
   <p>Nous mettons en œuvre des mesures techniques et organisationnelles appropriées (HTTPS, mots de passe hachés, accès limités aux données, sauvegardes chiffrées) pour protéger vos données.</p>
 
   <h2>9. Cookies</h2>
-  <p>Notre site utilise des cookies. Pour plus de détails, consultez notre <a href="cookies.php">politique cookies</a>.</p>
+  <p>Notre site utilise des cookies. Pour plus de détails, consultez notre <a href="cookies">politique cookies</a>.</p>
 
   <h2>10. Modifications</h2>
   <p>La présente politique peut être modifiée à tout moment. La version en vigueur est celle publiée sur le site à la date de votre visite.</p>

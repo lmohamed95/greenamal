@@ -2,10 +2,10 @@
 require_once __DIR__ . '/includes/helpers.php';
 
 if (customer_logged_in()) {
-    redirect('account.php');
+    redirect('account');
 }
 
-$next = $_GET['next'] ?? 'account.php';
+$next = $_GET['next'] ?? 'account';
 $err = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pw    = (string) ($_POST['password'] ?? '');
         $res = customer_login($email, $pw);
         if ($res['ok']) {
-            $next = (string) ($_POST['next'] ?? 'account.php');
+            $next = (string) ($_POST['next'] ?? 'account');
             // Only allow same-origin paths: a relative file path, or one absolute
             // path starting with a single "/" (not "//", which is protocol-relative).
             // Block schemes (javascript:, http://) and CRLF injection.
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 && !preg_match('#[\r\n]#', $next)
                 && !preg_match('#^[a-z][a-z0-9+.-]*:#i', $next)
                 && !str_starts_with($next, '//');
-            redirect($safe ? $next : 'account.php');
+            redirect($safe ? $next : 'account');
         }
         $err = $res['msg'];
     }
@@ -40,7 +40,7 @@ require __DIR__ . '/includes/header.php';
 <section class="container" style="padding:48px 16px;max-width:480px;">
   <div class="auth-card">
     <h1 class="auth-title">Connexion</h1>
-    <p class="auth-sub">Pas encore de compte ? <a href="register.php">Créer un compte</a></p>
+    <p class="auth-sub">Pas encore de compte ? <a href="register">Créer un compte</a></p>
 
     <?php if ($err): ?><div class="form-error"><?= e($err) ?></div><?php endif; ?>
 
@@ -54,7 +54,7 @@ require __DIR__ . '/includes/header.php';
         <input type="password" name="password" required autocomplete="current-password">
       </label>
       <div class="auth-row">
-        <a href="forgot-password.php" class="auth-link">Mot de passe oublié ?</a>
+        <a href="forgot-password" class="auth-link">Mot de passe oublié ?</a>
       </div>
       <button type="submit" class="btn btn-primary btn-lg btn-block">Se connecter</button>
     </form>

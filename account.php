@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['op'] ?? '') === 'profile')
         [$first, $last, $phone, $city, $addr, $post, $user['id']]
     );
     flash_set('success', 'Profil mis à jour.');
-    redirect('account.php?tab=profile');
+    redirect('account?tab=profile');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['op'] ?? '') === 'password') {
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['op'] ?? '') === 'password'
     else {
         db_query('UPDATE customers SET password_hash = ? WHERE id = ?', [password_hash($pw, PASSWORD_BCRYPT), $user['id']]);
         flash_set('success', 'Mot de passe modifié.');
-        redirect('account.php?tab=password');
+        redirect('account?tab=password');
     }
 }
 
@@ -58,7 +58,7 @@ require __DIR__ . '/includes/header.php';
       <h1 style="margin:0;">Bonjour, <?= e($user['first_name'] ?: 'vous') ?></h1>
       <p style="color:var(--ink-soft);margin:4px 0 0;"><?= e($user['email']) ?></p>
     </div>
-    <a href="logout.php" class="btn btn-ghost">Se déconnecter</a>
+    <a href="logout" class="btn btn-ghost">Se déconnecter</a>
   </div>
 
   <?php if ($flash): ?><div class="form-<?= e($flash['type']) ?>"><?= e($flash['msg']) ?></div><?php endif; ?>
@@ -84,7 +84,7 @@ require __DIR__ . '/includes/header.php';
               <td class="cell-mute"><?= date('j M Y', strtotime($o['created_at'])) ?></td>
               <td><?= e(price((float) $o['total'])) ?></td>
               <td><span class="badge-status <?= e($cls) ?>"><?= e($lbl) ?></span></td>
-              <td><a href="order-confirmation.php?order=<?= e(urlencode($o['order_number'])) ?>" class="auth-link">Détails →</a></td>
+              <td><a href="order-confirmation?order=<?= e(urlencode($o['order_number'])) ?>" class="auth-link">Détails →</a></td>
             </tr>
           <?php endforeach; ?>
           </tbody>
@@ -94,7 +94,7 @@ require __DIR__ . '/includes/header.php';
       <div class="empty-state">
         <h2>Aucune commande pour le moment</h2>
         <p>Découvrez nos produits naturels du Maroc.</p>
-        <a href="shop.php" class="btn btn-primary">Voir la boutique</a>
+        <a href="shop" class="btn btn-primary">Voir la boutique</a>
       </div>
     <?php endif; ?>
   <?php elseif ($tab === 'profile'): ?>

@@ -12,7 +12,7 @@ require __DIR__ . '/includes/header.php';
   <p style="color:var(--ink-soft);margin:12px 0 28px;">Notre équipe a été notifiée. Si le problème persiste, n'hésitez pas à nous contacter.</p>
   <div class="error-actions">
     <a href="/" class="btn btn-primary">Retour à l'accueil</a>
-    <a href="/contact.php" class="btn btn-ghost">Nous contacter</a>
+    <a href="/contact" class="btn btn-ghost">Nous contacter</a>
   </div>
 </section>
 

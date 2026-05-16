@@ -32,7 +32,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <article class="container" style="padding:32px 16px;max-width:760px;">
-  <div class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/blog.php">Blog</a><span>/</span><span><?= e($post['title']) ?></span></div>
+  <div class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/blog">Blog</a><span>/</span><span><?= e($post['title']) ?></span></div>
   <header style="margin:24px 0;">
     <div class="blog-card-meta"><?= date('j F Y', strtotime($post['published_at'])) ?></div>
     <h1 style="font-size:2.2rem;line-height:1.15;margin:8px 0 12px;"><?= e($post['title']) ?></h1>

@@ -11,7 +11,7 @@ $row = $token ? db_one(
 ) : null;
 
 if (!$row) {
-    $err = 'Ce lien est invalide ou a expiré. <a href="forgot-password.php">Demander un nouveau lien</a>';
+    $err = 'Ce lien est invalide ou a expiré. <a href="forgot-password">Demander un nouveau lien</a>';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $row) {
@@ -42,7 +42,7 @@ require __DIR__ . '/includes/header.php';
     <h1 class="auth-title">Nouveau mot de passe</h1>
 
     <?php if ($ok): ?>
-      <div class="form-success">Mot de passe mis à jour. <a href="account.php">Aller à mon compte →</a></div>
+      <div class="form-success">Mot de passe mis à jour. <a href="account">Aller à mon compte →</a></div>
     <?php elseif ($err): ?>
       <div class="form-error"><?= $err /* contains safe HTML */ ?></div>
     <?php endif; ?>

@@ -39,13 +39,13 @@ require __DIR__ . '/includes/header.php';
   <?php elseif (count($results) === 0): ?>
     <div style="padding:48px 0;text-align:center;">
       <h2>Aucun résultat pour « <?= e($q) ?> »</h2>
-      <p style="color:var(--ink-soft);">Essayez un autre mot-clé ou parcourez nos <a href="categories.php">catégories</a>.</p>
+      <p style="color:var(--ink-soft);">Essayez un autre mot-clé ou parcourez nos <a href="categories">catégories</a>.</p>
     </div>
   <?php else: ?>
     <h1 style="font-size:1.4rem;margin:24px 0;"><?= count($results) ?> résultat<?= count($results) > 1 ? 's' : '' ?> pour « <?= e($q) ?> »</h1>
     <div class="product-grid">
       <?php foreach ($results as $p): ?>
-        <a href="product.php?slug=<?= e($p['slug']) ?>" class="product-card">
+        <a href="product?slug=<?= e($p['slug']) ?>" class="product-card">
           <div class="product-card-img">
             <img src="<?= e($p['image_main']) ?>" alt="<?= e($p['name']) ?>" loading="lazy">
           </div>

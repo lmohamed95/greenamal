@@ -8,7 +8,7 @@ $order = $order_number !== ''
     : null;
 
 if (!$order || !can_view_order($order, $token)) {
-    redirect('index.php');
+    redirect('/');
 }
 
 $items = db_all("SELECT * FROM order_items WHERE order_id = ?", [$order['id']]);
@@ -93,7 +93,7 @@ require __DIR__ . '/includes/header.php';
     </div>
 
     <div style="text-align: center; margin-top: 40px;">
-      <a href="shop.php" class="btn btn-primary btn-lg">Continuer mes achats</a>
+      <a href="shop" class="btn btn-primary btn-lg">Continuer mes achats</a>
     </div>
   </div>
 </section>

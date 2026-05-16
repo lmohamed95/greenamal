@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['coupon_code'])) {
     csrf_verify();
     if (!rate_limit('coupon_apply', 8, 60)) {
         $_SESSION['coupon_error'] = 'Trop de tentatives. Réessayez dans une minute.';
-        redirect('cart.php');
+        redirect('cart');
     }
     $code = strtoupper(trim((string) $_POST['coupon_code']));
     $c = db_one("
@@ -50,14 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['coupon_code'])) {
         $_SESSION['coupon'] = $c;
         unset($_SESSION['coupon_error']);
     }
-    redirect('cart.php');
+    redirect('cart');
 }
 
 require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container breadcrumb">
-  <a href="index.php">Accueil</a><span>/</span><span>Mon panier</span>
+  <a href="/">Accueil</a><span>/</span><span>Mon panier</span>
 </div>
 
 <section style="padding-top: 20px;">
@@ -71,7 +71,7 @@ require __DIR__ . '/includes/header.php';
       <div style="text-align: center; padding: 80px 20px; background: var(--white); border-radius: var(--radius); border: 1px solid var(--line);">
         <h2 style="font-size: 1.6rem;">Votre panier est vide</h2>
         <p style="color: var(--ink-soft); margin: 12px 0 24px;">Découvrez nos produits naturels du Maroc.</p>
-        <a href="shop.php" class="btn btn-primary btn-lg">Voir la boutique</a>
+        <a href="shop" class="btn btn-primary btn-lg">Voir la boutique</a>
       </div>
     <?php else: ?>
 
@@ -136,7 +136,7 @@ require __DIR__ . '/includes/header.php';
 
           <div class="summary-row total"><span>Total</span><span><?= price($total) ?></span></div>
 
-          <a href="checkout.php" class="btn btn-primary btn-block btn-lg" style="margin-top: 20px;">
+          <a href="checkout" class="btn btn-primary btn-block btn-lg" style="margin-top: 20px;">
             Passer la commande
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>

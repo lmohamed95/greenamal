@@ -18,21 +18,21 @@
       <div class="footer-col">
         <h4>Boutique</h4>
         <ul>
-          <li><a href="/categories.php">Toutes les catégories</a></li>
-          <li><a href="/shop.php">Tous les produits</a></li>
-          <li><a href="/shop.php?sort=sales">Best-sellers</a></li>
-          <li><a href="/shop.php?sort=recent">Nouveautés</a></li>
+          <li><a href="/categories">Toutes les catégories</a></li>
+          <li><a href="/shop">Tous les produits</a></li>
+          <li><a href="/shop?sort=sales">Best-sellers</a></li>
+          <li><a href="/shop?sort=recent">Nouveautés</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4>Aide</h4>
         <ul>
-          <li><a href="/contact.php">Contact</a></li>
-          <li><a href="/faq.php">FAQ</a></li>
-          <li><a href="/about.php">Notre histoire</a></li>
-          <li><a href="/blog.php">Blog</a></li>
-          <li><a href="/returns.php">Retours & remboursements</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/about">Notre histoire</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/returns">Retours & remboursements</a></li>
           <li><a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>">Service client WhatsApp</a></li>
         </ul>
       </div>
@@ -55,11 +55,11 @@
     </div>
 
     <div class="footer-legal-links">
-      <a href="/cgv.php">CGV</a>
-      <a href="/privacy.php">Confidentialité</a>
-      <a href="/cookies.php">Cookies</a>
-      <a href="/mentions.php">Mentions légales</a>
-      <a href="/returns.php">Retours</a>
+      <a href="/cgv">CGV</a>
+      <a href="/privacy">Confidentialité</a>
+      <a href="/cookies">Cookies</a>
+      <a href="/mentions">Mentions légales</a>
+      <a href="/returns">Retours</a>
       <button type="button" id="cookieReopen" class="footer-link-btn">Préférences cookies</button>
     </div>
 
@@ -77,7 +77,7 @@
 <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Préférences cookies" hidden>
   <div class="cookie-text">
     <strong>Cookies & vie privée</strong>
-    <p>Nous utilisons des cookies essentiels au fonctionnement du site, et · avec votre accord · des cookies de mesure d'audience pour l'améliorer. <a href="/cookies.php">En savoir plus</a></p>
+    <p>Nous utilisons des cookies essentiels au fonctionnement du site, et · avec votre accord · des cookies de mesure d'audience pour l'améliorer. <a href="/cookies">En savoir plus</a></p>
   </div>
   <div class="cookie-actions">
     <button type="button" class="btn btn-ghost btn-sm" data-cookie="reject">Refuser</button>

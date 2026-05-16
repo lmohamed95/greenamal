@@ -59,16 +59,16 @@ if (!empty($_GET['sort'])) {
 }
 
 $jsonld = [seo_breadcrumb_jsonld(array_filter([
-    ['Accueil', '/index.php'],
-    ['Boutique', '/shop.php'],
-    $selected_cat ? [$cat_row['name'] ?? 'Catégorie', '/shop.php?cat=' . $selected_cat] : null,
+    ['Accueil', '/'],
+    ['Boutique', '/shop'],
+    $selected_cat ? [$cat_row['name'] ?? 'Catégorie', '/shop?cat=' . $selected_cat] : null,
 ]))];
 
 require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container breadcrumb">
-  <a href="index.php">Accueil</a><span>/</span><span>Boutique</span>
+  <a href="/">Accueil</a><span>/</span><span>Boutique</span>
   <?php if ($selected_cat): ?>
     <?php $cat_name = db_value('SELECT name FROM categories WHERE slug = ?', [$selected_cat]); ?>
     <span>/</span><span><?= e($cat_name) ?></span>
@@ -153,14 +153,14 @@ require __DIR__ . '/includes/header.php';
                       'width'  => 800,
                       'height' => 800,
                   ]) ?>
-                  <a href="product.php?slug=<?= e($p['slug']) ?>" class="add-to-cart-overlay" data-add-to-cart>
+                  <a href="product?slug=<?= e($p['slug']) ?>" class="add-to-cart-overlay" data-add-to-cart>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                     Ajouter au panier
                   </a>
                 </div>
                 <div class="product-info">
                   <span class="product-cat"><?= e($p['category_name']) ?></span>
-                  <a href="product.php?slug=<?= e($p['slug']) ?>"><h4 class="product-name"><?= e($p['name']) ?></h4></a>
+                  <a href="product?slug=<?= e($p['slug']) ?>"><h4 class="product-name"><?= e($p['name']) ?></h4></a>
                   <div class="product-rating">
                     <span class="stars">★★★★★</span>
                     <span>(<?= (int) $p['rating_count'] ?>)</span>
@@ -171,7 +171,7 @@ require __DIR__ . '/includes/header.php';
                       <span class="price-was"><?= price($p['compare_at_price']) ?></span>
                     <?php endif; ?>
                   </div>
-                  <a href="product.php?slug=<?= e($p['slug']) ?>" class="btn-view">
+                  <a href="product?slug=<?= e($p['slug']) ?>" class="btn-view">
                     Voir
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </a>

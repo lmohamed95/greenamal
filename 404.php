@@ -12,8 +12,8 @@ require __DIR__ . '/includes/header.php';
   <p style="color:var(--ink-soft);margin:12px 0 28px;">Le lien est peut-être cassé ou la page a été déplacée. Voici quelques pistes :</p>
   <div class="error-actions">
     <a href="/" class="btn btn-primary">Accueil</a>
-    <a href="/shop.php" class="btn btn-ghost">Voir la boutique</a>
-    <a href="/contact.php" class="btn btn-ghost">Nous contacter</a>
+    <a href="/shop" class="btn btn-ghost">Voir la boutique</a>
+    <a href="/contact" class="btn btn-ghost">Nous contacter</a>
   </div>
 </section>
 

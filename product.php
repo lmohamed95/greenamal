@@ -15,7 +15,7 @@ if (!$product) {
     http_response_code(404);
     $page_title = 'Produit introuvable';
     require __DIR__ . '/includes/header.php';
-    echo '<div class="container" style="padding: 80px 0; text-align:center;"><h1>Produit introuvable</h1><p style="margin:20px 0;">Ce produit n\'existe pas ou a été retiré.</p><a href="shop.php" class="btn btn-primary">Voir la boutique</a></div>';
+    echo '<div class="container" style="padding: 80px 0; text-align:center;"><h1>Produit introuvable</h1><p style="margin:20px 0;">Ce produit n\'existe pas ou a été retiré.</p><a href="shop" class="btn btn-primary">Voir la boutique</a></div>';
     require __DIR__ . '/includes/footer.php';
     exit;
 }
@@ -52,10 +52,10 @@ $extra_meta = sprintf(
 $jsonld = [
     seo_product_jsonld($product, $product['category_name']),
     seo_breadcrumb_jsonld([
-        ['Accueil', '/index.php'],
-        ['Boutique', '/shop.php'],
-        [$product['category_name'] ?: 'Catégorie', '/shop.php?cat=' . $product['category_slug']],
-        [$product['name'], '/product.php?slug=' . $product['slug']],
+        ['Accueil', '/'],
+        ['Boutique', '/shop'],
+        [$product['category_name'] ?: 'Catégorie', '/shop?cat=' . $product['category_slug']],
+        [$product['name'], '/product?slug=' . $product['slug']],
     ]),
 ];
 
@@ -63,10 +63,10 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container breadcrumb">
-  <a href="index.php">Accueil</a><span>/</span>
-  <a href="shop.php">Boutique</a><span>/</span>
+  <a href="/">Accueil</a><span>/</span>
+  <a href="shop">Boutique</a><span>/</span>
   <?php if ($product['category_slug']): ?>
-    <a href="shop.php?cat=<?= e($product['category_slug']) ?>"><?= e($product['category_name']) ?></a><span>/</span>
+    <a href="shop?cat=<?= e($product['category_slug']) ?>"><?= e($product['category_name']) ?></a><span>/</span>
   <?php endif; ?>
   <span><?= e($product['name']) ?></span>
 </div>
@@ -186,7 +186,7 @@ require __DIR__ . '/includes/header.php';
         <ul class="pdp-pack-list">
           <?php foreach ($components as $c): ?>
             <li class="pdp-pack-item">
-              <a href="product.php?slug=<?= e($c['slug']) ?>" class="pdp-pack-link">
+              <a href="product?slug=<?= e($c['slug']) ?>" class="pdp-pack-link">
                 <div class="pdp-pack-thumb"><img src="<?= e($c['image_main']) ?>" alt="<?= e($c['name']) ?>" loading="lazy"></div>
                 <div class="pdp-pack-info">
                   <strong><?= e($c['name']) ?></strong>
@@ -246,7 +246,7 @@ require __DIR__ . '/includes/header.php';
                   'width'  => 800,
                   'height' => 800,
               ]) ?>
-              <a href="product.php?slug=<?= e($p['slug']) ?>" class="add-to-cart-overlay" data-add-to-cart>
+              <a href="product?slug=<?= e($p['slug']) ?>" class="add-to-cart-overlay" data-add-to-cart>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
                 Ajouter
               </a>
@@ -256,7 +256,7 @@ require __DIR__ . '/includes/header.php';
               <h4 class="product-name"><?= e($p['name']) ?></h4>
               <div class="product-rating"><span class="stars">★★★★★</span><span>(<?= (int) $p['rating_count'] ?>)</span></div>
               <div class="product-price"><span class="price-now"><?= price($p['price']) ?></span></div>
-              <a href="product.php?slug=<?= e($p['slug']) ?>" class="btn-view">
+              <a href="product?slug=<?= e($p['slug']) ?>" class="btn-view">
                 Voir
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>

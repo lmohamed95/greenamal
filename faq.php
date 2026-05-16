@@ -13,7 +13,7 @@ $faqs = [
         ['Livrez-vous à l\'international ?',
          'Pour le moment, nous livrons uniquement au Maroc. Les commandes internationales seront disponibles courant 2026 · inscrivez-vous à notre newsletter pour être informé(e).'],
         ['Puis-je suivre ma commande ?',
-         'Vous recevrez un email de confirmation avec le numéro de suivi dès l\'expédition. Vous pouvez également retrouver toutes vos commandes dans votre <a href="account.php">espace client</a>.'],
+         'Vous recevrez un email de confirmation avec le numéro de suivi dès l\'expédition. Vous pouvez également retrouver toutes vos commandes dans votre <a href="account">espace client</a>.'],
     ],
     'Paiement' => [
         ['Quels modes de paiement acceptez-vous ?',
@@ -33,7 +33,7 @@ $faqs = [
     ],
     'Retours & remboursements' => [
         ['Puis-je retourner un produit ?',
-         'Oui, vous disposez de 7 jours pour exercer votre droit de rétractation, sous réserve que le produit soit non ouvert et dans son emballage d\'origine. Détails sur la <a href="returns.php">page retours</a>.'],
+         'Oui, vous disposez de 7 jours pour exercer votre droit de rétractation, sous réserve que le produit soit non ouvert et dans son emballage d\'origine. Détails sur la <a href="returns">page retours</a>.'],
         ['Que faire si je reçois un produit endommagé ?',
          'Contactez-nous dans les 48 heures avec des photos à <a href="mailto:' . CONTACT_EMAIL . '">' . CONTACT_EMAIL . '</a>. Nous vous proposerons un remplacement ou un remboursement intégral, frais à notre charge.'],
     ],
@@ -41,7 +41,7 @@ $faqs = [
         ['Dois-je créer un compte pour commander ?',
          'Non, vous pouvez commander en mode invité. Mais un compte permet de suivre vos commandes, sauvegarder vos adresses et profiter d\'offres exclusives.'],
         ['J\'ai oublié mon mot de passe',
-         'Utilisez le formulaire <a href="forgot-password.php">mot de passe oublié</a>. Vous recevrez un lien de réinitialisation par email.'],
+         'Utilisez le formulaire <a href="forgot-password">mot de passe oublié</a>. Vous recevrez un lien de réinitialisation par email.'],
     ],
     'Coopérative' => [
         ['Qu\'est-ce que la Coopérative Al Amal ?',
@@ -87,7 +87,7 @@ require __DIR__ . '/includes/header.php';
     <h3>Vous n'avez pas trouvé votre réponse ?</h3>
     <p style="color:var(--ink-soft);">Notre équipe est là pour vous aider.</p>
     <div style="display:inline-flex;gap:8px;margin-top:8px;">
-      <a href="contact.php" class="btn btn-primary">Nous contacter</a>
+      <a href="contact" class="btn btn-primary">Nous contacter</a>
       <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp</a>
     </div>
   </div>

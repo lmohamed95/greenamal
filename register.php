@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/mail.php';
 
 if (customer_logged_in()) {
-    redirect('account.php');
+    redirect('account');
 }
 
 $err = null;
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         else {
             $exists = db_one('SELECT id, password_hash FROM customers WHERE email = ?', [$old['email']]);
             if ($exists && !empty($exists['password_hash'])) {
-                $err = 'Un compte existe déjà avec cet email. <a href="login.php">Se connecter</a>';
+                $err = 'Un compte existe déjà avec cet email. <a href="login">Se connecter</a>';
             } else {
                 $hash = password_hash($pw, PASSWORD_BCRYPT);
                 if ($exists) {
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 session_regenerate_id(true);
                 $_SESSION['customer_id'] = $cid;
                 @mail_welcome($old['email'], $old['first_name']);
-                redirect('account.php');
+                redirect('account');
             }
         }
     }
@@ -65,7 +65,7 @@ require __DIR__ . '/includes/header.php';
 <section class="container" style="padding:48px 16px;max-width:520px;">
   <div class="auth-card">
     <h1 class="auth-title">Créer un compte</h1>
-    <p class="auth-sub">Déjà inscrit ? <a href="login.php">Se connecter</a></p>
+    <p class="auth-sub">Déjà inscrit ? <a href="login">Se connecter</a></p>
 
     <?php if ($err): ?><div class="form-error"><?= $err /* contains safe HTML */ ?></div><?php endif; ?>
 
@@ -86,7 +86,7 @@ require __DIR__ . '/includes/header.php';
         <label>Confirmer            <input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
       </div>
       <small class="form-hint">8 caractères minimum.</small>
-      <p class="form-hint">En créant un compte, vous acceptez nos <a href="cgv.php">CGV</a> et notre <a href="privacy.php">politique de confidentialité</a>.</p>
+      <p class="form-hint">En créant un compte, vous acceptez nos <a href="cgv">CGV</a> et notre <a href="privacy">politique de confidentialité</a>.</p>
       <button type="submit" class="btn btn-primary btn-lg btn-block">Créer mon compte</button>
     </form>
   </div>

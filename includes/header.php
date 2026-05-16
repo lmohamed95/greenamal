@@ -86,28 +86,28 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
 
 <header class="site-header">
   <div class="header-inner">
-    <a href="/index.php" class="logo">
+    <a href="/" class="logo">
       <span class="logo-mark">G</span>
       <?= e(SITE_NAME) ?>
     </a>
     <nav class="main-nav">
-      <a href="/index.php" class="<?= nav_active($nav, 'home') ?>">Accueil</a>
-      <a href="/shop.php" class="<?= nav_active($nav, 'shop') ?>">Boutique</a>
-      <a href="/categories.php" class="<?= nav_active($nav, 'categories') ?>">Catégories</a>
-      <a href="/about.php" class="<?= nav_active($nav, 'about') ?>">Notre histoire</a>
-      <a href="/contact.php" class="<?= nav_active($nav, 'contact') ?>">Contact</a>
+      <a href="/" class="<?= nav_active($nav, 'home') ?>">Accueil</a>
+      <a href="/shop" class="<?= nav_active($nav, 'shop') ?>">Boutique</a>
+      <a href="/categories" class="<?= nav_active($nav, 'categories') ?>">Catégories</a>
+      <a href="/about" class="<?= nav_active($nav, 'about') ?>">Notre histoire</a>
+      <a href="/contact" class="<?= nav_active($nav, 'contact') ?>">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="icon-btn menu-toggle" aria-label="Menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
-      <a href="/search.php" class="icon-btn" aria-label="Recherche">
+      <a href="/search" class="icon-btn" aria-label="Recherche">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </a>
-      <a href="<?= customer_logged_in() ? '/account.php' : '/login.php' ?>" class="icon-btn" aria-label="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>" title="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>">
+      <a href="<?= customer_logged_in() ? '/account' : '/login' ?>" class="icon-btn" aria-label="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>" title="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </a>
-      <a href="/cart.php" class="icon-btn" aria-label="Panier">
+      <a href="/cart" class="icon-btn" aria-label="Panier">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="badge cart-badge"><?= cart_count() ?></span>
       </a>
