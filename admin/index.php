@@ -417,7 +417,7 @@ require __DIR__ . '/_includes/header.php';
     <div class="kpi">
       <div class="kpi-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
       <div class="kpi-label">Revenus</div>
-      <div class="kpi-value" data-countup data-value="<?= (float) $cur['revenue'] ?>" data-suffix=" <?= e(CURRENCY_SYMBOL) ?>"><?= price($cur['revenue']) ?></div>
+      <div class="kpi-value" data-countup data-value="<?= (float) $cur['revenue'] ?>" data-suffix=" <?= e(currency_symbol()) ?>"><?= price($cur['revenue']) ?></div>
       <div class="kpi-meta"><span class="kpi-trend <?= e($rev_cls) ?>"><?= e($rev_delta) ?></span><span class="kpi-meta-text">vs période précédente</span></div>
       <?php if ($rev_anomaly): ?><div class="kpi-anomaly <?= e($rev_anomaly[1]) ?>"><?= e($rev_anomaly[0]) ?></div><?php endif; ?>
       <div class="kpi-spark" data-spark="revenue"></div>
@@ -433,7 +433,7 @@ require __DIR__ . '/_includes/header.php';
     <div class="kpi">
       <div class="kpi-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
       <div class="kpi-label">Panier moyen</div>
-      <div class="kpi-value" data-countup data-value="<?= (float) $cur['aov'] ?>" data-suffix=" <?= e(CURRENCY_SYMBOL) ?>"><?= price($cur['aov']) ?></div>
+      <div class="kpi-value" data-countup data-value="<?= (float) $cur['aov'] ?>" data-suffix=" <?= e(currency_symbol()) ?>"><?= price($cur['aov']) ?></div>
       <div class="kpi-meta"><span class="kpi-trend <?= e($aov_cls) ?>"><?= e($aov_delta) ?></span><span class="kpi-meta-text">vs période précédente</span></div>
       <div class="kpi-spark" data-spark="aov"></div>
     </div>
@@ -698,7 +698,7 @@ require __DIR__ . '/_includes/header.php';
 </div>
 
 <script id="dashboard-data" type="application/json"><?= json_encode([
-    'currency' => CURRENCY_SYMBOL,
+    'currency' => currency_symbol(),
     'range'    => $range,
     'from'     => $from,
     'to'       => $to,

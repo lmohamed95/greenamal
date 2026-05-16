@@ -11,9 +11,23 @@ function e(?string $s): string {
     return htmlspecialchars($s ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/**
+ * The CURRENCY_SYMBOL constant rendered safely. Defensive: a misconfigured
+ * config.local.php (e.g. CURRENCY_SYMBOL accidentally set to a number)
+ * shouldn't produce "129 262145" on every price tag. Numeric/empty/oversized
+ * values fall back to 'DH'.
+ */
+function currency_symbol(): string {
+    $s = defined('CURRENCY_SYMBOL') ? CURRENCY_SYMBOL : 'DH';
+    if (!is_string($s) || $s === '' || is_numeric($s) || strlen($s) > 8) {
+        return 'DH';
+    }
+    return $s;
+}
+
 /** Format a price as "129 DH" */
 function price(float $amount, int $decimals = 0): string {
-    return number_format($amount, $decimals, ',', ' ') . ' ' . CURRENCY_SYMBOL;
+    return number_format($amount, $decimals, ',', ' ') . ' ' . currency_symbol();
 }
 
 /** Build a URL relative to the site root */
