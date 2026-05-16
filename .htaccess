@@ -39,7 +39,29 @@ RewriteCond %{DOCUMENT_ROOT}/$1.php -f
 RewriteRule ^([^.]+?)/?$ /$1.php [L]
 
 # ---------------------------------------------------------------------
-# Pretty URLs:
+# French URL aliases · clean French paths → the underlying PHP file.
+# Order matters: these run BEFORE the generic "/foo → /foo.php" catch-all
+# (which lives above), so e.g. /boutique resolves to shop.php directly.
+# ---------------------------------------------------------------------
+RewriteRule ^boutique/?$                shop.php                 [L,QSA]
+RewriteRule ^notre-histoire/?$          about.php                [L,QSA]
+RewriteRule ^panier/?$                  cart.php                 [L,QSA]
+RewriteRule ^paiement/?$                checkout.php             [L,QSA]
+RewriteRule ^mon-compte/?$              account.php              [L,QSA]
+RewriteRule ^connexion/?$               login.php                [L,QSA]
+RewriteRule ^inscription/?$             register.php             [L,QSA]
+RewriteRule ^deconnexion/?$             logout.php               [L,QSA]
+RewriteRule ^mot-de-passe-oublie/?$     forgot-password.php      [L,QSA]
+RewriteRule ^nouveau-mot-de-passe/?$    reset-password.php       [L,QSA]
+RewriteRule ^favoris/?$                 wishlist.php             [L,QSA]
+RewriteRule ^recherche/?$               search.php               [L,QSA]
+RewriteRule ^confidentialite/?$         privacy.php              [L,QSA]
+RewriteRule ^mentions-legales/?$        mentions.php             [L,QSA]
+RewriteRule ^retours/?$                 returns.php              [L,QSA]
+RewriteRule ^confirmation-commande/?$   order-confirmation.php   [L,QSA]
+
+# ---------------------------------------------------------------------
+# Pretty URLs (unchanged):
 #   /p/<slug>     → product.php?slug=<slug>
 #   /c/<slug>     → shop.php?cat=<slug>
 #   /post/<slug>  → blog-post.php?slug=<slug>
@@ -48,6 +70,43 @@ RewriteRule ^p/([a-z0-9\-]+)/?$    product.php?slug=$1   [L,QSA]
 RewriteRule ^c/([a-z0-9\-]+)/?$    shop.php?cat=$1       [L,QSA]
 RewriteRule ^post/([a-z0-9\-]+)/?$ blog-post.php?slug=$1 [L,QSA]
 RewriteRule ^blog/?$               blog.php              [L,QSA]
+
+# ---------------------------------------------------------------------
+# 301 redirects: old English clean URLs → French equivalents
+# (handles bookmarks, external backlinks, and Google's index)
+# ---------------------------------------------------------------------
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^shop/?$                  /boutique                [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^about/?$                 /notre-histoire          [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^cart/?$                  /panier                  [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^checkout/?$              /paiement                [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^account/?$               /mon-compte              [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^login/?$                 /connexion               [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^register/?$              /inscription             [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^logout/?$                /deconnexion             [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^forgot-password/?$       /mot-de-passe-oublie     [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^reset-password/?$        /nouveau-mot-de-passe    [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^wishlist/?$              /favoris                 [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^search/?$                /recherche               [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^privacy/?$               /confidentialite         [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^mentions/?$              /mentions-legales        [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^returns/?$               /retours                 [R=301,L]
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^order-confirmation/?$    /confirmation-commande   [R=301,L]
 </IfModule>
 
 # Cache static assets aggressively (1 year, immutable)

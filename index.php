@@ -26,11 +26,11 @@ require __DIR__ . '/includes/header.php';
         <h1>Le Maroc <em>authentique</em>, en bouteille.</h1>
         <p>Des huiles essentielles distillées à la main, des plantes cueillies dans l'Atlas, du couscous roulé selon la tradition. 100 % naturels, certifiés ONSSA, livrés chez vous.</p>
         <div class="hero-cta">
-          <a href="shop" class="btn btn-primary btn-lg">
+          <a href="boutique" class="btn btn-primary btn-lg">
             Découvrir la boutique
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
-          <a href="about" class="btn btn-outline btn-lg">Notre histoire</a>
+          <a href="notre-histoire" class="btn btn-outline btn-lg">Notre histoire</a>
         </div>
         <div class="hero-trust">
           <div class="hero-trust-item">
@@ -104,7 +104,7 @@ require __DIR__ . '/includes/header.php';
     </div>
     <div class="cat-grid">
       <?php foreach ($categories as $i => $cat): ?>
-        <a href="shop?cat=<?= e($cat['slug']) ?>" class="cat-card<?= $i === 0 ? ' cat-large' : '' ?>">
+        <a href="boutique?cat=<?= e($cat['slug']) ?>" class="cat-card<?= $i === 0 ? ' cat-large' : '' ?>">
           <?= picture_tag($cat['image_url'], $cat['name'] . ' · GreenAmal', [
               'lazy'   => true,
               'sizes'  => $i === 0 ? '(max-width: 720px) 100vw, 50vw' : '(max-width: 720px) 50vw, 25vw',
@@ -132,7 +132,7 @@ require __DIR__ . '/includes/header.php';
         <span class="eyebrow">Best-sellers</span>
         <h2>Les coups de cœur</h2>
       </div>
-      <a href="shop" class="head-link">Voir tous les produits →</a>
+      <a href="boutique" class="head-link">Voir tous les produits →</a>
     </div>
 
     <div class="product-grid">
@@ -181,7 +181,7 @@ require __DIR__ . '/includes/header.php';
     </div>
 
     <div class="text-center mt-4">
-      <a href="shop" class="btn btn-dark">Voir toute la boutique</a>
+      <a href="boutique" class="btn btn-dark">Voir toute la boutique</a>
     </div>
   </div>
 </section>
@@ -221,7 +221,7 @@ require __DIR__ . '/includes/header.php';
             <div><strong>Sans intermédiaire</strong><span>Du cultivateur à votre porte</span></div>
           </div>
         </div>
-        <a href="about" class="btn btn-outline">En savoir plus</a>
+        <a href="notre-histoire" class="btn btn-outline">En savoir plus</a>
       </div>
     </div>
   </div>

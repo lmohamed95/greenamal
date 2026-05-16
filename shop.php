@@ -61,7 +61,7 @@ if (!empty($_GET['sort'])) {
 $jsonld = [seo_breadcrumb_jsonld(array_filter([
     ['Accueil', '/'],
     ['Boutique', '/shop'],
-    $selected_cat ? [$cat_row['name'] ?? 'Catégorie', '/shop?cat=' . $selected_cat] : null,
+    $selected_cat ? [$cat_row['name'] ?? 'Catégorie', '/boutique?cat=' . $selected_cat] : null,
 ]))];
 
 require __DIR__ . '/includes/header.php';

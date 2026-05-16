@@ -15,7 +15,7 @@ if (!$product) {
     http_response_code(404);
     $page_title = 'Produit introuvable';
     require __DIR__ . '/includes/header.php';
-    echo '<div class="container" style="padding: 80px 0; text-align:center;"><h1>Produit introuvable</h1><p style="margin:20px 0;">Ce produit n\'existe pas ou a été retiré.</p><a href="shop" class="btn btn-primary">Voir la boutique</a></div>';
+    echo '<div class="container" style="padding: 80px 0; text-align:center;"><h1>Produit introuvable</h1><p style="margin:20px 0;">Ce produit n\'existe pas ou a été retiré.</p><a href="boutique" class="btn btn-primary">Voir la boutique</a></div>';
     require __DIR__ . '/includes/footer.php';
     exit;
 }
@@ -54,7 +54,7 @@ $jsonld = [
     seo_breadcrumb_jsonld([
         ['Accueil', '/'],
         ['Boutique', '/shop'],
-        [$product['category_name'] ?: 'Catégorie', '/shop?cat=' . $product['category_slug']],
+        [$product['category_name'] ?: 'Catégorie', '/boutique?cat=' . $product['category_slug']],
         [$product['name'], '/product?slug=' . $product['slug']],
     ]),
 ];
@@ -64,9 +64,9 @@ require __DIR__ . '/includes/header.php';
 
 <div class="container breadcrumb">
   <a href="/">Accueil</a><span>/</span>
-  <a href="shop">Boutique</a><span>/</span>
+  <a href="boutique">Boutique</a><span>/</span>
   <?php if ($product['category_slug']): ?>
-    <a href="shop?cat=<?= e($product['category_slug']) ?>"><?= e($product['category_name']) ?></a><span>/</span>
+    <a href="boutique?cat=<?= e($product['category_slug']) ?>"><?= e($product['category_name']) ?></a><span>/</span>
   <?php endif; ?>
   <span><?= e($product['name']) ?></span>
 </div>

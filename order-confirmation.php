@@ -93,7 +93,7 @@ require __DIR__ . '/includes/header.php';
     </div>
 
     <div style="text-align: center; margin-top: 40px;">
-      <a href="shop" class="btn btn-primary btn-lg">Continuer mes achats</a>
+      <a href="boutique" class="btn btn-primary btn-lg">Continuer mes achats</a>
     </div>
   </div>
 </section>

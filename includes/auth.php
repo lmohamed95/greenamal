@@ -20,7 +20,7 @@ function admin_logged_in(): bool {
 
 function admin_require_login(): void {
     if (!admin_logged_in()) {
-        redirect('login.php');
+        redirect('login');
     }
 }
 

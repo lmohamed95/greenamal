@@ -324,8 +324,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
     <span>© <?= date('Y') ?> <?= e(SITE_NAME) ?></span>
     <div class="cs-foot-links">
       <a href="mailto:<?= e(CONTACT_EMAIL) ?>">Contact</a>
-      <a href="privacy">Confidentialité</a>
-      <a href="mentions">Mentions légales</a>
+      <a href="confidentialite">Confidentialité</a>
+      <a href="mentions-legales">Mentions légales</a>
     </div>
   </footer>
 

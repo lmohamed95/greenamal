@@ -18,26 +18,26 @@ $now  = date('c');
 $urls = [];
 
 // Static pages
-$urls[] = ['loc' => $base . '/',      'lastmod' => $now, 'changefreq' => 'weekly',  'priority' => '1.0'];
-$urls[] = ['loc' => $base . '/categories', 'lastmod' => $now, 'changefreq' => 'weekly',  'priority' => '0.9'];
-$urls[] = ['loc' => $base . '/shop',       'lastmod' => $now, 'changefreq' => 'daily',   'priority' => '0.9'];
-$urls[] = ['loc' => $base . '/about',      'lastmod' => $now, 'changefreq' => 'monthly', 'priority' => '0.5'];
-$urls[] = ['loc' => $base . '/contact',    'lastmod' => $now, 'changefreq' => 'monthly', 'priority' => '0.4'];
+$urls[] = ['loc' => $base . '/',                'lastmod' => $now, 'changefreq' => 'weekly',  'priority' => '1.0'];
+$urls[] = ['loc' => $base . '/categories',      'lastmod' => $now, 'changefreq' => 'weekly',  'priority' => '0.9'];
+$urls[] = ['loc' => $base . '/boutique',        'lastmod' => $now, 'changefreq' => 'daily',   'priority' => '0.9'];
+$urls[] = ['loc' => $base . '/notre-histoire',  'lastmod' => $now, 'changefreq' => 'monthly', 'priority' => '0.5'];
+$urls[] = ['loc' => $base . '/contact',         'lastmod' => $now, 'changefreq' => 'monthly', 'priority' => '0.4'];
 
-// Categories
+// Categories — use the pretty /c/<slug> URL for cleaner SEO
 foreach (db_all("SELECT slug, created_at FROM categories ORDER BY display_order") as $cat) {
     $urls[] = [
-        'loc'        => $base . '/shop?cat=' . rawurlencode($cat['slug']),
+        'loc'        => $base . '/c/' . rawurlencode($cat['slug']),
         'lastmod'    => date('c', strtotime($cat['created_at'])),
         'changefreq' => 'weekly',
         'priority'   => '0.8',
     ];
 }
 
-// Active products
+// Active products — use the pretty /p/<slug> URL
 foreach (db_all("SELECT slug, updated_at, image_main FROM products WHERE status='active' ORDER BY updated_at DESC") as $p) {
     $urls[] = [
-        'loc'        => $base . '/product?slug=' . rawurlencode($p['slug']),
+        'loc'        => $base . '/p/' . rawurlencode($p['slug']),
         'lastmod'    => date('c', strtotime($p['updated_at'])),
         'changefreq' => 'weekly',
         'priority'   => '0.7',

@@ -97,7 +97,7 @@ function mail_order_confirmation(array $order, array $items): bool {
             e(price((float) $i['total']))
         );
     }
-    $view_link = url('order-confirmation.php?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number']));
+    $view_link = url('confirmation-commande?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number']));
     $inner = '<h1 style="margin:0 0 12px;font-size:22px;color:#3A5A40;">Merci pour votre commande !</h1>'
         . '<p>Bonjour ' . e($order['shipping_name']) . ',<br>'
         . 'Votre commande <strong>' . e($order['order_number']) . '</strong> a bien été enregistrée.</p>'
@@ -123,7 +123,7 @@ function mail_admin_new_order(array $order): bool {
         . '<p>Client : ' . e($order['shipping_name']) . ' · ' . e($order['shipping_phone']) . '<br>'
         . 'Email : ' . e($order['shipping_email']) . '<br>'
         . 'Ville : ' . e($order['shipping_city']) . '</p>'
-        . '<p><a href="' . url('admin/order-detail.php?id=' . (int) $order['id']) . '" style="color:#3A5A40;font-weight:600;">Voir dans l\'admin →</a></p>';
+        . '<p><a href="' . url('admin/order-detail?id=' . (int) $order['id']) . '" style="color:#3A5A40;font-weight:600;">Voir dans l\'admin →</a></p>';
     return send_mail($admin, 'Nouvelle commande ' . $order['order_number'], mail_layout('Nouvelle commande', $inner));
 }
 
@@ -140,13 +140,13 @@ function mail_order_status(array $order, string $new_status): bool {
     $inner = '<h1 style="margin:0 0 12px;font-size:20px;color:#3A5A40;">Mise à jour : ' . e($lbl) . '</h1>'
         . '<p>Commande <strong>' . e($order['order_number']) . '</strong></p>'
         . '<p>' . e($msg) . '</p>'
-        . '<p><a href="' . url('order-confirmation.php?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number'])) . '" style="color:#3A5A40;font-weight:600;">Voir ma commande →</a></p>';
+        . '<p><a href="' . url('confirmation-commande?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number'])) . '" style="color:#3A5A40;font-weight:600;">Voir ma commande →</a></p>';
     return send_mail($order['shipping_email'], '[' . $order['order_number'] . '] ' . $lbl, mail_layout($lbl, $inner));
 }
 
 /** Password reset */
 function mail_password_reset(string $email, string $token): bool {
-    $link = url('reset-password.php?token=' . urlencode($token));
+    $link = url('nouveau-mot-de-passe?token=' . urlencode($token));
     $inner = '<h1 style="margin:0 0 12px;font-size:20px;color:#3A5A40;">Réinitialisation de mot de passe</h1>'
         . '<p>Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le lien ci-dessous pour choisir un nouveau mot de passe :</p>'
         . '<p style="margin:18px 0;"><a href="' . $link . '" style="display:inline-block;background:#3A5A40;color:#FAF6F0;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:600;">Réinitialiser mon mot de passe</a></p>'
@@ -159,6 +159,6 @@ function mail_welcome(string $email, string $first_name): bool {
     $inner = '<h1 style="margin:0 0 12px;font-size:22px;color:#3A5A40;">Bienvenue chez GreenAmal !</h1>'
         . '<p>Bonjour ' . e($first_name) . ',</p>'
         . '<p>Votre compte a bien été créé. Vous pouvez maintenant suivre vos commandes, sauvegarder vos adresses et utiliser le code <strong>FIRST25</strong> pour −25 % sur votre première commande.</p>'
-        . '<p style="margin:18px 0;"><a href="' . url('shop.php') . '" style="display:inline-block;background:#3A5A40;color:#FAF6F0;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:600;">Découvrir la boutique</a></p>';
+        . '<p style="margin:18px 0;"><a href="' . url('boutique') . '" style="display:inline-block;background:#3A5A40;color:#FAF6F0;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:600;">Découvrir la boutique</a></p>';
     return send_mail($email, 'Bienvenue chez GreenAmal', mail_layout('Bienvenue', $inner));
 }

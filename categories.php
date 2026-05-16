@@ -36,7 +36,7 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="categories-grid">
       <?php foreach ($categories as $i => $cat): ?>
-        <a href="shop?cat=<?= e($cat['slug']) ?>" class="category-banner<?= $i === 0 ? ' category-banner-feature' : '' ?>">
+        <a href="boutique?cat=<?= e($cat['slug']) ?>" class="category-banner<?= $i === 0 ? ' category-banner-feature' : '' ?>">
           <div class="category-banner-image">
             <?= picture_tag($cat['image_url'], $cat['name'] . ' · produits naturels GreenAmal', [
                 'lazy'          => $i > 0,
@@ -69,7 +69,7 @@ require __DIR__ . '/includes/header.php';
       <span class="eyebrow">Tout le catalogue</span>
       <h2 style="margin-bottom: 16px;">Vous cherchez un produit en particulier ?</h2>
       <p style="color: var(--ink-soft); margin-bottom: 24px;">Parcourez la boutique avec des filtres avancés : prix, catégorie, recherche, tri.</p>
-      <a href="shop" class="btn btn-primary btn-lg">
+      <a href="boutique" class="btn btn-primary btn-lg">
         Aller à la boutique
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>

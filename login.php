@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/helpers.php';
 
 if (customer_logged_in()) {
-    redirect('account');
+    redirect('mon-compte');
 }
 
 $next = $_GET['next'] ?? 'account';
@@ -40,7 +40,7 @@ require __DIR__ . '/includes/header.php';
 <section class="container" style="padding:48px 16px;max-width:480px;">
   <div class="auth-card">
     <h1 class="auth-title">Connexion</h1>
-    <p class="auth-sub">Pas encore de compte ? <a href="register">Créer un compte</a></p>
+    <p class="auth-sub">Pas encore de compte ? <a href="inscription">Créer un compte</a></p>
 
     <?php if ($err): ?><div class="form-error"><?= e($err) ?></div><?php endif; ?>
 
@@ -54,7 +54,7 @@ require __DIR__ . '/includes/header.php';
         <input type="password" name="password" required autocomplete="current-password">
       </label>
       <div class="auth-row">
-        <a href="forgot-password" class="auth-link">Mot de passe oublié ?</a>
+        <a href="mot-de-passe-oublie" class="auth-link">Mot de passe oublié ?</a>
       </div>
       <button type="submit" class="btn btn-primary btn-lg btn-block">Se connecter</button>
     </form>

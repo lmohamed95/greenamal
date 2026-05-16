@@ -44,7 +44,7 @@ require __DIR__ . '/includes/header.php';
       <?= csrf_field() ?>
       <label>Email <input type="email" name="email" required autofocus autocomplete="email"></label>
       <button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer le lien</button>
-      <p style="text-align:center;margin-top:12px;"><a href="login" class="auth-link">Retour à la connexion</a></p>
+      <p style="text-align:center;margin-top:12px;"><a href="connexion" class="auth-link">Retour à la connexion</a></p>
     </form>
   </div>
 </section>

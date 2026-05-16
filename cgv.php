@@ -44,13 +44,13 @@ require __DIR__ . '/includes/header.php';
   <h2>8. Droit de rétractation</h2>
   <p>Conformément à l'article 36 de la loi 31-08 sur la protection du consommateur, le Client dispose d'un délai de 7 jours à compter de la réception du produit pour exercer son droit de rétractation, sans avoir à justifier de motifs. Les frais de retour restent à la charge du Client.</p>
   <p>Les produits alimentaires entamés, ainsi que les produits cosmétiques ouverts ou descellés, ne sont pas remboursables pour des raisons d'hygiène.</p>
-  <p>Voir détails sur la <a href="returns">Politique de retour</a>.</p>
+  <p>Voir détails sur la <a href="retours">Politique de retour</a>.</p>
 
   <h2>9. Garanties</h2>
   <p>Tous les produits sont garantis conformes à leur description et à leur usage. En cas de produit défectueux ou non conforme, le Client peut demander un remplacement ou un remboursement dans un délai de 14 jours après réception, photos à l'appui.</p>
 
   <h2>10. Données personnelles</h2>
-  <p>Les données personnelles collectées sont traitées conformément à la loi 09-08 et à notre <a href="privacy">politique de confidentialité</a>.</p>
+  <p>Les données personnelles collectées sont traitées conformément à la loi 09-08 et à notre <a href="confidentialite">politique de confidentialité</a>.</p>
 
   <h2>11. Propriété intellectuelle</h2>
   <p>Tous les contenus du site (textes, images, logo, graphismes) sont la propriété exclusive de la Coopérative Al Amal. Toute reproduction, même partielle, est interdite sans accord écrit préalable.</p>

@@ -4,7 +4,7 @@ require_once __DIR__ . '/includes/mail.php';
 
 $cart = cart_get();
 if (empty($cart)) {
-    redirect('shop');
+    redirect('boutique');
 }
 
 $page_title = 'Commande · Finaliser';
@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['allowed_orders'] = array_values(array_unique(array_slice($_SESSION['allowed_orders'], -20)));
 
             // Redirect to thank-you
-            redirect('order-confirmation?order=' . urlencode($order_number));
+            redirect('confirmation-commande?order=' . urlencode($order_number));
         }
     }
 }
@@ -197,7 +197,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container breadcrumb">
-  <a href="/">Accueil</a><span>/</span><a href="cart">Panier</a><span>/</span><span>Finaliser la commande</span>
+  <a href="/">Accueil</a><span>/</span><a href="panier">Panier</a><span>/</span><span>Finaliser la commande</span>
 </div>
 
 <section style="padding-top: 20px; padding-bottom: 80px;">
