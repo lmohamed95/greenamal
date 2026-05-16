@@ -58,8 +58,12 @@ HTML;
 /**
  * Send an HTML email. Returns true on success.
  *
- * In APP_DEBUG=true mode, instead of actually sending, the email is appended
- * to /tmp/greenamal-mail.log so you can inspect it during local development.
+ * In local dev (APP_ENV === 'local'), emails are appended to
+ * /tmp/greenamal-mail.log instead of being sent — so you can debug templates
+ * without spamming real addresses. In every other environment (production,
+ * staging) emails are sent via PHP mail() regardless of APP_DEBUG, because
+ * disabling email delivery should never be a side-effect of turning on
+ * error display.
  */
 function send_mail(string $to, string $subject, string $html): bool {
     $from = mail_from_address();
@@ -69,7 +73,7 @@ function send_mail(string $to, string $subject, string $html): bool {
     $headers .= "Reply-To: <{$from}>\r\n";
     $headers .= "X-Mailer: GreenAmal\r\n";
 
-    if (APP_DEBUG) {
+    if (APP_ENV === 'local') {
         $log = "/tmp/greenamal-mail.log";
         $sep = str_repeat('=', 60);
         @file_put_contents($log, "{$sep}\n[" . date('Y-m-d H:i:s') . "] To: {$to}\nSubject: {$subject}\n\n{$html}\n", FILE_APPEND);

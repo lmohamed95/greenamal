@@ -96,6 +96,8 @@ CREATE TABLE IF NOT EXISTS customers (
   lifetime_value DECIMAL(10,2) DEFAULT 0,
   segment ENUM('new','regular','vip','inactive') DEFAULT 'new',
   newsletter_subscribed TINYINT(1) DEFAULT 0,
+  reset_token VARCHAR(64),
+  reset_token_expires_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_order_at TIMESTAMP NULL
 ) ENGINE=InnoDB;
