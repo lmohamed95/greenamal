@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Notre histoire';
-$page_desc  = 'GreenAmal est une coopérative féminine berbère fondée en 2008 à Azrou. Découvrez notre histoire, nos valeurs et les femmes qui produisent nos produits naturels.';
+$page_desc  = 'GreenAmal est une coopérative féminine amazighe fondée en 2008 à Azrou. Découvrez notre histoire, nos valeurs et les femmes qui produisent nos produits naturels.';
 $nav        = 'about';
 $jsonld     = [seo_org_jsonld()];
 
@@ -12,7 +12,7 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <span class="eyebrow">Notre histoire</span>
     <h1>Quand la tradition <em style="color: var(--terracotta); font-style: italic;">rencontre</em> l'audace.</h1>
-    <p>Au cœur du Moyen Atlas, à Azrou, une coopérative féminine berbère cultive un héritage millénaire. Plus qu'une marque, GreenAmal est un projet de société.</p>
+    <p>Au cœur du Moyen Atlas, à Azrou, une coopérative féminine amazighe cultive un héritage millénaire. Plus qu'une marque, GreenAmal est un projet de société.</p>
   </div>
 </section>
 
@@ -26,7 +26,7 @@ require __DIR__ . '/includes/header.php';
       <div class="story-text">
         <span class="eyebrow">Notre genèse</span>
         <h2>Un rêve né dans les montagnes.</h2>
-        <p>En 2008, douze femmes berbères se réunissent autour d'une idée simple : transformer le savoir-faire ancestral de leurs aïeules en une activité économique viable, qui leur donne autonomie et dignité.</p>
+        <p>En 2008, douze femmes amazighes se réunissent autour d'une idée simple : transformer le savoir-faire ancestral de leurs aïeules en une activité économique viable, qui leur donne autonomie et dignité.</p>
         <p>De la cueillette des plantes médicinales à la distillation des huiles essentielles, en passant par le roulage manuel du couscous, chaque geste perpétue une tradition tout en construisant un avenir.</p>
         <p>Aujourd'hui, la coopérative Al Amal · qui signifie <em>"l'espoir"</em> en arabe · emploie plus de 45 femmes et exporte vers le monde entier.</p>
       </div>

@@ -44,7 +44,7 @@ $products = [
     'berkoukch,couscous gros grain,artisanal,Atlas,rustique'],
 
 'couscous-graines-lin' => [49, 'Couscous aux graines de lin 1 kg · riche en oméga 3.',
-    'Notre couscous aux graines de lin allie la tradition berbère à un apport nutritif moderne. Les graines de lin moulues s\'incorporent à la semoule lors du roulage à la main. Source naturelle d\'oméga 3, de fibres et de lignanes, il convient aux régimes santé sans renoncer au plaisir d\'un couscous du vendredi.',
+    'Notre couscous aux graines de lin allie la tradition amazighe à un apport nutritif moderne. Les graines de lin moulues s\'incorporent à la semoule lors du roulage à la main. Source naturelle d\'oméga 3, de fibres et de lignanes, il convient aux régimes santé sans renoncer au plaisir d\'un couscous du vendredi.',
     'couscous,graines de lin,oméga 3,santé,fibres'],
 
 'couscous-mais' => [45, 'Couscous de maïs 1 kg · sans gluten, doux et coloré.',
@@ -55,9 +55,9 @@ $products = [
     'Une création originale de la coopérative : la sauge fraîche du Moyen Atlas est intégrée à la semoule pendant le roulage. Le résultat est un couscous au parfum boisé et légèrement camphré, traditionnellement servi avec du poisson, du poulet aux herbes ou en accompagnement de tajines aux légumes verts.',
     'couscous sauge,parfumé,herbes,digestif'],
 
-'couscous-orge' => [45, 'Couscous d\'orge 1 kg · la version berbère ancestrale.',
+'couscous-orge' => [45, 'Couscous d\'orge 1 kg · la version amazighe ancestrale.',
     'Le couscous d\'orge est la forme la plus ancienne et la plus traditionnelle au Maroc. Riche en fibres et à index glycémique bas, il a un goût rustique et robuste qui se marie particulièrement bien avec les sept légumes et les plats à base de viande de mouton. Roulé manuellement à partir d\'orge cultivée localement.',
-    'couscous orge,berbère,fibres,IG bas,traditionnel'],
+    'couscous orge,amazigh,fibres,IG bas,traditionnel'],
 
 'couscous-lentilles' => [49, 'Couscous aux lentilles 1 kg · protéiné et complet.',
     'Une innovation nutritive : la farine de lentilles moulues finement est incorporée à la semoule pour un couscous complet en protéines végétales. Idéal pour un plat unique équilibré, accompagné simplement de légumes vapeur et d\'un filet d\'huile d\'olive.',
@@ -151,7 +151,7 @@ $products = [
 
 // ===== Savon (9) =====
 'green-ritual-tabrima' => [79, 'Green Ritual Tabrima 100 g · gommage exfoliant aux plantes du Moyen Atlas.',
-    'Le tabrima est un rituel berbère de purification du corps. Notre version associe argile rouge, plantes broyées et huile d\'argan pour exfolier en douceur tout en nourrissant. À utiliser en gommage hebdomadaire, sur peau humide, en mouvements circulaires. Rincer abondamment.',
+    'Le tabrima est un rituel amazigh de purification du corps. Notre version associe argile rouge, plantes broyées et huile d\'argan pour exfolier en douceur tout en nourrissant. À utiliser en gommage hebdomadaire, sur peau humide, en mouvements circulaires. Rincer abondamment.',
     'tabrima,gommage,argile,plantes,argan,rituel'],
 
 'poudre-jujubier' => [55, 'Poudre de jujubier (sidr) 80 g · soin lavant des cheveux.',
@@ -183,7 +183,7 @@ $products = [
     'savon noir,Beldi,7 plantes,hammam,herbal'],
 
 'greenmoukhammaria' => [85, 'GreenMoukhammaria 50 g · baume traditionnel multi-usage.',
-    'Le "moukhammaria" est un baume berbère traditionnel à base de cire d\'abeille, beurre de karité et huiles essentielles, utilisé sur les lèvres, les coudes, les talons secs ou en application sur les piqûres d\'insectes. Notre version en pot rose conserve la formule originale, fondante et parfumée.',
+    'Le "moukhammaria" est un baume amazigh traditionnel à base de cire d\'abeille, beurre de karité et huiles essentielles, utilisé sur les lèvres, les coudes, les talons secs ou en application sur les piqûres d\'insectes. Notre version en pot rose conserve la formule originale, fondante et parfumée.',
     'moukhammaria,baume,karité,cire abeille,multi-usage'],
 
 // ===== Huiles essentielles (8) · petits flacons compte-gouttes =====

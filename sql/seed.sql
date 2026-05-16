@@ -6,7 +6,7 @@
 -- Categories
 -- =====================================================================
 INSERT INTO categories (slug, name, description, image_url, display_order) VALUES
-('huiles-essentielles', 'Huiles essentielles',          'Distillées au feu de bois dans la pure tradition berbère.',                  '/assets/img/categories/huiles-essentielles.jpg', 1),
+('huiles-essentielles', 'Huiles essentielles',          'Distillées au feu de bois dans la pure tradition amazighe.',                  '/assets/img/categories/huiles-essentielles.jpg', 1),
 ('huiles-vegetales',    'Huiles végétales',              'Pressées à froid, 100 % pures — argan, olive, nigelle et plus.',            '/assets/img/categories/huiles-vegetales.jpg', 2),
 ('eau-florale',         'Eaux florales (hydrolats)',     'Eaux distillées de roses, fleurs d''oranger, lavande et menthe.',            '/assets/img/categories/eau-florale.jpg', 3),
 ('pam',                 'Plantes aromatiques & médicinales','Plantes cueillies à la main et séchées à l''ombre dans l''Atlas.',         '/assets/img/categories/pam.jpg', 4),
@@ -36,7 +36,7 @@ INSERT INTO products (slug, sku, name, category_id, description_short, descripti
 ('couscous-orge-bio-1kg', 'CSC-ORG-1K', 'Couscous d''orge bio 1kg',
   (SELECT id FROM categories WHERE slug='couscous'),
   'Roulé à la main, séché au soleil. Le goût authentique du Maroc rural.',
-  'Couscous d''orge biologique préparé selon la tradition berbère. Roulé à la main par les femmes de la coopérative, séché au soleil de l''Atlas. Plus rustique et plus parfumé que le couscous de blé.',
+  'Couscous d''orge biologique préparé selon la tradition amazighe. Roulé à la main par les femmes de la coopérative, séché au soleil de l''Atlas. Plus rustique et plus parfumé que le couscous de blé.',
   45.00, NULL, 18.00, 9, 'https://images.unsplash.com/photo-1612537786051-1d4cc6cf16d8?w=900&q=80', 'active', 1, 4.9, 214, 214, 'couscous,orge,bio,artisanal'),
 
 ('hydrolat-rose-damascena-250ml', 'HYD-ROS-250', 'Hydrolat de rose damascène 250ml',
@@ -48,7 +48,7 @@ INSERT INTO products (slug, sku, name, category_id, description_short, descripti
 ('verveine-sechee-100g', 'PLT-VRV-100', 'Verveine séchée artisanale 100g',
   (SELECT id FROM categories WHERE slug='pam'),
   'Verveine du Moyen Atlas, séchée à l''ombre. Pour vos infusions.',
-  'Cueillie à la main dans les jardins berbères, séchée lentement à l''ombre pour préserver tous ses arômes. Digestive, relaxante.',
+  'Cueillie à la main dans les jardins amazighs, séchée lentement à l''ombre pour préserver tous ses arômes. Digestive, relaxante.',
   35.00, NULL, 12.00, 7, 'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=900&q=80', 'active', 0, 4.5, 42, 42, 'verveine,plante,infusion,relaxation'),
 
 ('savon-noir-beldi-200g', 'SAV-BLD-200', 'Savon noir Beldi à l''eucalyptus 200g',
@@ -60,7 +60,7 @@ INSERT INTO products (slug, sku, name, category_id, description_short, descripti
 ('ghassoul-argile-500g', 'GHS-ARG-500', 'Ghassoul argile naturelle 500g',
   (SELECT id FROM categories WHERE slug='poudres'),
   'Argile volcanique du Moyen Atlas. Soin cheveux et visage.',
-  'Argile minérale extraite uniquement au Maroc. Purifie la peau et nettoie les cheveux en douceur, sans agresser. Utilisé depuis des générations dans les rituels de beauté berbères.',
+  'Argile minérale extraite uniquement au Maroc. Purifie la peau et nettoie les cheveux en douceur, sans agresser. Utilisé depuis des générations dans les rituels de beauté amazighs.',
   49.00, NULL, 18.00, 76, 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=900&q=80', 'active', 1, 4.9, 184, 184, 'ghassoul,argile,cheveux,visage'),
 
 ('huile-eucalyptus-30ml', 'HE-EUC-30', 'Huile essentielle d''eucalyptus 30ml',

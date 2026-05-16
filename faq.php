@@ -45,7 +45,7 @@ $faqs = [
     ],
     'Coopérative' => [
         ['Qu\'est-ce que la Coopérative Al Amal ?',
-         'La Coopérative féminine Al Amal est basée à Tigrigra, dans la province d\'Ifrane (Moyen Atlas). Elle regroupe une vingtaine de femmes berbères qui transforment et commercialisent les ressources végétales locales.'],
+         'La Coopérative féminine Al Amal est basée à Tigrigra, dans la province d\'Ifrane (Moyen Atlas). Elle regroupe une vingtaine de femmes amazighes qui transforment et commercialisent les ressources végétales locales.'],
         ['Comment soutenir la coopérative ?',
          'Acheter nos produits soutient directement les artisanes. Vous pouvez aussi nous suivre sur les réseaux sociaux ou parrainer un projet · contactez-nous pour les détails.'],
     ],

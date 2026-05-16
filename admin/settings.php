@@ -5,18 +5,52 @@ admin_require_login();
 $page_title = 'Paramètres';
 $current = 'settings';
 
+$pwd_error = null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    foreach ($_POST as $k => $v) {
-        if ($k === '_csrf') continue;
-        if (!is_string($v)) continue; // skip arrays
-        db_query(
-            "INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)
-             ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)",
-            [$k, $v]
-        );
+
+    // Handle admin password change (dedicated form)
+    if (($_POST['_action'] ?? '') === 'change_password') {
+        if (!rate_limit('admin_change_password', 5, 300)) {
+            $pwd_error = 'Trop de tentatives. Réessayez dans quelques minutes.';
+        } else {
+            $current  = (string) ($_POST['current_password'] ?? '');
+            $new      = (string) ($_POST['new_password'] ?? '');
+            $confirm  = (string) ($_POST['confirm_password'] ?? '');
+            $admin    = admin_user();
+            $row      = $admin ? db_one('SELECT password_hash FROM admin_users WHERE id = ?', [$admin['id']]) : null;
+
+            if (!$row || !password_verify($current, $row['password_hash'])) {
+                $pwd_error = 'Mot de passe actuel incorrect.';
+            } elseif (strlen($new) < 8) {
+                $pwd_error = 'Le nouveau mot de passe doit comporter au moins 8 caractères.';
+            } elseif ($new !== $confirm) {
+                $pwd_error = 'La confirmation ne correspond pas au nouveau mot de passe.';
+            } elseif ($new === $current) {
+                $pwd_error = 'Le nouveau mot de passe doit être différent de l\'actuel.';
+            } else {
+                db_query(
+                    'UPDATE admin_users SET password_hash = ? WHERE id = ?',
+                    [password_hash($new, PASSWORD_DEFAULT), $admin['id']]
+                );
+                session_regenerate_id(true);
+                redirect('settings.php?pwd=1');
+            }
+        }
+    } else {
+        // Generic settings save
+        foreach ($_POST as $k => $v) {
+            if ($k === '_csrf' || $k === '_action') continue;
+            if (!is_string($v)) continue; // skip arrays
+            db_query(
+                "INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)
+                 ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)",
+                [$k, $v]
+            );
+        }
+        redirect('settings.php?saved=1');
     }
-    redirect('settings.php?saved=1');
 }
 
 $settings = [];
@@ -41,6 +75,12 @@ require __DIR__ . '/_includes/header.php';
   <?php if (!empty($_GET['saved'])): ?>
     <div style="background: var(--success-bg); color: var(--success); padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;">
       ✓ Paramètres enregistrés.
+    </div>
+  <?php endif; ?>
+
+  <?php if (!empty($_GET['pwd'])): ?>
+    <div style="background: var(--success-bg); color: var(--success); padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;">
+      ✓ Mot de passe modifié avec succès.
     </div>
   <?php endif; ?>
 
@@ -144,6 +184,40 @@ require __DIR__ . '/_includes/header.php';
 
     <button type="submit" class="btn btn-primary" style="margin: 20px 0;">Enregistrer</button>
   </form>
+
+  <div class="card" style="margin-bottom: 16px;">
+    <div class="card-head">
+      <h3>Sécurité · mot de passe administrateur</h3>
+      <span class="head-meta"><?= e(admin_user()['email'] ?? '') ?></span>
+    </div>
+    <div class="card-body">
+      <?php if ($pwd_error): ?>
+        <div style="background: var(--danger-bg); color: var(--danger); padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 14px; font-size: 0.88rem;">
+          <?= e($pwd_error) ?>
+        </div>
+      <?php endif; ?>
+      <form method="post" autocomplete="off">
+        <?= csrf_field() ?>
+        <input type="hidden" name="_action" value="change_password">
+        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+          <div class="field">
+            <label>Mot de passe actuel</label>
+            <input type="password" name="current_password" autocomplete="current-password" required>
+          </div>
+          <div class="field">
+            <label>Nouveau mot de passe</label>
+            <input type="password" name="new_password" autocomplete="new-password" minlength="8" required>
+            <span class="help">8 caractères minimum</span>
+          </div>
+          <div class="field">
+            <label>Confirmer le mot de passe</label>
+            <input type="password" name="confirm_password" autocomplete="new-password" minlength="8" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 14px;">Modifier le mot de passe</button>
+      </form>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-head">

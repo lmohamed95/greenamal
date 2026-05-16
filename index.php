@@ -191,7 +191,7 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="story">
       <div class="story-image">
-        <?= picture_tag('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80', 'Coopérative féminine d\'Azrou · femmes berbères au travail', [
+        <?= picture_tag('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80', 'Coopérative féminine d\'Azrou · femmes amazighes au travail', [
             'lazy'   => true,
             'width'  => 800,
             'height' => 1000,
@@ -201,7 +201,7 @@ require __DIR__ . '/includes/header.php';
       <div class="story-text">
         <span class="eyebrow">Notre histoire</span>
         <h2>Une coopérative, des mains, un héritage.</h2>
-        <p>À Azrou, au cœur du Moyen Atlas, des femmes berbères perpétuent un savoir-faire transmis de mères en filles. Cueillette à l'aube, distillation au feu de bois, mouture à la pierre.</p>
+        <p>À Azrou, au cœur du Moyen Atlas, des femmes amazighes perpétuent un savoir-faire transmis de mères en filles. Cueillette à l'aube, distillation au feu de bois, mouture à la pierre.</p>
         <p>Chaque produit GreenAmal raconte cette histoire · celle d'un Maroc rural, debout, fier, et résolument tourné vers l'avenir.</p>
         <div class="story-features">
           <div class="story-feature">
@@ -234,7 +234,7 @@ require __DIR__ . '/includes/header.php';
       <div>
         <span class="eyebrow" style="color: var(--saffron);">−25% offerts</span>
         <h2>Rejoignez la tribu GreenAmal</h2>
-        <p>Recevez le code <strong style="color: var(--saffron);">first25</strong>, des recettes berbères inédites et nos offres en avant-première.</p>
+        <p>Recevez le code <strong style="color: var(--saffron);">first25</strong>, des recettes amazighes inédites et nos offres en avant-première.</p>
       </div>
       <form class="newsletter-form" onsubmit="return false;">
         <input type="email" placeholder="Votre adresse email" required>

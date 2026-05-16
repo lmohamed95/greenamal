@@ -14,7 +14,7 @@
 -- Categories
 -- =====================================================================
 INSERT INTO categories (slug, name, description, image_url, display_order) VALUES
-('huiles-essentielles', 'Huiles essentielles',          'Distillées au feu de bois dans la pure tradition berbère.',                  '/assets/img/categories/huiles-essentielles.jpg', 1),
+('huiles-essentielles', 'Huiles essentielles',          'Distillées au feu de bois dans la pure tradition amazighe.',                  '/assets/img/categories/huiles-essentielles.jpg', 1),
 ('huiles-vegetales',    'Huiles végétales',              'Pressées à froid, 100 % pures — argan, olive, nigelle et plus.',            '/assets/img/categories/huiles-vegetales.jpg', 2),
 ('eau-florale',         'Eaux florales (hydrolats)',     'Eaux distillées de roses, fleurs d''oranger, lavande et menthe.',            '/assets/img/categories/eau-florale.jpg', 3),
 ('pam',                 'Plantes aromatiques & médicinales','Plantes cueillies à la main et séchées à l''ombre dans l''Atlas.',         '/assets/img/categories/pam.jpg', 4),

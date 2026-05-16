@@ -59,9 +59,9 @@ WHERE slug = 'berkoukch';
 UPDATE products SET
   price = 49.00, stock = 30, status = 'active',
   description_short = 'Couscous aux graines de lin 1 kg — riche en oméga 3.',
-  description_long = 'Notre couscous aux graines de lin allie la tradition berbère à un apport nutritif moderne. Les graines de lin moulues s''incorporent à la semoule lors du roulage à la main. Source naturelle d''oméga 3, de fibres et de lignanes, il convient aux régimes santé sans renoncer au plaisir d''un couscous du vendredi.',
+  description_long = 'Notre couscous aux graines de lin allie la tradition amazighe à un apport nutritif moderne. Les graines de lin moulues s''incorporent à la semoule lors du roulage à la main. Source naturelle d''oméga 3, de fibres et de lignanes, il convient aux régimes santé sans renoncer au plaisir d''un couscous du vendredi.',
   meta_title = 'Couscous aux graines de lin 1 kg — riche en oméga 3.',
-  meta_description = 'Notre couscous aux graines de lin allie la tradition berbère à un apport nutritif moderne. Les graines de lin moulues s''incorporent à la semoule lors du roulage',
+  meta_description = 'Notre couscous aux graines de lin allie la tradition amazighe à un apport nutritif moderne. Les graines de lin moulues s''incorporent à la semoule lors du roulage',
   tags = 'couscous,graines de lin,oméga 3,santé,fibres'
 WHERE slug = 'couscous-graines-lin';
 
@@ -85,11 +85,11 @@ WHERE slug = 'couscous-sauge';
 
 UPDATE products SET
   price = 45.00, stock = 30, status = 'active',
-  description_short = 'Couscous d''orge 1 kg — la version berbère ancestrale.',
+  description_short = 'Couscous d''orge 1 kg — la version amazighe ancestrale.',
   description_long = 'Le couscous d''orge est la forme la plus ancienne et la plus traditionnelle au Maroc. Riche en fibres et à index glycémique bas, il a un goût rustique et robuste qui se marie particulièrement bien avec les sept légumes et les plats à base de viande de mouton. Roulé manuellement à partir d''orge cultivée localement.',
-  meta_title = 'Couscous d''orge 1 kg — la version berbère ancestrale.',
+  meta_title = 'Couscous d''orge 1 kg — la version amazighe ancestrale.',
   meta_description = 'Le couscous d''orge est la forme la plus ancienne et la plus traditionnelle au Maroc. Riche en fibres et à index glycémique bas, il a un goût rustique et robuste',
-  tags = 'couscous orge,berbère,fibres,IG bas,traditionnel'
+  tags = 'couscous orge,amazigh,fibres,IG bas,traditionnel'
 WHERE slug = 'couscous-orge';
 
 UPDATE products SET
@@ -293,9 +293,9 @@ WHERE slug = 'greensilk';
 UPDATE products SET
   price = 79.00, stock = 30, status = 'active',
   description_short = 'Green Ritual Tabrima 100 g — gommage exfoliant aux plantes du Moyen Atlas.',
-  description_long = 'Le tabrima est un rituel berbère de purification du corps. Notre version associe argile rouge, plantes broyées et huile d''argan pour exfolier en douceur tout en nourrissant. À utiliser en gommage hebdomadaire, sur peau humide, en mouvements circulaires. Rincer abondamment.',
+  description_long = 'Le tabrima est un rituel amazigh de purification du corps. Notre version associe argile rouge, plantes broyées et huile d''argan pour exfolier en douceur tout en nourrissant. À utiliser en gommage hebdomadaire, sur peau humide, en mouvements circulaires. Rincer abondamment.',
   meta_title = 'Green Ritual Tabrima 100 g — gommage exfoliant aux plantes du Moy',
-  meta_description = 'Le tabrima est un rituel berbère de purification du corps. Notre version associe argile rouge, plantes broyées et huile d''argan pour exfolier en douceur tout en',
+  meta_description = 'Le tabrima est un rituel amazigh de purification du corps. Notre version associe argile rouge, plantes broyées et huile d''argan pour exfolier en douceur tout en',
   tags = 'tabrima,gommage,argile,plantes,argan,rituel'
 WHERE slug = 'green-ritual-tabrima';
 
@@ -365,9 +365,9 @@ WHERE slug = 'greenritual-savon-herbal';
 UPDATE products SET
   price = 85.00, stock = 30, status = 'active',
   description_short = 'GreenMoukhammaria 50 g — baume traditionnel multi-usage.',
-  description_long = 'Le "moukhammaria" est un baume berbère traditionnel à base de cire d''abeille, beurre de karité et huiles essentielles, utilisé sur les lèvres, les coudes, les talons secs ou en application sur les piqûres d''insectes. Notre version en pot rose conserve la formule originale, fondante et parfumée.',
+  description_long = 'Le "moukhammaria" est un baume amazigh traditionnel à base de cire d''abeille, beurre de karité et huiles essentielles, utilisé sur les lèvres, les coudes, les talons secs ou en application sur les piqûres d''insectes. Notre version en pot rose conserve la formule originale, fondante et parfumée.',
   meta_title = 'GreenMoukhammaria 50 g — baume traditionnel multi-usage.',
-  meta_description = 'Le "moukhammaria" est un baume berbère traditionnel à base de cire d''abeille, beurre de karité et huiles essentielles, utilisé sur les lèvres, les coudes, les t',
+  meta_description = 'Le "moukhammaria" est un baume amazigh traditionnel à base de cire d''abeille, beurre de karité et huiles essentielles, utilisé sur les lèvres, les coudes, les t',
   tags = 'moukhammaria,baume,karité,cire abeille,multi-usage'
 WHERE slug = 'greenmoukhammaria';
 
