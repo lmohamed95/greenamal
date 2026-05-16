@@ -30,6 +30,19 @@ function price(float $amount, int $decimals = 0): string {
     return number_format($amount, $decimals, ',', ' ') . ' ' . currency_symbol();
 }
 
+/**
+ * First name of a customer/order, suitable for "Merci Mohamed !" greetings.
+ * Defensive against bad data: if the name field contains an email (a real
+ * checkout mistake), or is empty, returns ''. Title-cases the result.
+ */
+function customer_first_name(string $name): string {
+    $name = trim($name);
+    if ($name === '' || filter_var($name, FILTER_VALIDATE_EMAIL)) return '';
+    $first = trim(explode(' ', $name)[0]);
+    if ($first === '' || str_contains($first, '@')) return '';
+    return mb_convert_case(mb_strtolower($first, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+}
+
 /** Build a URL relative to the site root */
 function url(string $path = ''): string {
     return rtrim(SITE_URL, '/') . '/' . ltrim($path, '/');

@@ -98,8 +98,9 @@ function mail_order_confirmation(array $order, array $items): bool {
         );
     }
     $view_link = url('confirmation-commande?order=' . urlencode($order['order_number']) . '&t=' . order_view_token($order['order_number']));
+    $greet_name = customer_first_name($order['shipping_name'] ?? '');
     $inner = '<h1 style="margin:0 0 12px;font-size:22px;color:#3A5A40;">Merci pour votre commande !</h1>'
-        . '<p>Bonjour ' . e($order['shipping_name']) . ',<br>'
+        . '<p>Bonjour' . ($greet_name ? ' ' . e($greet_name) : '') . ',<br>'
         . 'Votre commande <strong>' . e($order['order_number']) . '</strong> a bien été enregistrée.</p>'
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:16px 0;">'
         . $rows

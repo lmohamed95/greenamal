@@ -28,7 +28,8 @@ require __DIR__ . '/includes/header.php';
         <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
       </div>
       <span class="eyebrow">Commande confirmée</span>
-      <h1 style="margin: 12px 0;">Merci <?= e($order['shipping_name']) ?> !</h1>
+      <?php $first = customer_first_name($order['shipping_name'] ?? ''); ?>
+      <h1 style="margin: 12px 0;">Merci<?= $first ? ' ' . e($first) : '' ?> !</h1>
       <p style="color: var(--ink-soft); font-size: 1.05rem;">
         Votre commande <strong style="color: var(--olive);">#<?= e($order['order_number']) ?></strong> a bien été enregistrée.
         Vous recevrez un email de confirmation à <strong><?= e($order['shipping_email']) ?></strong>.
