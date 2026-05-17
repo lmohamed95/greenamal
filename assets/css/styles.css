@@ -153,9 +153,12 @@ h4 { font-size: 1.15rem; font-family: var(--font-body); font-weight: 600; }
 }
 .logo-img {
   display: block;
-  height: 52px;
+  height: 80px;
   width: auto;
-  max-width: 200px;
+  max-width: 240px;
+  /* Negative margin lets the SVG's internal whitespace overlap the
+     header padding instead of stretching the bar taller. */
+  margin: -14px 0;
 }
 .footer-brand .logo-img {
   filter: brightness(0) invert(1);
