@@ -6,18 +6,26 @@ $page_title = 'Personnalisation';
 $current    = 'customization';
 
 // Save on POST
+$save_error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    foreach ($_POST as $k => $v) {
-        if ($k === '_csrf' || $k === '_action') continue;
-        if (!is_string($v)) continue;
-        db_query(
-            "INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)
-             ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)",
-            [$k, $v]
-        );
+    try {
+        foreach ($_POST as $k => $v) {
+            if ($k === '_csrf' || $k === '_action') continue;
+            if (!is_string($v)) continue;
+            // setting_key is VARCHAR(100) — skip silently if too long
+            if (strlen($k) > 100) continue;
+            db_query(
+                "INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)
+                 ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)",
+                [$k, $v]
+            );
+        }
+        redirect('customization.php?saved=1');
+    } catch (Throwable $e) {
+        error_log('[customization.php] save failed: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
+        $save_error = $e->getMessage();
     }
-    redirect('customization.php?saved=1');
 }
 
 // Load all settings into a flat array
@@ -50,6 +58,13 @@ require __DIR__ . '/_includes/header.php';
   <?php if (!empty($_GET['saved'])): ?>
     <div style="background: var(--success-bg); color: var(--success); padding: 12px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;">
       ✓ Personnalisation enregistrée. Rafraîchissez la page d'accueil pour voir le résultat.
+    </div>
+  <?php endif; ?>
+
+  <?php if ($save_error): ?>
+    <div style="background:#fde6e2; color:#a82e10; padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 18px; font-size: 0.88rem;">
+      <strong>Erreur lors de l'enregistrement :</strong> <?= e($save_error) ?>
+      <br><span style="opacity:0.8;font-size:0.85em;">Le détail complet a été écrit dans le journal d'erreurs PHP (cPanel → Errors).</span>
     </div>
   <?php endif; ?>
 
