@@ -348,14 +348,29 @@ require __DIR__ . '/includes/header.php';
   });
   if (qty) qty.addEventListener('input', refresh);
 
-  // Thumbnail switching
+  // Thumbnail switching — swap the entire <picture> so the responsive
+  // <source srcset> entries are replaced too. Just setting img.src doesn't
+  // work because <source> still wins.
   document.querySelectorAll('.gallery .thumb').forEach(function(t){
     t.addEventListener('click', function(){
       document.querySelectorAll('.gallery .thumb').forEach(function(x){ x.classList.remove('active'); });
       t.classList.add('active');
-      var src = t.querySelector('img');
-      var main = document.querySelector('#mainImage img');
-      if (src && main) main.src = src.currentSrc || src.src;
+
+      var main = document.getElementById('mainImage');
+      if (!main) return;
+
+      var currentPic = main.querySelector('picture') || main.querySelector('img');
+      var newPic     = t.querySelector('picture') || t.querySelector('img');
+      if (!currentPic || !newPic) return;
+
+      var fresh = newPic.cloneNode(true);
+      var finalImg = fresh.tagName === 'PICTURE' ? fresh.querySelector('img') : fresh;
+      if (finalImg) {
+        finalImg.removeAttribute('loading');
+        finalImg.setAttribute('fetchpriority', 'high');
+        finalImg.setAttribute('decoding', 'async');
+      }
+      currentPic.parentNode.replaceChild(fresh, currentPic);
     });
   });
 })();
