@@ -24,8 +24,16 @@ const IMG_WEBP_QUALITY = 78;
  */
 function image_make_responsive(string $source_abs, string $out_dir_abs, string $slug): array {
     if (!is_dir($out_dir_abs)) {
-        mkdir($out_dir_abs, 0755, true);
+        if (!mkdir($out_dir_abs, 0755, true) && !is_dir($out_dir_abs)) {
+            throw new RuntimeException("Cannot create directory: $out_dir_abs (check filesystem permissions)");
+        }
     }
+
+    // Some shared-hosting GD builds don't have WebP support — fall back to
+    // JPEG-only output. picture_tag already degrades gracefully when the
+    // .webp companion files are missing on disk.
+    $webp_supported_in  = function_exists('imagecreatefromwebp');
+    $webp_supported_out = function_exists('imagewebp');
 
     $info = @getimagesize($source_abs);
     if (!$info) {
@@ -37,7 +45,9 @@ function image_make_responsive(string $source_abs, string $out_dir_abs, string $
     $src = match (true) {
         $mime === 'image/jpeg' => imagecreatefromjpeg($source_abs),
         $mime === 'image/png'  => imagecreatefrompng($source_abs),
-        $mime === 'image/webp' => imagecreatefromwebp($source_abs),
+        $mime === 'image/webp' => $webp_supported_in
+            ? imagecreatefromwebp($source_abs)
+            : throw new RuntimeException("WebP input is not supported by this server's GD. Please upload JPG or PNG."),
         $mime === 'image/gif'  => imagecreatefromgif($source_abs),
         default => throw new RuntimeException("Unsupported image type: $mime"),
     };
@@ -99,18 +109,19 @@ function image_make_responsive(string $source_abs, string $out_dir_abs, string $
             imagejpeg($resized, $jpg_path, IMG_JPEG_QUALITY);
         }
 
-        // Output WebP
-        imagewebp($resized, $webp_path, IMG_WEBP_QUALITY);
+        // Output WebP (only when GD on this server can do it)
+        if ($webp_supported_out) {
+            imagewebp($resized, $webp_path, IMG_WEBP_QUALITY);
+        }
 
-
-        $bytes += filesize($jpg_path) + filesize($webp_path);
+        $bytes += filesize($jpg_path) + ($webp_supported_out && file_exists($webp_path) ? filesize($webp_path) : 0);
 
         if ($size['suffix'] === '') {
             $paths['jpg']  = $jpg_path;
-            $paths['webp'] = $webp_path;
+            $paths['webp'] = $webp_supported_out ? $webp_path : '';
         } else {
             $paths['jpg_mobile']  = $jpg_path;
-            $paths['webp_mobile'] = $webp_path;
+            $paths['webp_mobile'] = $webp_supported_out ? $webp_path : '';
         }
     }
 

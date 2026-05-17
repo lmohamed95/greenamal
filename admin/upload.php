@@ -9,11 +9,48 @@
  * Returns JSON: { ok, url, filename }
  */
 
+// Always answer in JSON, even on fatal errors. The widget tries to JSON.parse
+// the response — an HTML error page would surface as "Réponse serveur invalide".
+header('Content-Type: application/json; charset=utf-8');
+ob_start();
+
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) return false;
+    throw new ErrorException($message, 0, $severity, $file, $line);
+});
+
+register_shutdown_function(function () {
+    $err = error_get_last();
+    if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        @ob_clean();
+        http_response_code(500);
+        echo json_encode([
+            'ok'      => false,
+            'error'   => 'fatal',
+            'message' => $err['message'] . ' @ ' . basename($err['file']) . ':' . $err['line'],
+        ]);
+    } else {
+        @ob_end_flush();
+    }
+});
+
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/image.php';
-admin_require_login();
 
-header('Content-Type: application/json; charset=utf-8');
+// Don't let admin_require_login() redirect this XHR endpoint to an HTML login
+// page — answer in JSON instead so the upload widget can show a real error.
+if (!admin_logged_in()) {
+    http_response_code(401);
+    echo json_encode(['ok' => false, 'error' => 'unauthorized', 'message' => 'Session expirée, reconnectez-vous.']);
+    exit;
+}
+
+// Bail early if GD isn't compiled in — image_make_responsive needs it.
+if (!function_exists('imagecreatetruecolor')) {
+    http_response_code(500);
+    echo json_encode(['ok' => false, 'error' => 'no_gd', 'message' => 'Extension GD manquante sur le serveur. Demandez à l\'hébergeur d\'activer php-gd.']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
