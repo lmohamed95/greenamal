@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Conditions générales de vente';
 $page_desc  = 'Conditions générales de vente de GreenAmal · coopérative féminine d\'Azrou. Commande, livraison, paiement, retours, garanties.';
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 

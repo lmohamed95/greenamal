@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Politique de retour & remboursement';
 $page_desc  = 'Comment retourner un produit GreenAmal et obtenir un remboursement. Délais, conditions, démarche.';
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 

@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Politique cookies';
 $page_desc  = 'Quels cookies utilisons-nous, à quoi servent-ils, comment les contrôler.';
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 

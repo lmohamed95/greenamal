@@ -34,30 +34,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $row) {
 
 $page_title = 'Nouveau mot de passe';
 $noindex    = true;
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="container" style="padding:48px 16px;max-width:480px;">
-  <div class="auth-card">
-    <h1 class="auth-title">Nouveau mot de passe</h1>
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-card">
+      <span class="h-eyebrow">Mon compte</span>
+      <h1 class="h-serif">Nouveau mot de <em>passe</em>.</h1>
 
-    <?php if ($ok): ?>
-      <div class="form-success">Mot de passe mis à jour. <a href="mon-compte">Aller à mon compte →</a></div>
-    <?php elseif ($err): ?>
-      <div class="form-error"><?= $err /* contains safe HTML */ ?></div>
-    <?php endif; ?>
+      <?php if ($ok): ?>
+        <div class="auth-success">Mot de passe mis à jour. <a href="/mon-compte">Aller à mon compte →</a></div>
+      <?php elseif ($err): ?>
+        <div class="auth-error"><?= $err /* contains safe HTML */ ?></div>
+      <?php endif; ?>
 
-    <?php if ($row && !$ok): ?>
-      <p class="auth-sub">Choisissez un nouveau mot de passe pour <strong><?= e($row['email']) ?></strong>.</p>
-      <form method="post" class="auth-form" novalidate>
-        <?= csrf_field() ?>
-        <input type="hidden" name="token" value="<?= e($token) ?>">
-        <label>Nouveau mot de passe <input type="password" name="password"  required minlength="8" autocomplete="new-password" autofocus></label>
-        <label>Confirmer              <input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
-        <small class="form-hint">8 caractères minimum.</small>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Enregistrer</button>
-      </form>
-    <?php endif; ?>
+      <?php if ($row && !$ok): ?>
+        <p class="auth-sub">Choisissez un nouveau mot de passe pour <strong><?= e($row['email']) ?></strong>.</p>
+        <form method="post" class="auth-form" novalidate>
+          <?= csrf_field() ?>
+          <input type="hidden" name="token" value="<?= e($token) ?>">
+          <div class="gd-field">
+            <label>Nouveau mot de passe</label>
+            <input type="password" name="password" required minlength="8" autocomplete="new-password" autofocus>
+          </div>
+          <div class="gd-field">
+            <label>Confirmer</label>
+            <input type="password" name="password2" required minlength="8" autocomplete="new-password">
+          </div>
+          <small class="form-hint">8 caractères minimum.</small>
+          <button type="submit" class="h-btn h-btn-primary h-btn-lg" style="width:100%;">
+            Enregistrer
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      <?php endif; ?>
+    </div>
   </div>
 </section>
 

@@ -59,36 +59,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = 'Créer un compte';
 $page_desc  = 'Créez votre compte GreenAmal pour suivre vos commandes et profiter de promotions exclusives.';
 $noindex    = true;
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="container" style="padding:48px 16px;max-width:520px;">
-  <div class="auth-card">
-    <h1 class="auth-title">Créer un compte</h1>
-    <p class="auth-sub">Déjà inscrit ? <a href="connexion">Se connecter</a></p>
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-card auth-card-wide">
+      <span class="h-eyebrow">Rejoindre la tribu</span>
+      <h1 class="h-serif">Créer un <em>compte</em>.</h1>
+      <p class="auth-sub">Déjà inscrit ? <a href="/connexion">Se connecter</a></p>
 
-    <?php if ($err): ?><div class="form-error"><?= $err /* contains safe HTML */ ?></div><?php endif; ?>
+      <?php if ($err): ?><div class="auth-error"><?= $err /* contains safe HTML */ ?></div><?php endif; ?>
 
-    <form method="post" class="auth-form" novalidate>
-      <?= csrf_field() ?>
-      <div class="form-row">
-        <label>Prénom <input type="text" name="first_name" required value="<?= e($old['first_name']) ?>" autocomplete="given-name"></label>
-        <label>Nom    <input type="text" name="last_name"  required value="<?= e($old['last_name']) ?>"  autocomplete="family-name"></label>
-      </div>
-      <label>Email
-        <input type="email" name="email" required value="<?= e($old['email']) ?>" autocomplete="email">
-      </label>
-      <label>Téléphone
-        <input type="tel" name="phone" value="<?= e($old['phone']) ?>" placeholder="+212 6 ..." autocomplete="tel">
-      </label>
-      <div class="form-row">
-        <label>Mot de passe       <input type="password" name="password"  required minlength="8" autocomplete="new-password"></label>
-        <label>Confirmer            <input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
-      </div>
-      <small class="form-hint">8 caractères minimum.</small>
-      <p class="form-hint">En créant un compte, vous acceptez nos <a href="cgv">CGV</a> et notre <a href="confidentialite">politique de confidentialité</a>.</p>
-      <button type="submit" class="btn btn-primary btn-lg btn-block">Créer mon compte</button>
-    </form>
+      <form method="post" class="auth-form gd-form-grid" novalidate>
+        <?= csrf_field() ?>
+        <div class="gd-field">
+          <label>Prénom <span class="req">*</span></label>
+          <input type="text" name="first_name" required value="<?= e($old['first_name']) ?>" autocomplete="given-name">
+        </div>
+        <div class="gd-field">
+          <label>Nom <span class="req">*</span></label>
+          <input type="text" name="last_name" required value="<?= e($old['last_name']) ?>" autocomplete="family-name">
+        </div>
+        <div class="gd-field gd-field-full">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" name="email" required value="<?= e($old['email']) ?>" autocomplete="email">
+        </div>
+        <div class="gd-field gd-field-full">
+          <label>Téléphone</label>
+          <input type="tel" name="phone" value="<?= e($old['phone']) ?>" placeholder="+212 6 …" autocomplete="tel">
+        </div>
+        <div class="gd-field">
+          <label>Mot de passe <span class="req">*</span></label>
+          <input type="password" name="password" required minlength="8" autocomplete="new-password">
+        </div>
+        <div class="gd-field">
+          <label>Confirmer <span class="req">*</span></label>
+          <input type="password" name="password2" required minlength="8" autocomplete="new-password">
+        </div>
+        <div class="gd-field-full">
+          <p class="form-hint">8 caractères minimum. En créant un compte, vous acceptez nos <a href="/cgv">CGV</a> et notre <a href="/confidentialite">politique de confidentialité</a>.</p>
+        </div>
+        <div class="gd-field-full">
+          <button type="submit" class="h-btn h-btn-primary h-btn-lg" style="width:100%;">
+            Créer mon compte
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </section>
 

@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Politique de confidentialité';
 $page_desc  = 'Comment GreenAmal collecte, utilise et protège vos données personnelles. Conforme à la loi marocaine 09-08.';
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 

@@ -29,23 +29,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $page_title = 'Mot de passe oublié';
 $noindex    = true;
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="container" style="padding:48px 16px;max-width:480px;">
-  <div class="auth-card">
-    <h1 class="auth-title">Mot de passe oublié</h1>
-    <p class="auth-sub">Entrez l'email de votre compte. Nous vous enverrons un lien pour choisir un nouveau mot de passe.</p>
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-card">
+      <span class="h-eyebrow">Mon compte</span>
+      <h1 class="h-serif">Mot de passe <em>oublié</em>.</h1>
+      <p class="auth-sub">Entrez l'email de votre compte. Nous vous enverrons un lien pour choisir un nouveau mot de passe.</p>
 
-    <?php if ($msg): ?><div class="form-success"><?= e($msg) ?></div><?php endif; ?>
-    <?php if ($err): ?><div class="form-error"><?= e($err) ?></div><?php endif; ?>
+      <?php if ($msg): ?><div class="auth-success"><?= e($msg) ?></div><?php endif; ?>
+      <?php if ($err): ?><div class="auth-error"><?= e($err) ?></div><?php endif; ?>
 
-    <form method="post" class="auth-form" novalidate>
-      <?= csrf_field() ?>
-      <label>Email <input type="email" name="email" required autofocus autocomplete="email"></label>
-      <button type="submit" class="btn btn-primary btn-lg btn-block">Envoyer le lien</button>
-      <p style="text-align:center;margin-top:12px;"><a href="connexion" class="auth-link">Retour à la connexion</a></p>
-    </form>
+      <form method="post" class="auth-form" novalidate>
+        <?= csrf_field() ?>
+        <div class="gd-field">
+          <label>Email</label>
+          <input type="email" name="email" required autofocus autocomplete="email">
+        </div>
+        <button type="submit" class="h-btn h-btn-primary h-btn-lg" style="width:100%;">
+          Envoyer le lien
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p style="text-align:center;margin-top:8px;"><a href="/connexion" class="auth-link">Retour à la connexion</a></p>
+      </form>
+    </div>
   </div>
 </section>
 

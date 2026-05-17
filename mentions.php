@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Mentions légales';
 $page_desc  = 'Mentions légales du site greenamal.com · éditeur, hébergeur, propriété intellectuelle.';
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 

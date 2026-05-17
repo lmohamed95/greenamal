@@ -11,6 +11,8 @@ $page_title = 'Commande · Finaliser';
 $page_desc  = 'Finalisez votre commande GreenAmal · paiement à la livraison ou carte bancaire.';
 $nav        = '';
 $noindex    = true;
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 
 $subtotal = cart_subtotal();
 $shipping = $subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
@@ -196,106 +198,114 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require __DIR__ . '/includes/header.php';
 ?>
 
-<div class="container breadcrumb">
-  <a href="/">Accueil</a><span>/</span><a href="panier">Panier</a><span>/</span><span>Finaliser la commande</span>
-</div>
-
-<section style="padding-top: 20px; padding-bottom: 80px;">
+<section class="checkout-page">
   <div class="container">
-    <div style="margin-bottom: 32px;">
-      <h1 style="font-size: 2.2rem;">Finaliser ma commande</h1>
-      <p style="color: var(--ink-soft); margin-top: 8px;">Sécurisé · Livraison 24-48h · Paiement à la livraison disponible</p>
+    <div class="crumbs">
+      <a href="/">Accueil</a><span class="sep">/</span><a href="/panier">Panier</a><span class="sep">/</span><span>Finaliser</span>
+    </div>
+
+    <div class="checkout-head">
+      <h1>Finaliser ma <em>commande</em>.</h1>
+      <p class="muted">Sécurisé · Livraison 24-48h · Paiement à la livraison disponible</p>
     </div>
 
     <?php if (!empty($errors)): ?>
-      <div style="background: var(--danger-bg, #F8E5DF); border-left: 3px solid var(--danger); padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px; color: var(--danger);">
+      <div class="checkout-errors">
         <?php foreach ($errors as $err): ?><div>• <?= e($err) ?></div><?php endforeach; ?>
       </div>
     <?php endif; ?>
 
-    <form method="post" class="cart-layout">
+    <form method="post" class="checkout-grid">
       <?= csrf_field() ?>
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;">
-          <h3 style="margin-bottom: 18px;">Adresse de livraison</h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <div style="grid-column: 1/-1; display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Nom complet *</label>
-              <input type="text" name="shipping_name" required style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);" value="<?= e($_POST['shipping_name'] ?? '') ?>">
+
+      <div class="checkout-main">
+        <div class="checkout-card">
+          <h3 class="h-serif">Adresse de livraison</h3>
+          <div class="gd-form-grid" style="margin-top:14px;">
+            <div class="gd-field gd-field-full">
+              <label>Nom complet <span class="req">*</span></label>
+              <input type="text" name="shipping_name" required value="<?= e($_POST['shipping_name'] ?? '') ?>">
             </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Email *</label>
-              <input type="email" name="shipping_email" required style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);" value="<?= e($_POST['shipping_email'] ?? '') ?>">
+            <div class="gd-field">
+              <label>Email <span class="req">*</span></label>
+              <input type="email" name="shipping_email" required value="<?= e($_POST['shipping_email'] ?? '') ?>">
             </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Téléphone *</label>
-              <input type="tel" name="shipping_phone" required style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);" value="<?= e($_POST['shipping_phone'] ?? '') ?>" placeholder="+212 ...">
+            <div class="gd-field">
+              <label>Téléphone <span class="req">*</span></label>
+              <input type="tel" name="shipping_phone" required value="<?= e($_POST['shipping_phone'] ?? '') ?>" placeholder="+212 …">
             </div>
-            <div style="grid-column: 1/-1; display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Adresse *</label>
-              <input type="text" name="shipping_address" required style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);" value="<?= e($_POST['shipping_address'] ?? '') ?>" placeholder="Rue, n°, appartement, étage...">
+            <div class="gd-field gd-field-full">
+              <label>Adresse <span class="req">*</span></label>
+              <input type="text" name="shipping_address" required value="<?= e($_POST['shipping_address'] ?? '') ?>" placeholder="Rue, n°, appartement, étage…">
             </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Ville *</label>
-              <input type="text" name="shipping_city" required style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);" value="<?= e($_POST['shipping_city'] ?? '') ?>">
+            <div class="gd-field">
+              <label>Ville <span class="req">*</span></label>
+              <input type="text" name="shipping_city" required value="<?= e($_POST['shipping_city'] ?? '') ?>">
             </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Code postal</label>
-              <input type="text" name="shipping_postcode" style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);" value="<?= e($_POST['shipping_postcode'] ?? '') ?>">
+            <div class="gd-field">
+              <label>Code postal</label>
+              <input type="text" name="shipping_postcode" value="<?= e($_POST['shipping_postcode'] ?? '') ?>">
             </div>
-            <div style="grid-column: 1/-1; display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Notes (optionnel)</label>
-              <textarea name="notes" style="padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); min-height: 80px; font-family: inherit;" placeholder="Instructions pour le livreur, point de repère..."><?= e($_POST['notes'] ?? '') ?></textarea>
+            <div class="gd-field gd-field-full">
+              <label>Notes <span class="muted" style="font-weight:400;">(optionnel)</span></label>
+              <textarea name="notes" placeholder="Instructions pour le livreur, point de repère…"><?= e($_POST['notes'] ?? '') ?></textarea>
             </div>
           </div>
         </div>
 
-        <div style="background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;">
-          <h3 style="margin-bottom: 18px;">Méthode de paiement</h3>
+        <div class="checkout-card">
+          <h3 class="h-serif">Méthode de paiement</h3>
           <input type="hidden" name="payment_method" value="cod">
-          <div style="display: flex; align-items: center; gap: 14px; padding: 18px 20px; border: 2px solid var(--olive); border-radius: var(--radius-sm); background: var(--sand);">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--olive); color: var(--cream); display: grid; place-items: center; flex-shrink: 0;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="6" y1="12" x2="6.01" y2="12"/><line x1="18" y1="12" x2="18.01" y2="12"/></svg>
+          <div class="payment-method active">
+            <div class="payment-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <div>
-              <strong style="display: block; margin-bottom: 2px;">Paiement à la livraison</strong>
-              <div style="font-size: 0.85rem; color: var(--ink-soft);">Vous payez en espèces à la réception du colis. Aucun frais supplémentaire.</div>
+              <strong>Paiement à la livraison</strong>
+              <div class="payment-desc">Vous payez en espèces à la réception du colis. Aucun frais supplémentaire.</div>
+            </div>
+            <div class="payment-check">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m5 12 5 5L20 7"/></svg>
             </div>
           </div>
-          <p style="font-size: 0.78rem; color: var(--ink-mute); margin-top: 12px;">Le paiement par carte bancaire et le virement seront disponibles prochainement.</p>
+          <p class="muted" style="font-size:11.5px; margin-top:12px;">Le paiement par carte bancaire et le virement seront disponibles prochainement.</p>
         </div>
       </div>
 
-      <aside class="cart-summary">
-        <h3>Votre commande</h3>
-        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line);">
+      <aside class="cart-summary checkout-summary">
+        <h3 class="h-serif">Votre commande</h3>
+
+        <div class="checkout-items">
           <?php foreach ($cart as $item): ?>
-            <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center;">
-              <div style="width: 56px; height: 56px; border-radius: var(--radius-sm); overflow: hidden; background: var(--sand); position: relative;">
-                <img src="<?= e($item['image']) ?>" style="width:100%;height:100%;object-fit:cover;">
-                <span style="position: absolute; top: -6px; right: -6px; background: var(--olive); color: var(--cream); width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700;"><?= (int) $item['qty'] ?></span>
+            <div class="checkout-line">
+              <div class="checkout-line-thumb">
+                <img src="<?= e($item['image']) ?>" alt="<?= e($item['name']) ?>" loading="lazy">
+                <span class="qty-pill"><?= (int) $item['qty'] ?></span>
               </div>
-              <div style="font-size: 0.85rem; line-height: 1.3;">
-                <strong><?= e($item['name']) ?></strong>
-              </div>
-              <strong style="font-size: 0.88rem; color: var(--olive);"><?= price($item['price'] * $item['qty']) ?></strong>
+              <div class="checkout-line-name"><?= e($item['name']) ?></div>
+              <strong class="checkout-line-price"><?= price($item['price'] * $item['qty']) ?></strong>
             </div>
           <?php endforeach; ?>
         </div>
 
         <div class="summary-row"><span>Sous-total</span><span><?= price($subtotal) ?></span></div>
-        <div class="summary-row"><span>Livraison</span><span><?= $shipping > 0 ? price($shipping) : 'Gratuite' ?></span></div>
+        <div class="summary-row"><span>Livraison</span><span><?= $shipping > 0 ? price($shipping) : '<b style="color:var(--forest-700);">Gratuite</b>' ?></span></div>
         <?php if ($discount > 0): ?>
-          <div class="summary-row" style="color: var(--terracotta);"><span>Réduction</span><span>−<?= price($discount) ?></span></div>
+          <div class="summary-row is-discount"><span>Réduction</span><span>−<?= price($discount) ?></span></div>
         <?php endif; ?>
-        <div class="summary-row total"><span>Total</span><span><?= price($total) ?></span></div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span class="total-amount"><?= price($total) ?></span>
+        </div>
 
-        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 20px;">
+        <button type="submit" class="h-btn h-btn-primary h-btn-lg" style="width:100%; margin-top:20px;">
           Confirmer la commande
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
+
         <div class="cart-secure">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          Paiement sécurisé · vos données sont chiffrées
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg>
+          Paiement sécurisé · données chiffrées
         </div>
       </aside>
     </form>

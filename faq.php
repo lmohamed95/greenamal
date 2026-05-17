@@ -63,31 +63,42 @@ foreach ($faqs as $cat => $items) {
     }
 }
 $jsonld = [$qa_jsonld];
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="container" style="padding:48px 16px;max-width:880px;">
-  <div class="breadcrumb"><a href="/">Accueil</a><span>/</span><span>FAQ</span></div>
-  <h1 style="margin:24px 0 8px;">Questions fréquentes</h1>
-  <p style="color:var(--ink-soft);margin-bottom:32px;">Tout ce qu'il faut savoir avant de commander chez GreenAmal.</p>
+<section class="static-page">
+  <div class="container">
+    <div class="crumbs"><a href="/">Accueil</a><span class="sep">/</span><span>FAQ</span></div>
 
-  <?php foreach ($faqs as $cat => $items): ?>
-    <div class="faq-section">
-      <h2 class="faq-cat"><?= e($cat) ?></h2>
-      <?php foreach ($items as [$q, $a]): ?>
-        <details class="faq-item">
-          <summary><?= e($q) ?></summary>
-          <div class="faq-answer"><?= $a /* trusted: hand-written */ ?></div>
-        </details>
-      <?php endforeach; ?>
+    <div class="static-head">
+      <span class="h-eyebrow">Questions fréquentes</span>
+      <h1 class="h-serif">On vous <em>répond</em>.</h1>
+      <p>Tout ce qu'il faut savoir avant de commander chez GreenAmal.</p>
     </div>
-  <?php endforeach; ?>
 
-  <div class="card" style="padding:24px;margin-top:36px;text-align:center;">
-    <h3>Vous n'avez pas trouvé votre réponse ?</h3>
-    <p style="color:var(--ink-soft);">Notre équipe est là pour vous aider.</p>
-    <div style="display:inline-flex;gap:8px;margin-top:8px;">
-      <a href="contact" class="btn btn-primary">Nous contacter</a>
+    <div style="max-width:760px; margin: 0 auto;">
+      <?php foreach ($faqs as $cat => $items): ?>
+        <h2 class="faq-section-title"><?= e($cat) ?></h2>
+        <div class="faq-list" style="margin-bottom: 24px;">
+          <?php foreach ($items as [$q, $a]): ?>
+            <details class="faq-item">
+              <summary><?= e($q) ?></summary>
+              <div class="faq-answer"><?= $a /* trusted: hand-written */ ?></div>
+            </details>
+          <?php endforeach; ?>
+        </div>
+      <?php endforeach; ?>
+
+      <div class="static-content" style="text-align:center; margin-top: 32px; padding: 28px 24px;">
+        <h2 class="h-serif" style="font-family:var(--font-display-h); font-weight:400; font-size:1.4rem; margin-bottom: 8px; color: var(--ink-h);">Vous n'avez pas trouvé votre réponse&nbsp;?</h2>
+        <p style="margin-bottom: 18px;">Notre équipe est là pour vous aider.</p>
+        <a href="/contact" class="h-btn h-btn-primary h-btn-lg">
+          Nous contacter
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>

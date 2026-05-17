@@ -34,30 +34,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_title = 'Connexion';
 $page_desc  = 'Connectez-vous à votre compte GreenAmal pour suivre vos commandes et profiter de promotions exclusives.';
 $noindex    = true;
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="container" style="padding:48px 16px;max-width:480px;">
-  <div class="auth-card">
-    <h1 class="auth-title">Connexion</h1>
-    <p class="auth-sub">Pas encore de compte ? <a href="inscription">Créer un compte</a></p>
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-card">
+      <span class="h-eyebrow">Mon compte</span>
+      <h1 class="h-serif">Connexion</h1>
+      <p class="auth-sub">Pas encore de compte ? <a href="/inscription">Créer un compte</a></p>
 
-    <?php if ($err): ?><div class="form-error"><?= e($err) ?></div><?php endif; ?>
+      <?php if ($err): ?><div class="auth-error"><?= e($err) ?></div><?php endif; ?>
 
-    <form method="post" class="auth-form" novalidate>
-      <?= csrf_field() ?>
-      <input type="hidden" name="next" value="<?= e($next) ?>">
-      <label>Email
-        <input type="email" name="email" required autocomplete="email" autofocus>
-      </label>
-      <label>Mot de passe
-        <input type="password" name="password" required autocomplete="current-password">
-      </label>
-      <div class="auth-row">
-        <a href="mot-de-passe-oublie" class="auth-link">Mot de passe oublié ?</a>
-      </div>
-      <button type="submit" class="btn btn-primary btn-lg btn-block">Se connecter</button>
-    </form>
+      <form method="post" class="auth-form" novalidate>
+        <?= csrf_field() ?>
+        <input type="hidden" name="next" value="<?= e($next) ?>">
+        <div class="gd-field">
+          <label>Email</label>
+          <input type="email" name="email" required autocomplete="email" autofocus>
+        </div>
+        <div class="gd-field">
+          <label>Mot de passe</label>
+          <input type="password" name="password" required autocomplete="current-password">
+        </div>
+        <div class="auth-row">
+          <a href="/mot-de-passe-oublie" class="auth-link">Mot de passe oublié ?</a>
+        </div>
+        <button type="submit" class="h-btn h-btn-primary h-btn-lg" style="width:100%;">
+          Se connecter
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
   </div>
 </section>
 
