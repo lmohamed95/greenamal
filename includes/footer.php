@@ -107,6 +107,6 @@
 </a>
 <?php endif; ?>
 
-<script src="assets/js/main.js"></script>
+<script src="<?= e(asset('/assets/js/main.js')) ?>"></script>
 </body>
 </html>

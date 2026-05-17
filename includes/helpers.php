@@ -673,6 +673,19 @@ function cust(string $key, string $default = ''): string {
     return $v === '' ? $default : $v;
 }
 
+/**
+ * Cache-busting helper for static assets.
+ * Returns the path with a ?v=<filemtime> query so browsers / CDNs reload
+ * automatically on the next change. Falls back to the request timestamp if
+ * filemtime() fails for any reason.
+ */
+function asset(string $path): string {
+    $abs = realpath(__DIR__ . '/..') . '/' . ltrim($path, '/');
+    $v   = @filemtime($abs) ?: $_SERVER['REQUEST_TIME'] ?? time();
+    $sep = (strpos($path, '?') === false) ? '?' : '&';
+    return $path . $sep . 'v=' . $v;
+}
+
 /** Fetch a single setting value once per request (with a default fallback). */
 function setting(string $key, string $default = ''): string {
     static $cache = [];
