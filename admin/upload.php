@@ -99,22 +99,31 @@ if ($f['size'] > $max_bytes) {
     exit;
 }
 
-// MIME / extension check · don't trust client, use finfo + getimagesize
-$finfo = finfo_open(FILEINFO_MIME_TYPE);
-$mime = finfo_file($finfo, $f['tmp_name']);
-
+// MIME / extension check · don't trust client. Prefer finfo (more accurate);
+// fall back to getimagesize() since not every shared host has the fileinfo
+// extension enabled, and we only accept images here anyway.
 $allowed = [
     'image/jpeg' => 'jpg',
     'image/png'  => 'png',
     'image/webp' => 'webp',
     'image/gif'  => 'gif',
 ];
-if (!isset($allowed[$mime])) {
+$mime = null;
+if (function_exists('finfo_open')) {
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime  = $finfo ? finfo_file($finfo, $f['tmp_name']) : null;
+    if ($finfo) finfo_close($finfo);
+}
+if (!$mime) {
+    $probe = @getimagesize($f['tmp_name']);
+    $mime  = $probe['mime'] ?? null;
+}
+if (!$mime || !isset($allowed[$mime])) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'bad_type', 'message' => 'Format accepté : JPG, PNG, WebP, GIF.']);
     exit;
 }
-// Double-check it's actually an image (defends against polyglot files)
+// Double-check it's actually a decodable image (defends against polyglot files)
 if (@getimagesize($f['tmp_name']) === false) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'invalid_image']);
