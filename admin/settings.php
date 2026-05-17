@@ -118,6 +118,21 @@ require __DIR__ . '/_includes/header.php';
           </button>
         </form>
       </div>
+
+      <div class="settings-toggle-row">
+        <div>
+          <strong>Commande via WhatsApp</strong>
+          <div class="cell-mute">Affiche le bouton flottant WhatsApp en bas à droite du site et le CTA « Commander rapidement via WhatsApp » sur les fiches produits. Le numéro utilisé est celui du téléphone de contact.</div>
+        </div>
+        <form method="post" action="toggle-wa-order.php" style="display:inline; margin:0;">
+          <?= csrf_field() ?>
+          <input type="hidden" name="back" value="settings.php">
+          <button type="submit" class="cs-toggle-btn<?= ($settings['whatsapp_order_enabled'] ?? '0') === '1' ? ' is-on' : '' ?>">
+            <span class="cs-dot"></span>
+            <span class="cs-label"><?= ($settings['whatsapp_order_enabled'] ?? '0') === '1' ? 'Activé' : 'Désactivé' ?></span>
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -156,8 +171,9 @@ require __DIR__ . '/_includes/header.php';
               <input type="tel" name="contact_phone" value="<?= e($settings['contact_phone'] ?? CONTACT_PHONE) ?>">
             </div>
             <div class="field full">
-              <label>Numéro WhatsApp (sans le +)</label>
-              <input type="text" name="whatsapp_number" value="<?= e($settings['whatsapp_number'] ?? WHATSAPP_NUMBER) ?>">
+              <label>Numéro WhatsApp</label>
+              <input type="text" value="<?= e(wa_number()) ?>" readonly disabled style="opacity:0.6;">
+              <span class="help">Synchronisé automatiquement avec le téléphone ci-dessus (chiffres uniquement, pour les liens wa.me).</span>
             </div>
           </div>
         </div>

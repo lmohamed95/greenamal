@@ -2,15 +2,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo">
-          <span class="logo-mark">G</span>
-          <?= e(SITE_NAME) ?>
+        <div class="logo" aria-label="<?= e(SITE_NAME) ?>">
+          <img src="/assets/img/logo.svg" alt="<?= e(SITE_NAME) ?>" class="logo-img">
         </div>
         <p>Coopérative Al Amal · Produits naturels du Maroc, certifiés ONSSA, issus du cœur de l'Atlas.</p>
         <div class="footer-social">
           <a href="https://facebook.com" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
           <a href="https://instagram.com" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-          <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.4 11.4 0 0012 0a11.5 11.5 0 00-9.7 17.6L0 24l6.6-1.7a11.5 11.5 0 005.4 1.4h.1A11.5 11.5 0 0024 12.2c0-3.1-1.2-6-3.5-8.7zM12 21.5h-.1a9.6 9.6 0 01-4.9-1.3l-.3-.2-3.6.9.9-3.5-.2-.4a9.5 9.5 0 117.4 5.5z"/></svg></a>
           <a href="https://youtube.com" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 6.4a3 3 0 00-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a3 3 0 00-2 2A31 31 0 001 12a31 31 0 00.5 5.6 3 3 0 002 2c1.8.4 8.5.4 8.5.4s6.7 0 8.5-.4a3 3 0 002-2 31 31 0 00.5-5.6 31 31 0 00-.5-5.6zM10 15.5v-7l6 3.5z"/></svg></a>
         </div>
       </div>
@@ -33,7 +31,6 @@
           <li><a href="/notre-histoire">Notre histoire</a></li>
           <li><a href="/blog">Blog</a></li>
           <li><a href="/retours">Retours & remboursements</a></li>
-          <li><a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>">Service client WhatsApp</a></li>
         </ul>
       </div>
 
@@ -104,9 +101,11 @@
 })();
 </script>
 
-<a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>" class="wa-float" aria-label="WhatsApp">
+<?php if (wa_order_enabled()): ?>
+<a href="https://wa.me/<?= e(wa_number()) ?>" class="wa-float" aria-label="Commander par WhatsApp">
   <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.4 11.4 0 0012 0a11.5 11.5 0 00-9.7 17.6L0 24l6.6-1.7a11.5 11.5 0 005.4 1.4h.1A11.5 11.5 0 0024 12.2c0-3.1-1.2-6-3.5-8.7zM12 21.5h-.1a9.6 9.6 0 01-4.9-1.3l-.3-.2-3.6.9.9-3.5-.2-.4a9.5 9.5 0 117.4 5.5z"/></svg>
 </a>
+<?php endif; ?>
 
 <script src="assets/js/main.js"></script>
 </body>

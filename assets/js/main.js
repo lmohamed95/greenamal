@@ -4,9 +4,40 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ========== Mobile menu ========== */
   const menuToggle = document.querySelector('.menu-toggle');
   const mainNav = document.querySelector('.main-nav');
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener('click', () => mainNav.classList.toggle('open'));
+  const mobileDrawer = document.getElementById('mobile-drawer');
+  const mobileDrawerBackdrop = document.getElementById('mobile-drawer-backdrop');
+  const mobileDrawerClose = document.querySelector('.mobile-drawer-close');
+
+  const openMobileDrawer = () => {
+    if (!mobileDrawer) return;
+    mobileDrawer.classList.add('open');
+    mobileDrawer.setAttribute('aria-hidden', 'false');
+    mobileDrawerBackdrop?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeMobileDrawer = () => {
+    if (!mobileDrawer) return;
+    mobileDrawer.classList.remove('open');
+    mobileDrawer.setAttribute('aria-hidden', 'true');
+    mobileDrawerBackdrop?.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      // Prefer the new mobile drawer if it's present (gd-2026 layout);
+      // fall back to the legacy .main-nav dropdown.
+      if (mobileDrawer) openMobileDrawer();
+      else mainNav?.classList.toggle('open');
+    });
   }
+  mobileDrawerClose?.addEventListener('click', closeMobileDrawer);
+  mobileDrawerBackdrop?.addEventListener('click', closeMobileDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileDrawer?.classList.contains('open')) closeMobileDrawer();
+  });
+  // Auto-close the drawer when a link inside is followed
+  mobileDrawer?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setTimeout(closeMobileDrawer, 50)));
 
   const SHIPPING_THRESHOLD = parseFloat(document.body.dataset.shippingThreshold || '350');
 
@@ -195,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========== Cart icon → open drawer ========== */
-  document.querySelectorAll('a[href$="cart.php"].icon-btn').forEach(link => {
+  document.querySelectorAll('a[href$="cart.php"].icon-btn, a[href="/panier"].icon-btn, a[href$="/panier"].icon-btn').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       openDrawer();

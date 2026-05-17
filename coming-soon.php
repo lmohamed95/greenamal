@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/helpers.php';
 
 $page_title = 'Bientôt disponible';
-$page_desc  = 'GreenAmal · Coopérative Al Amal — produits naturels du Moyen Atlas. La maison ouvre ses portes prochainement.';
+$page_desc  = 'GreenAmal · Coopérative Al Amal · produits naturels du Moyen Atlas. La maison ouvre ses portes prochainement.';
 $noindex    = true;
 
 // Newsletter signup (reuse the existing newsletter_subscribers table)

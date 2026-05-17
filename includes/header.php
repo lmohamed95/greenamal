@@ -69,26 +69,31 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/styles.css">
+<?php foreach (($extra_css ?? []) as $css): ?>
+<link rel="stylesheet" href="<?= e($css) ?>">
+<?php endforeach; ?>
 
 <?php foreach ($jsonld as $block): if (empty($block)) continue; ?>
 <script type="application/ld+json"><?= seo_jsonld($block) ?></script>
 <?php endforeach; ?>
 </head>
-<body data-shipping-threshold="<?= (int) FREE_SHIPPING_THRESHOLD ?>">
+<body class="<?= e($body_class ?? '') ?>" data-shipping-threshold="<?= (int) FREE_SHIPPING_THRESHOLD ?>">
 
 <div class="promo-bar">
   <div class="container">
-    <strong>−25% sur votre première commande</strong> avec le code <code>first25</code> · Livraison gratuite dès <?= price(FREE_SHIPPING_THRESHOLD) ?>
+    <strong>Livraison gratuite</strong> à partir de <?= price(FREE_SHIPPING_THRESHOLD) ?>
   </div>
 </div>
 
 <header class="site-header">
   <div class="header-inner">
-    <a href="/" class="logo">
-      <span class="logo-mark">G</span>
-      <?= e(SITE_NAME) ?>
+    <button class="icon-btn menu-toggle" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="/" class="logo" aria-label="<?= e(SITE_NAME) ?>">
+      <img src="/assets/img/logo.svg" alt="<?= e(SITE_NAME) ?>" class="logo-img">
     </a>
     <nav class="main-nav">
       <a href="/" class="<?= nav_active($nav, 'home') ?>">Accueil</a>
@@ -98,13 +103,10 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
       <a href="/contact" class="<?= nav_active($nav, 'contact') ?>">Contact</a>
     </nav>
     <div class="header-actions">
-      <button class="icon-btn menu-toggle" aria-label="Menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <a href="/recherche" class="icon-btn" aria-label="Recherche">
+      <a href="/recherche" class="icon-btn header-icon-search" aria-label="Recherche">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </a>
-      <a href="<?= customer_logged_in() ? '/account' : '/login' ?>" class="icon-btn" aria-label="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>" title="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>">
+      <a href="<?= customer_logged_in() ? '/account' : '/login' ?>" class="icon-btn header-icon-account" aria-label="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>" title="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </a>
       <a href="/panier" class="icon-btn" aria-label="Panier">
@@ -114,3 +116,59 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
     </div>
   </div>
 </header>
+
+<!-- Mobile slide-out menu (rendered hidden, opened on mobile by the hamburger) -->
+<div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" aria-hidden="true">
+  <div class="mobile-drawer-head">
+    <a href="/" class="mobile-drawer-logo" aria-label="<?= e(SITE_NAME) ?>">
+      <img src="/assets/img/logo.svg" alt="<?= e(SITE_NAME) ?>">
+    </a>
+    <button class="mobile-drawer-close" aria-label="Fermer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-drawer-nav">
+    <a href="/" class="<?= nav_active($nav, 'home') ?>">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11 12 4l9 7"/><path d="M5 10v9h14v-9"/></svg>
+      Accueil
+    </a>
+    <a href="/boutique" class="<?= nav_active($nav, 'shop') ?>">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg>
+      Boutique
+    </a>
+    <a href="/categories" class="<?= nav_active($nav, 'categories') ?>">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catégories
+    </a>
+    <a href="/notre-histoire" class="<?= nav_active($nav, 'about') ?>">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+      Notre histoire
+    </a>
+    <a href="/contact" class="<?= nav_active($nav, 'contact') ?>">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.7-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.5Z"/></svg>
+      Contact
+    </a>
+  </nav>
+  <div class="mobile-drawer-section">
+    <div class="mobile-drawer-section-title">Mon compte</div>
+    <a href="/recherche" class="mobile-drawer-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Rechercher un produit
+    </a>
+    <a href="<?= customer_logged_in() ? '/account' : '/login' ?>" class="mobile-drawer-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>
+    </a>
+    <a href="/favoris" class="mobile-drawer-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>
+      Favoris
+    </a>
+  </div>
+  <div class="mobile-drawer-foot">
+    <a href="/contact" class="mobile-drawer-contact-cta">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 2.5a2 2 0 0 1-.6 1.9l-1.3 1.3a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 1.9-.6l2.5.5a2 2 0 0 1 1.7 2Z"/></svg>
+      Nous contacter
+    </a>
+  </div>
+</aside>

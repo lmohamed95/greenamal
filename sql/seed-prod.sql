@@ -46,7 +46,6 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('site_tagline', 'Coopérative Al Amal'),
 ('contact_email', 'contact@greenamal.com'),
 ('contact_phone', '+212 627-634472'),
-('whatsapp_number', '212627634472'),
 ('shipping_standard_fee', '30'),
 ('shipping_free_threshold', '350'),
 ('currency_symbol', 'د.م.'),

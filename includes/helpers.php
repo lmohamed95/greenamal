@@ -654,3 +654,60 @@ function coming_soon_guard(): void {
     header('Location: /coming-soon.php');
     exit;
 }
+
+/* ============================================================
+   Front-end customization (Admin → Personnalisation)
+   Settings live in the `settings` table under home_* keys.
+   ============================================================ */
+
+/** Fetch a customizable string. Loads all home_* settings once per request. */
+function cust(string $key, string $default = ''): string {
+    static $cache = null;
+    if ($cache === null) {
+        $cache = [];
+        foreach (db_all("SELECT setting_key, setting_value FROM settings WHERE setting_key LIKE 'home\\_%' OR setting_key='hero_image_url'") as $row) {
+            $cache[$row['setting_key']] = (string) $row['setting_value'];
+        }
+    }
+    $v = $cache[$key] ?? '';
+    return $v === '' ? $default : $v;
+}
+
+/** Fetch a single setting value once per request (with a default fallback). */
+function setting(string $key, string $default = ''): string {
+    static $cache = [];
+    if (!array_key_exists($key, $cache)) {
+        $v = db_value("SELECT setting_value FROM settings WHERE setting_key = ?", [$key]);
+        $cache[$key] = is_string($v) ? $v : '';
+    }
+    return $cache[$key] !== '' ? $cache[$key] : $default;
+}
+
+/** Phone-number-derived WhatsApp digits for wa.me URLs (mirrors the live contact phone). */
+function wa_number(): string {
+    return preg_replace('/\D/', '', setting('contact_phone', CONTACT_PHONE));
+}
+
+/** Whether "Order via WhatsApp" CTAs are enabled by the admin. */
+function wa_order_enabled(): bool {
+    return setting('whatsapp_order_enabled', '0') === '1';
+}
+
+/**
+ * Render a customizable rich-text value safely.
+ * Allowed inline markers (typed by the admin):
+ *   {accent}…{/accent}   →  <em>…</em>          (terra italic)
+ *   {ochre}…{/ochre}     →  <em class="ochre">…</em>
+ *   {br}                 →  <br>
+ *   {code}…{/code}       →  <span class="code">…</span>
+ * Everything else is escaped — no raw HTML reaches the page.
+ */
+function cust_html(string $key, string $default = ''): string {
+    $s = cust($key, $default);
+    $s = htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+    $s = preg_replace('/\{accent\}(.+?)\{\/accent\}/us', '<em>$1</em>', $s);
+    $s = preg_replace('/\{ochre\}(.+?)\{\/ochre\}/us',   '<em class="ochre">$1</em>', $s);
+    $s = preg_replace('/\{code\}(.+?)\{\/code\}/us',     '<span class="code">$1</span>', $s);
+    $s = str_replace('{br}', '<br>', $s);
+    return $s;
+}

@@ -88,7 +88,6 @@ require __DIR__ . '/includes/header.php';
     <p style="color:var(--ink-soft);">Notre équipe est là pour vous aider.</p>
     <div style="display:inline-flex;gap:8px;margin-top:8px;">
       <a href="contact" class="btn btn-primary">Nous contacter</a>
-      <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp</a>
     </div>
   </div>
 </section>

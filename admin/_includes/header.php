@@ -82,6 +82,10 @@ unset($_SESSION['flash']);
       </div>
       <div class="sidebar-section">
         <div class="sidebar-section-title">Réglages</div>
+        <a href="customization.php" class="sidebar-link<?= $current === 'customization' ? ' active' : '' ?>">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.4 4.7.4-3.6 3.1 1.1 4.6L12 13l-4.1 2.5 1.1-4.6-3.6-3.1 4.7-.4z"/><path d="M5 21l1.5-3M19 21l-1.5-3"/></svg>
+          Personnalisation
+        </a>
         <a href="settings.php" class="sidebar-link<?= $current === 'settings' ? ' active' : '' ?>">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06"/></svg>
           Paramètres

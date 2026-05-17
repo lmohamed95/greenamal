@@ -4,6 +4,8 @@ require_once __DIR__ . '/includes/helpers.php';
 $page_title = 'Contact';
 $page_desc  = 'Contactez la coopérative GreenAmal · téléphone, WhatsApp, email. Service client basé à Azrou, Maroc.';
 $nav        = 'contact';
+$body_class = 'gd-2026';
+$extra_css  = ['/assets/css/home.css'];
 $jsonld     = [
     [
         '@context'    => 'https://schema.org',
@@ -19,13 +21,12 @@ $jsonld     = [
     ]),
 ];
 
-$sent = false;
+$sent  = false;
 $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    // Honeypot — real users leave this empty; bots fill every field.
     if (!empty($_POST['website'] ?? '')) {
-        $sent = true; // pretend success, drop silently
+        $sent = true; // honeypot trap, silently succeed
     } elseif (!rate_limit('contact', 3, 600)) {
         $error = 'Trop de tentatives, merci de réessayer dans quelques minutes.';
     } else {
@@ -33,10 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email   = trim($_POST['email'] ?? '');
         $phone   = trim($_POST['phone'] ?? '');
         $message = trim($_POST['message'] ?? '');
+        $topic   = trim($_POST['topic'] ?? 'Question produit');
 
         if ($name && filter_var($email, FILTER_VALIDATE_EMAIL) && $message) {
-            // For now, store as a "newsletter subscriber" with source=contact + a note in the message field would need a proper messages table
-            // Quick path: log to an internal admin email via mail() in production. Locally, just confirm.
             $sent = true;
         } else {
             $error = 'Merci de remplir au moins le nom, l\'email et le message.';
@@ -47,136 +47,137 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require __DIR__ . '/includes/header.php';
 ?>
 
-<div class="container breadcrumb">
-  <a href="">Accueil</a><span>/</span><span>Contact</span>
-</div>
-
-<section class="about-hero">
+<section class="contact-hero">
   <div class="container">
-    <span class="eyebrow">Nous contacter</span>
-    <h1>Une question ? <em style="color: var(--terracotta); font-style: italic;">Parlez-nous.</em></h1>
+    <div class="crumbs"><a href="/">Accueil</a><span class="sep">/</span><span>Contact</span></div>
+    <span class="h-eyebrow">Nous contacter</span>
+    <h1>Une question ? <em>Parlez-nous.</em></h1>
     <p>Notre équipe répond du lundi au samedi, 9h–18h. Le moyen le plus rapide reste WhatsApp.</p>
   </div>
 </section>
 
-<section class="section section-sand">
+<section class="contact-body">
   <div class="container">
-    <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: flex-start;" class="contact-grid">
-
-      <aside style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="background: var(--white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--line);">
-          <h3 style="margin-bottom: 18px;">Coordonnées</h3>
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--sand); color: var(--olive); display: grid; place-items: center; flex-shrink: 0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-              </div>
-              <div>
-                <div style="font-size: 0.78rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">Téléphone</div>
-                <a href="tel:<?= str_replace(' ', '', e(CONTACT_PHONE)) ?>" style="color: var(--ink); font-weight: 500;"><?= e(CONTACT_PHONE) ?></a>
-              </div>
+    <div class="contact-grid">
+      <!-- Left: coordinates + WA promo -->
+      <div>
+        <div class="contact-card">
+          <h2>Coordonnées</h2>
+          <p class="sub">Plusieurs façons de nous joindre.</p>
+          <div class="contact-items">
+            <a href="tel:<?= str_replace(' ', '', e(CONTACT_PHONE)) ?>" class="contact-item">
+              <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 2.5a2 2 0 0 1-.6 1.9l-1.3 1.3a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 1.9-.6l2.5.5a2 2 0 0 1 1.7 2Z"/></svg></span>
+              <div><div class="lbl">Téléphone</div><div class="val"><?= e(CONTACT_PHONE) ?></div></div>
+            </a>
+            <a href="https://wa.me/<?= e(wa_number()) ?>" class="contact-item" target="_blank" rel="noopener">
+              <span class="ico" style="background:rgba(37,211,102,0.15);color:#1A8245;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.4-1.2A9 9 0 1 0 12 3Z"/></svg></span>
+              <div><div class="lbl">WhatsApp</div><div class="val"><a href="https://wa.me/<?= e(wa_number()) ?>">Chat avec nous →</a></div></div>
+            </a>
+            <a href="mailto:<?= e(CONTACT_EMAIL) ?>" class="contact-item">
+              <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+              <div><div class="lbl">Email</div><div class="val"><?= e(CONTACT_EMAIL) ?></div></div>
+            </a>
+            <div class="contact-item">
+              <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+              <div><div class="lbl">Adresse</div><div class="val">Coopérative Al Amal,<br>Azrou, Maroc</div></div>
             </div>
-
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: #25D36622; color: #25D366; display: grid; place-items: center; flex-shrink: 0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.4 11.4 0 0012 0a11.5 11.5 0 00-9.7 17.6L0 24l6.6-1.7a11.5 11.5 0 005.4 1.4h.1A11.5 11.5 0 0024 12.2c0-3.1-1.2-6-3.5-8.7zM12 21.5h-.1a9.6 9.6 0 01-4.9-1.3l-.3-.2-3.6.9.9-3.5-.2-.4a9.5 9.5 0 117.4 5.5z"/></svg>
-              </div>
-              <div>
-                <div style="font-size: 0.78rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">WhatsApp</div>
-                <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>" style="color: var(--ink); font-weight: 500;">Chat avec nous →</a>
-              </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--sand); color: var(--olive); display: grid; place-items: center; flex-shrink: 0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </div>
-              <div>
-                <div style="font-size: 0.78rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">Email</div>
-                <a href="mailto:<?= e(CONTACT_EMAIL) ?>" style="color: var(--ink); font-weight: 500;"><?= e(CONTACT_EMAIL) ?></a>
-              </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--sand); color: var(--olive); display: grid; place-items: center; flex-shrink: 0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <div>
-                <div style="font-size: 0.78rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">Adresse</div>
-                <span style="color: var(--ink);">Coopérative Al Amal,<br>Azrou, Maroc</span>
-              </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--sand); color: var(--olive); display: grid; place-items: center; flex-shrink: 0;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
-              <div>
-                <div style="font-size: 0.78rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;">Horaires</div>
-                <span style="color: var(--ink);">Lun – Sam : 9h – 18h<br>Dimanche : fermé</span>
-              </div>
+            <div class="contact-item">
+              <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+              <div><div class="lbl">Horaires</div><div class="val">Lun–Sam : 9h–18h<br><span class="muted" style="font-size:12.5px;">Dimanche : fermé</span></div></div>
             </div>
           </div>
         </div>
 
-        <div style="background: var(--olive); color: var(--cream); border-radius: var(--radius); padding: 24px;">
-          <strong style="font-family: var(--font-display); font-size: 1.3rem; display: block; margin-bottom: 8px;">Le plus rapide ?</strong>
-          <p style="font-size: 0.92rem; opacity: 0.85; margin-bottom: 16px;">WhatsApp. Réponse en moins d'une heure pendant les horaires de service.</p>
-          <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>" class="btn btn-primary btn-block">Ouvrir WhatsApp →</a>
+        <div class="wa-promo">
+          <h3>Le plus rapide ?</h3>
+          <p>WhatsApp. Réponse en moins d'une heure pendant les horaires de service.</p>
+          <a href="https://wa.me/<?= e(wa_number()) ?>" class="h-btn" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.4-1.2A9 9 0 1 0 12 3Z"/></svg>
+            Ouvrir WhatsApp
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
-      </aside>
+      </div>
 
-      <div style="background: var(--white); border-radius: var(--radius); padding: 32px; border: 1px solid var(--line);">
-        <h3 style="margin-bottom: 8px;">Écrivez-nous</h3>
-        <p style="color: var(--ink-soft); margin-bottom: 24px;">Remplissez le formulaire · nous répondons sous 24 h ouvrées.</p>
+      <!-- Right: form -->
+      <div>
+        <div class="contact-card">
+          <h2>Écrivez-nous</h2>
+          <p class="sub">Remplissez le formulaire, nous répondons sous 24h ouvrées.</p>
 
-        <?php if ($sent): ?>
-          <div style="background: rgba(74, 122, 79, 0.12); color: var(--olive-dark); padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px; font-size: 0.92rem;">
-            ✓ Message envoyé. Nous vous recontactons sous 24 h.
-          </div>
-        <?php elseif ($error): ?>
-          <div style="background: rgba(200, 85, 61, 0.12); color: var(--terracotta-dark); padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px; font-size: 0.92rem;">
-            <?= e($error) ?>
-          </div>
-        <?php endif; ?>
-
-        <form method="post">
-          <?= csrf_field() ?>
-          <div style="position:absolute;left:-9999px;" aria-hidden="true">
-            <label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Nom complet *</label>
-              <input type="text" name="name" required value="<?= e($_POST['name'] ?? '') ?>" style="padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);">
+          <?php if ($sent): ?>
+            <div style="background: var(--forest-50); color: var(--forest-700); padding: 14px 18px; border-radius: var(--r-md-h); margin-top: 18px; font-size: 0.92rem;">
+              ✓ Message envoyé. Nous vous recontactons sous 24 h.
             </div>
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 0.85rem; font-weight: 500;">Email *</label>
-              <input type="email" name="email" required value="<?= e($_POST['email'] ?? '') ?>" style="padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);">
+          <?php elseif ($error): ?>
+            <div style="background: var(--terra-50); color: var(--terra-600); padding: 14px 18px; border-radius: var(--r-md-h); margin-top: 18px; font-size: 0.92rem;">
+              <?= e($error) ?>
             </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
-            <label style="font-size: 0.85rem; font-weight: 500;">Téléphone (optionnel)</label>
-            <input type="tel" name="phone" value="<?= e($_POST['phone'] ?? '') ?>" style="padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);">
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;">
-            <label style="font-size: 0.85rem; font-weight: 500;">Votre message *</label>
-            <textarea name="message" required rows="5" style="padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-family: inherit;"><?= e($_POST['message'] ?? '') ?></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg">
-            Envoyer le message
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </form>
+          <?php endif; ?>
+
+          <form method="post" style="margin-top:18px;">
+            <?= csrf_field() ?>
+            <div style="position:absolute;left:-9999px;" aria-hidden="true">
+              <label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <div class="gd-field gd-field-full" style="margin-bottom:14px;">
+              <label>Sujet du message</label>
+              <div class="topic-pills" id="topicPills">
+                <?php foreach (['Question produit', 'Suivi commande', 'Gros volume / B2B', 'Presse', 'Autre'] as $t):
+                  $active = ($_POST['topic'] ?? 'Question produit') === $t;
+                ?>
+                  <button type="button" class="topic-pill<?= $active ? ' active' : '' ?>" data-topic="<?= e($t) ?>"><?= e($t) ?></button>
+                <?php endforeach; ?>
+              </div>
+              <input type="hidden" name="topic" id="topicInput" value="<?= e($_POST['topic'] ?? 'Question produit') ?>">
+            </div>
+
+            <div class="gd-form-grid">
+              <div class="gd-field">
+                <label>Nom complet <span class="req">*</span></label>
+                <input type="text" name="name" required value="<?= e($_POST['name'] ?? '') ?>" placeholder="Salma Khalil">
+              </div>
+              <div class="gd-field">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" name="email" required value="<?= e($_POST['email'] ?? '') ?>" placeholder="vous@email.com">
+              </div>
+              <div class="gd-field gd-field-full">
+                <label>Téléphone <span class="muted" style="font-weight:400;">(optionnel)</span></label>
+                <input type="tel" name="phone" value="<?= e($_POST['phone'] ?? '') ?>" placeholder="+212 …">
+              </div>
+              <div class="gd-field gd-field-full">
+                <label>Votre message <span class="req">*</span></label>
+                <textarea name="message" required placeholder="Dites-nous tout…"><?= e($_POST['message'] ?? '') ?></textarea>
+              </div>
+              <div class="gd-field-full" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <button type="submit" class="h-btn h-btn-primary h-btn-lg">
+                  Envoyer le message
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <span class="muted" style="font-size:11.5px;">En envoyant, vous acceptez notre politique de confidentialité.</span>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
-    <style>
-      @media (max-width: 900px) {
-        .contact-grid { grid-template-columns: 1fr !important; }
-      }
-    </style>
+    <div class="map-band">
+      <div class="ph">[ Carte interactive · Coopérative Al Amal, Azrou ]</div>
+      <div class="map-pin"></div>
+    </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll('#topicPills .topic-pill').forEach(function(p){
+    p.addEventListener('click', function(){
+      document.querySelectorAll('#topicPills .topic-pill').forEach(function(x){ x.classList.remove('active'); });
+      p.classList.add('active');
+      document.getElementById('topicInput').value = p.dataset.topic;
+    });
+  });
+</script>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
