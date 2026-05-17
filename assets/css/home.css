@@ -4,7 +4,13 @@
    Palette / type tokens come from the design handoff.
    ============================================================ */
 
+html:has(body.gd-2026) { overflow-x: hidden; }
 body.gd-2026 {
+  /* Stop any rogue child (drawer transforms, decorative SVGs, edge-bleed
+     gradients) from extending the page horizontally past the viewport. */
+  overflow-x: hidden;
+  max-width: 100vw;
+
   /* Colors */
   --forest-900: #14301F;
   --forest-700: #1F4A30;
@@ -1966,17 +1972,17 @@ body.gd-2026 .cart-drawer .secure-line svg { color: var(--forest-700); }
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 8px;
-    padding: 4px 16px;
+    padding: 10px 14px;
     align-items: center;
   }
   /* The hamburger is the first child of header-inner → naturally lands in col 1 */
   body.gd-2026 .menu-toggle { display: grid; }
-  /* Logo centered in middle column — bigger SVG, with negative margin so the
-     internal SVG whitespace doesn't push the header taller. */
+  /* Logo centered in middle column — bigger SVG, with a small negative margin
+     so the internal SVG whitespace doesn't make the bar too tall. */
   body.gd-2026 .header-inner > .logo {
     justify-self: center;
     grid-column: 2;
-    margin: -6px 0;
+    margin: -2px 0;
   }
   body.gd-2026 .logo-img { height: 76px; max-width: 220px; }
   /* Desktop nav hidden on mobile — the drawer replaces it */
