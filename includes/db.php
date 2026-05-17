@@ -14,6 +14,12 @@ function db(): PDO {
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
+                // Match the connection collation to what the tables use after
+                // the utf8mb4 migration. Without this, string literals in
+                // queries default to utf8mb4_general_ci and any UNION / JOIN
+                // against table columns (utf8mb4_unicode_ci) throws
+                // "Illegal mix of collations".
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci",
             ]);
         } catch (PDOException $e) {
             if (APP_DEBUG) {
