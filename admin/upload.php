@@ -74,7 +74,7 @@ if (empty($_FILES['image']) || !is_array($_FILES['image'])) {
 
 $f = $_FILES['image'];
 $target = $_POST['target'] ?? 'products';
-$target = in_array($target, ['categories', 'products', 'hero'], true) ? $target : 'products';
+$target = in_array($target, ['categories', 'products', 'hero', 'posts'], true) ? $target : 'products';
 
 // Upload error?
 if ($f['error'] !== UPLOAD_ERR_OK) {

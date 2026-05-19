@@ -80,6 +80,7 @@ cgi-bin/
 /assets/img/uploads/products/
 /assets/img/uploads/categories/
 /assets/img/uploads/hero/
+/assets/img/uploads/posts/
 
 # ---------------------------------------------------------------------
 # Backups (local dumps, WP migrations, archive files dropped into the tree)
