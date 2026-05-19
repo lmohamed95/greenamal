@@ -368,10 +368,55 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========== Header scroll shadow ========== */
+  /* ========== Sticky header — add .is-scrolled past 10px so the CSS can
+                drop a shadow without inline styles. ========== */
   const header = document.querySelector('.site-header');
   if (header) {
-    window.addEventListener('scroll', () => {
-      header.style.boxShadow = window.scrollY > 10 ? 'var(--shadow)' : 'none';
-    }, { passive: true });
+    const onScroll = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 10);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // sync on load (in case we land mid-scroll)
   }
+
+  /* ========== Header search dropdown — animated slide-down from header.
+                Click toggles, Esc / outside-click / close-button dismisses,
+                focus auto-moves into the input on open. ========== */
+  const searchToggle = document.getElementById('searchToggle');
+  const searchPanel  = document.getElementById('headerSearch');
+  const searchClose  = document.getElementById('searchClose');
+  const searchInput  = searchPanel?.querySelector('input[name="q"]');
+
+  const openSearch = () => {
+    if (!searchPanel) return;
+    searchPanel.classList.add('open');
+    searchPanel.setAttribute('aria-hidden', 'false');
+    searchToggle?.setAttribute('aria-expanded', 'true');
+    // Wait for the transition to start before focusing — focusing a
+    // visibility:hidden element silently fails on some browsers.
+    setTimeout(() => searchInput?.focus(), 60);
+  };
+  const closeSearch = () => {
+    if (!searchPanel) return;
+    searchPanel.classList.remove('open');
+    searchPanel.setAttribute('aria-hidden', 'true');
+    searchToggle?.setAttribute('aria-expanded', 'false');
+  };
+
+  searchToggle?.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (searchPanel?.classList.contains('open')) closeSearch();
+    else openSearch();
+  });
+  searchClose?.addEventListener('click', closeSearch);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchPanel?.classList.contains('open')) closeSearch();
+  });
+  // Outside click — only when open, and only if the click missed both the
+  // panel and the toggle button.
+  document.addEventListener('click', (e) => {
+    if (!searchPanel?.classList.contains('open')) return;
+    if (searchPanel.contains(e.target) || searchToggle?.contains(e.target)) return;
+    closeSearch();
+  });
 });

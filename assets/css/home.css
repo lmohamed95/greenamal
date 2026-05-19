@@ -4,7 +4,10 @@
    Palette / type tokens come from the design handoff.
    ============================================================ */
 
-html:has(body.gd-2026) { overflow-x: hidden; }
+/* `overflow-x: hidden` here would establish a new scroll container and
+ * break the sticky header. `overflow-x: clip` clips overflow the same way
+ * (used to kill mobile horizontal bleed) without disabling position: sticky. */
+html:has(body.gd-2026) { overflow-x: clip; }
 body.gd-2026 {
   /* Stop any rogue child (drawer transforms, decorative SVGs, edge-bleed
      gradients) from extending the page horizontally past the viewport. */

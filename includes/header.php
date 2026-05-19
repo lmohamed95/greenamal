@@ -103,9 +103,9 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
       <a href="/contact" class="<?= nav_active($nav, 'contact') ?>">Contact</a>
     </nav>
     <div class="header-actions">
-      <a href="/recherche" class="icon-btn header-icon-search" aria-label="Recherche">
+      <button type="button" class="icon-btn header-icon-search" id="searchToggle" aria-label="Recherche" aria-expanded="false" aria-controls="headerSearch">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </a>
+      </button>
       <a href="<?= customer_logged_in() ? '/account' : '/login' ?>" class="icon-btn header-icon-account" aria-label="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>" title="<?= customer_logged_in() ? 'Mon compte' : 'Se connecter' ?>">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </a>
@@ -113,6 +113,22 @@ $full_title    = $page_title === SITE_NAME ? SITE_NAME : "{$page_title} · " . S
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="badge cart-badge"><?= cart_count() ?></span>
       </a>
+    </div>
+  </div>
+
+  <!-- Search dropdown · slides down from the bottom of the header on click of
+       the search icon. Submits to the same /recherche page so result rendering
+       stays server-side. -->
+  <div class="header-search" id="headerSearch" aria-hidden="true">
+    <div class="header-search-inner">
+      <form method="get" action="/recherche" class="header-search-form" role="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" name="q" placeholder="Rechercher un produit, une catégorie…" autocomplete="off" minlength="2" required>
+        <button type="submit" class="header-search-submit">Rechercher</button>
+        <button type="button" class="header-search-close" id="searchClose" aria-label="Fermer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </form>
     </div>
   </div>
 </header>

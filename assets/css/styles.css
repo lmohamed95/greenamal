@@ -130,6 +130,97 @@ h4 { font-size: 1.15rem; font-family: var(--font-body); font-weight: 600; }
   top: 0;
   z-index: 50;
   backdrop-filter: blur(8px);
+  transition: box-shadow .25s var(--ease);
+}
+.site-header.is-scrolled {
+  box-shadow: 0 6px 24px -16px rgba(20, 30, 20, 0.18);
+}
+
+/* ── Header search dropdown ──────────────────────────────────────────────
+ * Sits inside the sticky header, absolutely positioned just below it.
+ * Closed: clipped to 0 height with overflow hidden. Opened (.open):
+ * expands its height + opacity in tandem. The header is sticky so the
+ * dropdown stays attached when the page is scrolled. */
+.header-search {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 12px 28px -18px rgba(20, 30, 20, 0.22);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: max-height .32s var(--ease), opacity .22s var(--ease), visibility .32s;
+  z-index: 49;
+}
+.header-search.open {
+  max-height: 140px;
+  opacity: 1;
+  visibility: visible;
+}
+.header-search-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 18px 24px;
+}
+.header-search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--white);
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.header-search-form:focus-within {
+  border-color: var(--olive);
+  box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.12);
+}
+.header-search-form svg { color: var(--ink-mute); flex-shrink: 0; }
+.header-search-form input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.98rem;
+  color: var(--ink);
+  padding: 4px 0;
+  outline: none;
+  min-width: 0;
+}
+.header-search-form input::placeholder { color: var(--ink-mute); }
+.header-search-submit {
+  background: var(--olive);
+  color: var(--cream);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s var(--ease);
+  flex-shrink: 0;
+}
+.header-search-submit:hover { background: var(--olive-dark); }
+.header-search-close {
+  background: none;
+  border: none;
+  color: var(--ink-mute);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 6px;
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.header-search-close:hover { background: var(--line); color: var(--ink); }
+@media (max-width: 600px) {
+  .header-search-submit { padding: 8px 12px; font-size: 0.8rem; }
+  .header-search-inner { padding: 14px 16px; }
 }
 .header-inner {
   display: grid;
