@@ -34,7 +34,7 @@ body.gd-2026 {
   --line-h:     #E6DFCF;
   --line-2h:    #EFE8D6;
   /* Type */
-  --font-display-h: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display-h: "Fraunces", "Cormorant Garamond", "Times New Roman", serif;
   --font-sans-h:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   /* Radii / shadows */
   --r-md-h: 12px;
