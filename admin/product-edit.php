@@ -110,6 +110,14 @@ require __DIR__ . '/_includes/header.php';
         <p>SKU : <?= e($product['sku']) ?> · <?= (int) $product['sales_count'] ?> ventes · ★ <?= number_format($product['rating_avg'], 1) ?> (<?= (int) $product['rating_count'] ?>)</p>
       <?php endif; ?>
     </div>
+    <?php if (!$is_new): ?>
+      <div class="page-actions">
+        <button type="button" class="btn btn-ghost" id="deleteProduct" style="color: var(--danger);" data-id="<?= (int) $product['id'] ?>" data-name="<?= e($product['name']) ?>">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+          Supprimer le produit
+        </button>
+      </div>
+    <?php endif; ?>
   </div>
 
   <?php if ($saved): ?>
@@ -404,6 +412,32 @@ require __DIR__ . '/_includes/header.php';
     if (!btn) return;
     btn.closest('.component-row').remove();
     refreshEmpty();
+  });
+})();
+
+// Delete the whole product — posts to products.php's bulk_action=delete with
+// a single id, then the handler redirects back to the list with a flash.
+(function () {
+  const btn = document.getElementById('deleteProduct');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const id   = btn.dataset.id;
+    const name = btn.dataset.name || 'ce produit';
+    if (!confirm('Supprimer définitivement « ' + name + ' » ? Cette action est irréversible.')) return;
+    const csrf = document.querySelector('meta[name="csrf-token"]').content;
+    const f = document.createElement('form');
+    f.method = 'POST';
+    f.action = 'products.php';
+    const fields = { _csrf: csrf, bulk_action: 'delete', 'ids[]': id };
+    Object.entries(fields).forEach(([k, v]) => {
+      const i = document.createElement('input');
+      i.type = 'hidden';
+      i.name = k;
+      i.value = v;
+      f.appendChild(i);
+    });
+    document.body.appendChild(f);
+    f.submit();
   });
 })();
 </script>

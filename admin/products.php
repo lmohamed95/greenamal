@@ -171,7 +171,16 @@ require __DIR__ . '/_includes/header.php';
               <td><span style="color: var(--<?= $stock_color ?>); font-weight: 500;"><?= e($stock_lbl) ?></span></td>
               <td class="cell-num"><?= (int) $p['sales_count'] ?></td>
               <td><span class="badge-status <?= e($status_cls) ?>"><?= e($status_lbl) ?></span></td>
-              <td><a href="product-edit.php?id=<?= (int) $p['id'] ?>" class="topbar-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></a></td>
+              <td>
+                <div class="row-actions">
+                  <a href="product-edit.php?id=<?= (int) $p['id'] ?>" class="topbar-btn" title="Modifier" aria-label="Modifier <?= e($p['name']) ?>">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </a>
+                  <button type="button" class="topbar-btn row-delete" data-id="<?= (int) $p['id'] ?>" data-name="<?= e($p['name']) ?>" title="Supprimer" aria-label="Supprimer <?= e($p['name']) ?>">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                </div>
+              </td>
             </tr>
           <?php endforeach; ?>
           <?php if (!$products): ?>
@@ -217,6 +226,31 @@ require __DIR__ . '/_includes/header.php';
   bar.querySelectorAll('button[data-confirm]').forEach(btn => {
     btn.addEventListener('click', e => {
       if (!confirm(btn.getAttribute('data-confirm'))) e.preventDefault();
+    });
+  });
+
+  // Per-row delete — reuses the bulk_action=delete server handler with a
+  // single id. Builds a one-off form so we don't disturb the user's current
+  // checkbox selection.
+  document.querySelectorAll('.row-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id   = btn.dataset.id;
+      const name = btn.dataset.name || 'ce produit';
+      if (!confirm('Supprimer définitivement « ' + name + ' » ? Cette action est irréversible.')) return;
+      const csrf = document.querySelector('meta[name="csrf-token"]').content;
+      const f = document.createElement('form');
+      f.method = 'POST';
+      f.action = 'products.php';
+      const fields = { _csrf: csrf, bulk_action: 'delete', 'ids[]': id };
+      Object.entries(fields).forEach(([k, v]) => {
+        const i = document.createElement('input');
+        i.type = 'hidden';
+        i.name = k;
+        i.value = v;
+        f.appendChild(i);
+      });
+      document.body.appendChild(f);
+      f.submit();
     });
   });
 
