@@ -5,9 +5,9 @@
 Options -Indexes
 DirectoryIndex index.php
 
-# Force HTTPS in production (uncomment after deploy)
-# RewriteCond %{HTTPS} !=on
-# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# Force HTTPS in production
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # Custom error documents
 ErrorDocument 404 /404.php
