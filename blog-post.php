@@ -2,7 +2,13 @@
 require_once __DIR__ . '/includes/helpers.php';
 
 $slug = trim((string) ($_GET['slug'] ?? ''));
-$post = $slug ? db_one("SELECT * FROM posts WHERE slug = ? AND status = 'published'", [$slug]) : null;
+try {
+    $post = $slug ? db_one("SELECT * FROM posts WHERE slug = ? AND status = 'published'", [$slug]) : null;
+} catch (PDOException $e) {
+    // posts table not yet migrated — treat as "no such post" so we 404 below
+    // rather than 500ing with a SQL error.
+    $post = null;
+}
 
 if (!$post) {
     http_response_code(404);
