@@ -408,6 +408,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchPanel?.classList.contains('open')) closeSearch();
     else openSearch();
   });
+  // Mobile drawer "Rechercher un produit" entry — hijack to open the same
+  // header dropdown instead of navigating to the standalone /recherche page.
+  // The href stays as a no-JS fallback. The drawer's own auto-close handler
+  // (registered above on all <a> inside the drawer) will dismiss the drawer.
+  document.querySelectorAll('[data-search-trigger]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      openSearch();
+    });
+  });
   searchClose?.addEventListener('click', closeSearch);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && searchPanel?.classList.contains('open')) closeSearch();

@@ -2935,9 +2935,8 @@ body.gd-2026 .cart-drawer .secure-line svg { color: var(--forest-700); }
   body.gd-2026 .logo-img { height: 76px; max-width: 220px; }
   /* Desktop nav hidden on mobile — the drawer replaces it */
   body.gd-2026 .main-nav { display: none !important; }
-  /* In the right-column actions, hide search + account; keep cart only */
+  /* In the right-column actions, keep search + cart; hide account */
   body.gd-2026 .header-actions { grid-column: 3; gap: 0; }
-  body.gd-2026 .header-icon-search,
   body.gd-2026 .header-icon-account { display: none; }
 }
 @media (min-width: 901px) {
