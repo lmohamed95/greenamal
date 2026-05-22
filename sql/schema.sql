@@ -92,6 +92,8 @@ CREATE TABLE IF NOT EXISTS customers (
   last_name VARCHAR(100),
   phone VARCHAR(30),
   city VARCHAR(100),
+  address VARCHAR(500),
+  postcode VARCHAR(20),
   total_orders INT DEFAULT 0,
   lifetime_value DECIMAL(10,2) DEFAULT 0,
   segment ENUM('new','regular','vip','inactive') DEFAULT 'new',
