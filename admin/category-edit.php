@@ -166,9 +166,13 @@ require __DIR__ . '/_includes/header.php';
         <div class="card" style="border-color: var(--danger-bg);">
           <div class="card-body">
             <p style="font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 12px;">Cette catégorie est vide. Vous pouvez la supprimer en toute sécurité.</p>
-            <a href="categories.php?delete=<?= (int) $id ?>" onclick="return confirm('Supprimer définitivement cette catégorie ?')" class="btn btn-ghost btn-block" style="color: var(--danger); border: 1px solid var(--danger-bg);">
-              Supprimer la catégorie
-            </a>
+            <form method="post" action="categories.php" onsubmit="return confirm('Supprimer définitivement cette catégorie ?')" style="margin: 0;">
+              <?= csrf_field() ?>
+              <input type="hidden" name="delete" value="<?= (int) $id ?>">
+              <button type="submit" class="btn btn-ghost btn-block" style="color: var(--danger); border: 1px solid var(--danger-bg);">
+                Supprimer la catégorie
+              </button>
+            </form>
           </div>
         </div>
       <?php elseif (!$is_new): ?>

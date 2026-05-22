@@ -5,9 +5,10 @@ admin_require_login();
 $page_title = 'Catégories';
 $current = 'categories';
 
-// Handle delete (only if no products)
-if (isset($_GET['delete'])) {
-    $del_id = (int) $_GET['delete'];
+// Handle delete (only if no products) — POST + CSRF only.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    csrf_verify();
+    $del_id = (int) $_POST['delete'];
     $pcount = (int) db_value('SELECT COUNT(*) FROM products WHERE category_id = ?', [$del_id]);
     if ($pcount === 0) {
         db_query('DELETE FROM categories WHERE id = ?', [$del_id]);
@@ -83,9 +84,13 @@ require __DIR__ . '/_includes/header.php';
             Voir
           </a>
           <?php if ((int) $cat['product_count'] === 0): ?>
-            <a href="?delete=<?= (int) $cat['id'] ?>" onclick="return confirm('Supprimer cette catégorie ?')" class="btn btn-ghost btn-sm" style="color: var(--danger); margin-left: auto;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 01-2 2H9a2 2 0 01-2-2L5 6"/></svg>
-            </a>
+            <form method="post" action="categories.php" onsubmit="return confirm('Supprimer cette catégorie ?')" style="margin: 0 0 0 auto;">
+              <?= csrf_field() ?>
+              <input type="hidden" name="delete" value="<?= (int) $cat['id'] ?>">
+              <button type="submit" class="btn btn-ghost btn-sm" style="color: var(--danger);">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 01-2 2H9a2 2 0 01-2-2L5 6"/></svg>
+              </button>
+            </form>
           <?php endif; ?>
         </div>
       </div>

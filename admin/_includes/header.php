@@ -102,9 +102,12 @@ unset($_SESSION['flash']);
         <strong><?= e($user_name) ?></strong>
         <span><?= e(ucfirst(str_replace('_', ' ', $user['role']))) ?></span>
       </div>
-      <a href="logout.php" title="Déconnexion" style="color: rgba(250,246,240,0.6); width: 30px; height: 30px; border-radius: var(--radius-sm); display: grid; place-items: center;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      </a>
+      <form method="post" action="logout.php" style="margin: 0;">
+        <?= csrf_field() ?>
+        <button type="submit" title="Déconnexion" style="color: rgba(250,246,240,0.6); width: 30px; height: 30px; border-radius: var(--radius-sm); display: grid; place-items: center; padding: 0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </form>
     </div>
   </aside>
 

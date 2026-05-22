@@ -61,10 +61,13 @@ require __DIR__ . '/includes/header.php';
         <h1 class="h-serif">Bonjour, <em><?= e($user['first_name'] ?: 'vous') ?></em>.</h1>
         <p class="muted" style="margin:6px 0 0; font-size: 14px;"><?= e($user['email']) ?></p>
       </div>
-      <a href="/deconnexion" class="h-btn h-btn-ghost">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Se déconnecter
-      </a>
+      <form method="post" action="/deconnexion" style="margin: 0;">
+        <?= csrf_field() ?>
+        <button type="submit" class="h-btn h-btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Se déconnecter
+        </button>
+      </form>
     </div>
 
     <?php if ($flash): ?>

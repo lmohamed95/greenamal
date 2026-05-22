@@ -64,36 +64,36 @@ Read-only audit checklist for the GreenAmal project. This document explains what
 
 ## Medium Priority
 
-- [ ] Convert category delete from GET to POST + CSRF
+- [x] Convert category delete from GET to POST + CSRF — **DONE (2026-05-22)**
 
   Problem: `admin/categories.php?delete=ID` deletes via GET.
 
-  How to fix:
+  Resolution:
 
-  - Replace the delete link with a small POST form.
-  - Include `csrf_field()`.
-  - In `admin/categories.php`, handle deletion only when `$_SERVER['REQUEST_METHOD'] === 'POST'`.
-  - Call `csrf_verify()` before deleting.
+  - Handler in [admin/categories.php:8-19](admin/categories.php#L8-L19) now requires `REQUEST_METHOD === 'POST'` + `csrf_verify()`.
+  - Delete buttons in [admin/categories.php:86-93](admin/categories.php#L86-L93) and [admin/category-edit.php:169-175](admin/category-edit.php#L169-L175) replaced with POST forms carrying `csrf_field()`.
+  - `php -l` ✅ clean on both files.
 
-  Verify:
+  Verify on prod:
 
-  - Direct visit to `admin/categories.php?delete=1` does nothing.
-  - Delete button still works from the admin UI.
+  - `curl -i https://greenamal.com/admin/categories.php?delete=1` (or visit directly while logged in) → no delete, just lists.
+  - Delete button in the admin UI still works.
 
-- [ ] Convert logout to POST
+- [x] Convert logout to POST — **DONE (2026-05-22)**
 
   Problem: `admin/logout.php` and `logout.php` mutate session state via GET.
 
-  How to fix:
+  Resolution:
 
-  - Change logout links into POST forms with CSRF fields.
-  - In logout handlers, require POST and call `csrf_verify()`.
-  - For GET requests, redirect back or return `405`.
+  - [admin/logout.php](admin/logout.php) and [logout.php](logout.php) now redirect on GET (to `admin/index.php` / `mon-compte` respectively) and require `csrf_verify()` on POST.
+  - Admin logout icon in [admin/_includes/header.php:105-110](admin/_includes/header.php#L105-L110) is a POST form.
+  - Customer logout button in [account.php:64-70](account.php#L64-L70) is a POST form.
+  - `php -l` ✅ clean on all four files.
 
-  Verify:
+  Verify on prod:
 
-  - Visiting `/logout.php` directly does not log out.
-  - Clicking the actual logout control works.
+  - Visiting `/logout.php` or `/admin/logout.php` directly (GET) → redirects, session intact.
+  - Clicking the actual logout control still logs you out and flashes the success message.
 
 - [ ] Disable admin error display in production
 
@@ -177,8 +177,8 @@ Read-only audit checklist for the GreenAmal project. This document explains what
 1. ~~Remove/protect `db-test.php`.~~ ✅ Done — gitignored + removed from prod.
 2. ~~Rotate default admin password.~~ ✅ Done — strip leftover seed comments for full closure.
 3. ~~Fix schema mismatch (`customers.address` / `postcode`).~~ ✅ Done — schema + migration added; needs import on prod.
-4. Fix GET delete + logout CSRF. ← next
-5. Disable admin debug output in production.
+4. ~~Fix GET delete + logout CSRF.~~ ✅ Done — categories + admin/customer logout now POST + CSRF.
+5. Disable admin debug output in production. ← next
 6. Clamp cart quantities.
 7. Add role enforcement.
 
