@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action'])) {
     }
 
     // Preserve filters on redirect
-    $qs = http_build_query(array_intersect_key($_POST, array_flip(['status', 'cat'])));
+    $qs = http_build_query(array_intersect_key($_POST, array_flip(['status', 'cat', 'q'])));
     redirect('products.php' . ($qs ? '?' . $qs : ''));
 }
 
@@ -49,14 +49,23 @@ $current = 'products';
 
 $status_filter = $_GET['status'] ?? 'all';
 $cat_filter = $_GET['cat'] ?? '';
+$q_filter = trim((string) ($_GET['q'] ?? ''));
 
 $where = [];
 $params = [];
+$order_by = 'p.created_at DESC';
 if ($status_filter !== 'all') {
     if ($status_filter === 'low_stock') {
         $where[] = "p.stock <= p.low_stock_threshold AND p.stock > 0";
     } elseif ($status_filter === 'out_of_stock') {
         $where[] = "p.stock = 0";
+    } elseif ($status_filter === 'featured') {
+        $where[] = "p.is_featured = 1";
+    } elseif ($status_filter === 'bestseller') {
+        $where[] = "p.sales_count > 0";
+        $order_by = 'p.sales_count DESC';
+    } elseif ($status_filter === 'promo') {
+        $where[] = "p.compare_at_price > p.price";
     } else {
         $where[] = "p.status = ?";
         $params[] = $status_filter;
@@ -66,6 +75,12 @@ if ($cat_filter !== '') {
     $where[] = "c.slug = ?";
     $params[] = $cat_filter;
 }
+if ($q_filter !== '') {
+    $where[] = "(p.name LIKE ? OR p.sku LIKE ?)";
+    $like = '%' . $q_filter . '%';
+    $params[] = $like;
+    $params[] = $like;
+}
 $whereSql = empty($where) ? '' : 'WHERE ' . implode(' AND ', $where);
 
 $products = db_all("
@@ -73,7 +88,7 @@ $products = db_all("
     FROM products p
     LEFT JOIN categories c ON c.id = p.category_id
     $whereSql
-    ORDER BY p.created_at DESC
+    ORDER BY $order_by
     LIMIT 50
 ", $params);
 
@@ -83,7 +98,10 @@ $counts = db_one("
       SUM(status='active') AS active,
       SUM(status='draft') AS draft,
       SUM(stock <= low_stock_threshold AND stock > 0) AS low_stock,
-      SUM(stock = 0) AS out_of_stock
+      SUM(stock = 0) AS out_of_stock,
+      SUM(is_featured = 1) AS featured,
+      SUM(sales_count > 0) AS bestseller,
+      SUM(compare_at_price > price) AS promo
     FROM products
 ");
 $categories = db_all("SELECT * FROM categories ORDER BY display_order");
@@ -121,14 +139,27 @@ require __DIR__ . '/_includes/header.php';
     <div class="flash flash-<?= e($flash['type']) ?>"><?= e($flash['msg']) ?></div>
   <?php endif; ?>
 
+  <?php
+    // Build a querystring that preserves the current cat+q across tab switches
+    $tab_qs = function (string $status) use ($cat_filter, $q_filter): string {
+        $p = ['status' => $status];
+        if ($cat_filter !== '') $p['cat'] = $cat_filter;
+        if ($q_filter !== '') $p['q'] = $q_filter;
+        return '?' . http_build_query($p);
+    };
+  ?>
   <form method="get" class="toolbar">
     <div class="toolbar-tabs">
-      <a href="?status=all" class="toolbar-tab<?= $status_filter === 'all' ? ' active' : '' ?>">Tous <span class="count"><?= (int) $counts['total'] ?></span></a>
-      <a href="?status=active" class="toolbar-tab<?= $status_filter === 'active' ? ' active' : '' ?>">Actifs <span class="count"><?= (int) $counts['active'] ?></span></a>
-      <a href="?status=draft" class="toolbar-tab<?= $status_filter === 'draft' ? ' active' : '' ?>">Brouillons <span class="count"><?= (int) $counts['draft'] ?></span></a>
-      <a href="?status=low_stock" class="toolbar-tab<?= $status_filter === 'low_stock' ? ' active' : '' ?>">Stock bas <span class="count"><?= (int) $counts['low_stock'] ?></span></a>
-      <a href="?status=out_of_stock" class="toolbar-tab<?= $status_filter === 'out_of_stock' ? ' active' : '' ?>">Rupture <span class="count"><?= (int) $counts['out_of_stock'] ?></span></a>
+      <a href="<?= e($tab_qs('all')) ?>" class="toolbar-tab<?= $status_filter === 'all' ? ' active' : '' ?>">Tous <span class="count"><?= (int) $counts['total'] ?></span></a>
+      <a href="<?= e($tab_qs('active')) ?>" class="toolbar-tab<?= $status_filter === 'active' ? ' active' : '' ?>">Actifs <span class="count"><?= (int) $counts['active'] ?></span></a>
+      <a href="<?= e($tab_qs('draft')) ?>" class="toolbar-tab<?= $status_filter === 'draft' ? ' active' : '' ?>">Brouillons <span class="count"><?= (int) $counts['draft'] ?></span></a>
+      <a href="<?= e($tab_qs('featured')) ?>" class="toolbar-tab<?= $status_filter === 'featured' ? ' active' : '' ?>">★ Mis en avant <span class="count"><?= (int) $counts['featured'] ?></span></a>
+      <a href="<?= e($tab_qs('bestseller')) ?>" class="toolbar-tab<?= $status_filter === 'bestseller' ? ' active' : '' ?>">Best-sellers <span class="count"><?= (int) $counts['bestseller'] ?></span></a>
+      <a href="<?= e($tab_qs('promo')) ?>" class="toolbar-tab<?= $status_filter === 'promo' ? ' active' : '' ?>">En promo <span class="count"><?= (int) $counts['promo'] ?></span></a>
+      <a href="<?= e($tab_qs('low_stock')) ?>" class="toolbar-tab<?= $status_filter === 'low_stock' ? ' active' : '' ?>">Stock bas <span class="count"><?= (int) $counts['low_stock'] ?></span></a>
+      <a href="<?= e($tab_qs('out_of_stock')) ?>" class="toolbar-tab<?= $status_filter === 'out_of_stock' ? ' active' : '' ?>">Rupture <span class="count"><?= (int) $counts['out_of_stock'] ?></span></a>
     </div>
+    <input type="search" name="q" class="field-input" placeholder="Rechercher (nom ou SKU)…" value="<?= e($q_filter) ?>">
     <select name="cat" class="field-select" onchange="this.form.submit()">
       <option value="">Toutes catégories</option>
       <?php foreach ($categories as $c): ?>
@@ -142,6 +173,7 @@ require __DIR__ . '/_includes/header.php';
     <?= csrf_field() ?>
     <input type="hidden" name="status" value="<?= e($status_filter) ?>">
     <input type="hidden" name="cat" value="<?= e($cat_filter) ?>">
+    <input type="hidden" name="q" value="<?= e($q_filter) ?>">
 
     <div class="bulk-bar" id="bulkBar" hidden>
       <span class="bulk-count"><strong id="bulkCount">0</strong> sélectionné(s)</span>
