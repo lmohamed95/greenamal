@@ -35,6 +35,7 @@ Desktop.ini
 # Local environment & secrets — NEVER commit these
 # ---------------------------------------------------------------------
 includes/config.local.php
+db-test.php
 .env
 .env.local
 .env.*.local
